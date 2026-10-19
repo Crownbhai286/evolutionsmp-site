@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>EvolutionSMP Store | Ranks for the EvolutionSMP Minecraft server</title>
+<meta name="description" content="Official EvolutionSMP webstore. Browse ranks for play.evolutionsmp.fun.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a1234;--s1:#0e1a4a;--s2:#132060;--line:#27346a;--tx:#f2f2f6;--mu:#9a9aab;--v:#e0b25a;--b:#8b7cf6;--ok:#34d399;--er:#f87171;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root{color-scheme:dark;scrollbar-color:#27346a #0a1234}
+*,*::before,*::after{box-sizing:inherit}html{scroll-behavior:smooth;scroll-padding-top:80px}
+html{background:#0a1234}body{margin:0;min-height:100vh;background:linear-gradient(90deg,#0b1433 0%,#111c45 48%,#211443 100%);color:var(--tx);font:400 16px/1.6 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit}button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--b);outline-offset:3px;border-radius:6px}
+.w{max-width:1120px;margin:0 auto;padding:0 20px}
+nav{position:sticky;top:0;z-index:20;background:rgba(14,14,18,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+nav .w{display:flex;align-items:center;gap:20px;height:64px}
+.logo{font-weight:800;letter-spacing:-.02em;font-size:18px;text-decoration:none;display:flex;gap:10px;align-items:center}
+.logo i{width:22px;height:22px;background:linear-gradient(135deg,var(--v),var(--b));display:block;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}
+.links{display:flex;gap:4px;margin-left:auto}.links a{padding:8px 12px;border-radius:8px;text-decoration:none;color:var(--mu);font-size:14px;font-weight:500}.links a:hover{color:var(--tx);background:var(--s2)}
+.cartbtn{border:1px solid var(--line);background:var(--s1);border-radius:10px;padding:8px 14px;font-size:14px;font-weight:600}.cartbtn:hover{border-color:var(--v)}
+.menu{display:none;border:1px solid var(--line);background:var(--s1);border-radius:10px;padding:8px 12px}
+.hero{position:relative;overflow:hidden;padding:96px 0 88px;border-bottom:1px solid var(--line);background:radial-gradient(60% 80% at 80% 0,rgba(224,178,90,.18),transparent 70%),radial-gradient(50% 70% at 5% 100%,rgba(139,124,246,.14),transparent 70%)}
+#fx{position:absolute;inset:0;width:100%;height:100%;opacity:.7}
+.hero .w{position:relative;display:grid;grid-template-columns:1.2fr .8fr;gap:48px;align-items:center}
+h1{font-size:clamp(44px,7vw,84px);line-height:.98;letter-spacing:-.045em;margin:0 0 20px;font-weight:800}
+h1 span{display:block;color:transparent;-webkit-text-stroke:1.5px var(--tx)}
+.lead{color:var(--mu);font-size:18px;max-width:46ch;margin:0 0 28px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 20px;border-radius:10px;font-weight:600;font-size:15px;border:1px solid var(--line);background:var(--s1);text-decoration:none;transition:transform .15s,border-color .15s}
+.btn:hover{border-color:var(--v);transform:translateY(-1px)}.btn.p{background:linear-gradient(135deg,#f0cd85,var(--v) 55%,#b8862e);color:#1a1405;border-color:transparent;position:relative;overflow:hidden}.btn.p::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(100deg,transparent 35%,rgba(255,255,255,.35) 50%,transparent 65%);transform:translateX(-120%);animation:sweep 6s ease-in-out infinite}@keyframes sweep{60%,100%{transform:translateX(120%)}}.btn[disabled]{opacity:.5;cursor:not-allowed;transform:none}
+.row{display:flex;gap:12px;flex-wrap:wrap}
+.ip{background:rgba(22,22,28,.9);border:1px solid var(--line);border-radius:16px;padding:24px;backdrop-filter:blur(8px)}
+.ip small{color:var(--mu);font-size:13px}.ip code{display:block;font:700 20px/1.3 ui-monospace,Menlo,monospace;margin:6px 0 16px;word-break:break-all}
+.port{display:flex;justify-content:space-between;border-top:1px solid var(--line);margin-top:16px;padding-top:14px;color:var(--mu);font-size:14px}.port b{color:var(--tx)}
+section{padding:80px 0;border-bottom:1px solid var(--line)}
+h2{font-size:clamp(28px,4vw,40px);letter-spacing:-.03em;line-height:1.1;margin:0 0 10px}
+.sub{color:var(--mu);margin:0 0 32px;max-width:60ch}
+.tabs{display:flex;gap:8px;margin-bottom:28px;flex-wrap:wrap}.tabs button{border:1px solid var(--line);background:var(--s1);border-radius:999px;padding:8px 18px;font-size:14px;font-weight:500;color:var(--mu)}
+.tabs button[aria-selected=true]{color:var(--tx);border-color:var(--v);background:rgba(224,178,90,.14)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+.card{position:relative;background:var(--s1);border:1px solid var(--line);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:12px;transition:transform .2s,border-color .2s}
+.card:hover{transform:translateY(-3px);border-color:var(--t)}
+.card::before{content:"";position:absolute;left:20px;right:20px;top:0;height:2px;background:var(--t);border-radius:0 0 4px 4px}
+.card .star svg{image-rendering:pixelated;filter:drop-shadow(0 3px 8px color-mix(in srgb,var(--t) 35%,transparent))}
+.card h3{margin:0;font-size:20px;letter-spacing:-.02em}.card p{margin:0;color:var(--mu);font-size:14px;flex:1}
+.price{font-size:26px;font-weight:800;letter-spacing:-.03em}
+.tier{font-size:12px;color:var(--mu)}
+.card.top{grid-column:span 2;background:linear-gradient(135deg,#2a2112,#0e1a4a 60%);border-color:var(--v);flex-direction:row;align-items:center;gap:24px;flex-wrap:wrap}
+.card.top svg{width:104px;height:104px}.card.top>div{flex:1;min-width:200px;display:flex;flex-direction:column;gap:12px}
+.badge{align-self:flex-start;font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;background:linear-gradient(135deg,#f0cd85,var(--v));color:#1a1405}
+.empty{border:1px dashed var(--line);border-radius:16px;padding:48px 24px;text-align:center;color:var(--mu)}.empty b{display:block;color:var(--tx);margin-bottom:6px}
+.why{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:28px}.why div{border-left:2px solid var(--line);padding-left:18px}.why h3{margin:0 0 6px;font-size:17px}.why p{margin:0;color:var(--mu);font-size:15px}
+details{border-bottom:1px solid var(--line);padding:16px 0}summary{cursor:pointer;font-weight:600;list-style:none;display:flex;justify-content:space-between}summary::after{content:"+";color:var(--mu)}details[open] summary::after{content:"\2212"}details p{color:var(--mu);margin:10px 0 0;max-width:70ch}
+footer{padding:48px 0 64px;color:var(--mu);font-size:14px}footer .w{display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between}footer nav2{display:flex;gap:18px;flex-wrap:wrap}footer a,footer button.l{background:none;border:0;padding:0;color:var(--mu);text-decoration:none}footer a:hover,footer button.l:hover{color:var(--tx)}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.65);display:none;z-index:50;padding:16px;overflow:auto}.ov.on{display:flex;align-items:flex-start;justify-content:center}
+.dlg{background:var(--s1);border:1px solid var(--line);border-radius:18px;width:100%;max-width:480px;margin:5vh auto;padding:24px;position:relative;animation:pop .2s ease-out}
+.drawer{margin:0 0 0 auto;max-width:400px;min-height:calc(100% - 0px);border-radius:18px 0 0 18px}
+@keyframes pop{from{opacity:0;transform:translateY(8px)}}
+.x{position:absolute;right:14px;top:14px;border:0;background:var(--s2);border-radius:8px;width:32px;height:32px}
+.dlg h3{margin:0 0 4px;font-size:22px}label{display:block;font-size:14px;font-weight:500;margin:16px 0 6px}
+input[type=text]{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:11px 12px;color:var(--tx);font:inherit}input[type=text]:focus{border-color:var(--b);outline:0}
+.err{color:var(--er);font-size:13px;min-height:20px;margin-top:6px}
+.note{background:var(--s2);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--mu);margin:14px 0}
+.it{display:flex;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid var(--line);font-size:15px}.it small{display:block;color:var(--mu)}.it button{background:none;border:0;color:var(--er);font-size:13px;padding:0}
+.tot{display:flex;justify-content:space-between;font-weight:700;font-size:18px;margin:16px 0}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--s2);border:1px solid var(--line);padding:10px 18px;border-radius:10px;font-size:14px;z-index:60;display:none}
+#h1a{-webkit-text-stroke:0;color:var(--tx)}#h1a:empty::before,#h1b:empty::before{content:"\200b"}.logo{animation:glow 7s ease-in-out infinite}@keyframes glow{0%,100%{filter:drop-shadow(0 0 3px rgba(224,178,90,.15))}50%{filter:drop-shadow(0 0 10px rgba(224,178,90,.4))}}.card.top{animation:breathe 7s ease-in-out infinite}@keyframes breathe{50%{box-shadow:0 0 30px rgba(224,178,90,.16)}}.card[data-id]{cursor:pointer}.card.sel{border-color:var(--v);box-shadow:0 0 0 1px var(--v),0 0 30px rgba(224,178,90,.35);transform:scale(1.02)}.spk{position:absolute;width:4px;height:4px;background:var(--v);pointer-events:none;border-radius:1px}
+nav{background:rgba(12,14,24,.9)}nav .w{max-width:1320px;gap:14px}.logo{white-space:nowrap}.logo img{height:36px;width:auto}.av{display:block;overflow:hidden;border-radius:8px;image-rendering:pixelated}.av svg{display:block;width:100%;height:100%}.ign{display:flex;align-items:center;gap:10px;min-width:0;background:rgba(35,48,100,.35);border:1px solid rgba(139,124,246,.28);border-radius:14px;padding:6px 16px 6px 6px;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);text-align:left;transition:border-color .2s,background .2s}.ign:hover{border-color:rgba(167,139,250,.6);background:rgba(45,60,125,.5)}.ign .av{width:46px;height:46px;flex:none;border-radius:8px;box-shadow:0 0 0 1px rgba(139,124,246,.35)}.ign b{display:block;font-size:14px;line-height:1.2;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ign small{display:block;color:var(--mu);font-size:12px;line-height:1.2}.links a{border:1px solid transparent;border-radius:10px;padding:8px 12px;white-space:nowrap;transition:background .2s,color .2s,border-color .2s}.links a.act{background:#17246a;border-color:rgba(139,124,246,.55);box-shadow:0 0 14px rgba(99,102,241,.35);color:var(--tx)}.links a:hover{background:#131f56;color:var(--tx)}.cartbtn{padding:0 14px;height:44px;border-radius:12px;background:#0e1a4a;border-color:rgba(139,124,246,.3);white-space:nowrap}.menu{height:44px;min-width:44px;border-radius:12px;background:#0e1a4a;border-color:rgba(139,124,246,.3)}.cartbtn:hover,.menu:hover{border-color:#8b7cf6;background:#132060}
+@media(max-width:1240px){.links{display:none;position:absolute;top:64px;left:0;right:0;flex-direction:column;background:var(--bg);padding:12px 20px;border-bottom:1px solid var(--line)}.links.on{display:flex}.menu{display:block;margin-left:auto}}
+@media(max-width:560px){.ign small,.ct{display:none}.ign{padding-right:12px}nav .w{gap:8px;padding:0 12px}.cartbtn,.menu{padding:8px 10px}}
+.hero{background:radial-gradient(60% 70% at 85% 10%,rgba(139,92,246,.28),transparent 70%),radial-gradient(50% 70% at 0 100%,rgba(37,99,235,.22),transparent 70%)}h1{font-size:clamp(38px,5.6vw,68px);line-height:1.02}#h1a,#h1c{-webkit-text-stroke:0;color:var(--tx)}#h1b{-webkit-text-stroke:0;background:linear-gradient(90deg,#ffd23f,#ff8a1f);-webkit-background-clip:text;background-clip:text;color:transparent}#h1c:empty::before{content:"\200b"}.bd{margin-bottom:16px}.bdg{display:inline-flex;align-items:center;gap:10px;padding:10px 18px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(6px);font-weight:600;font-size:15px}.bdg small{color:var(--mu);font-weight:500}.ipt{background:linear-gradient(90deg,#ffd23f,#ff8a1f);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800}.dot{width:10px;height:10px;border-radius:50%;background:#7a7a8c;box-shadow:0 0 0 3px rgba(122,122,140,.25);flex:none}.dot.on{background:#34d399;box-shadow:0 0 10px #34d399}.dot.off{background:#fb923c;box-shadow:0 0 10px #fb923c}.btn.yo{background:linear-gradient(135deg,#ffd23f,#ff8a1f);color:#1a1405}.btn.dc{background:linear-gradient(135deg,#5865f2,#7c3aed);border-color:transparent;color:#fff}.btn svg{flex:none}.ghost{color:var(--tx);text-decoration:none;font-weight:600;border-bottom:1px solid rgba(255,255,255,.3)}.logoCard{justify-self:center;width:100%;max-width:520px;border-radius:26px;padding:10px;background:linear-gradient(135deg,rgba(255,210,63,.5),rgba(139,92,246,.4));box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 60px rgba(139,92,246,.25);animation:fl 8s ease-in-out infinite}.logoCard img{display:block;width:100%;height:auto;border-radius:18px;aspect-ratio:1166/912}@keyframes fl{50%{transform:translateY(-6px)}}.logo img{height:44px;width:auto;border-radius:6px}.flogo{height:40px;width:auto;border-radius:6px;display:block;margin-bottom:10px}
+nav{background:linear-gradient(180deg,#0d1843,#0a1234);border-bottom:0}nav::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:linear-gradient(90deg,transparent,#6d5cf0 20%,#8b5cf6 50%,#3b82f6 80%,transparent)}nav .w{height:96px}.logo{gap:2px;animation:none;filter:none}#lm[hidden]{display:none}.logo img{width:58px;height:45px;object-fit:contain;border:0;border-radius:0;background:none;box-shadow:none;flex:none;margin-right:-4px;}.logo b{font-size:24px;line-height:1.05;font-weight:800;letter-spacing:-.02em}.st{background:linear-gradient(90deg,#ffd23f,#ff8a1f);-webkit-background-clip:text;background-clip:text;color:transparent}.links{top:96px}
+@media(max-width:560px){nav .w{height:64px;gap:6px;padding:0 10px}.links{top:64px}.logo{gap:2px}.logo img{width:40px;height:31px;margin-right:-3px}.logo b{font-size:14px}.st{display:block}.cartbtn,.menu{padding:8px}}
+#store{position:relative;overflow:hidden;background:linear-gradient(180deg,transparent 0%,rgba(17,28,69,.85) 22%,rgba(33,20,67,.75) 78%,transparent 100%)}#store::before{content:"";position:absolute;left:50%;top:58%;width:min(1100px,130%);height:560px;transform:translate(-50%,-50%);background:radial-gradient(ellipse at center,rgba(99,102,241,.17),rgba(139,92,246,.09) 45%,transparent 70%);pointer-events:none}#store .w{position:relative}#store .tabs button:not([aria-selected=true]){background:rgba(17,28,69,.75);border-color:rgba(139,124,246,.25)}#store .card:not(.top){background:linear-gradient(180deg,#15245c,#0f1c4f);border-color:rgba(139,124,246,.28);box-shadow:0 8px 24px rgba(3,6,25,.35)}#store .card:not(.top):hover{transform:translateY(-4px);border-color:var(--t);box-shadow:0 14px 34px rgba(3,6,25,.5),0 0 26px color-mix(in srgb,var(--t) 26%,transparent)}#store .card.top:hover{box-shadow:0 14px 34px rgba(3,6,25,.5),0 0 30px rgba(139,92,246,.3)}#store .card.sel{border-color:var(--v);box-shadow:0 0 0 1px var(--v),0 0 30px rgba(224,178,90,.35);transform:scale(1.02)}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(60% 70% at 85% 10%,rgba(139,92,246,.28),transparent 70%),radial-gradient(50% 70% at 0 100%,rgba(37,99,235,.22),transparent 70%),linear-gradient(90deg,#0b1433 0%,#111c45 48%,#211443 100%)}#fx{position:fixed;inset:0;z-index:0;pointer-events:none}.hero{background:none;position:relative;z-index:1}section,footer{position:relative;z-index:1}#store{overflow:visible;background:none}#store::before{display:none}
+/* ===== glass theme ===== */
+:root{--glass:linear-gradient(160deg,rgba(24,40,112,.55),rgba(38,22,78,.5));--gb:rgba(139,124,246,.32);--blur:blur(12px) saturate(1.25)}
+.price{font-size:32px;line-height:1.1}.was{font-size:14px;color:var(--mu);font-weight:500;text-decoration:line-through;margin-right:8px}.per{font-size:14px;color:var(--mu);font-weight:500;margin-left:4px}
+#store .card:not(.top),.empty,.why div,details,.bdg{background:var(--glass);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);border:1px solid var(--gb)}
+#store .card.top{background:linear-gradient(135deg,rgba(80,56,14,.5),rgba(24,40,112,.5) 65%);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);border-color:rgba(224,178,90,.5)}
+#store .card{transition:transform .2s,border-color .2s,box-shadow .2s}
+.dlg{background:rgba(14,22,66,.9);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);border-color:var(--gb)}
+.why div{padding:20px;border-radius:16px}.empty{border-style:solid}
+details{border-radius:14px;padding:16px 20px;margin-bottom:10px;transition:border-color .2s}details[open]{border-color:rgba(139,124,246,.6)}details:hover{border-color:rgba(139,124,246,.55)}
+#store .tabs button:not([aria-selected=true]){background:rgba(24,40,112,.4);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);border-color:var(--gb)}#store .tabs button[aria-selected=true]{box-shadow:0 0 16px rgba(224,178,90,.22)}
+.btn:not(.p):not(.dc){background:rgba(24,40,112,.45);border-color:var(--gb)}.btn{transition:transform .15s,border-color .15s,box-shadow .2s}.btn:hover{box-shadow:0 0 18px rgba(139,124,246,.25)}
+.note{background:rgba(255,255,255,.05)}.toast{background:rgba(14,22,66,.92);border-color:var(--gb)}
+@media(max-width:1240px){.links{background:rgba(10,18,52,.95)}}
+@media(max-width:800px){:root{--blur:blur(8px)}}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){#store .card:not(.top),.empty,.why div,details,.bdg{background:rgba(18,30,86,.92)}}
+/* ===== cleaner glass cards ===== */
+:root{--glass:rgba(35,45,95,.58);--gb:rgba(139,124,246,.3)}
+#store .grid{gap:22px}
+#store .card:not(.top){background:rgba(35,45,95,.58);border:1px solid rgba(139,124,246,.3);border-radius:20px;padding:30px 22px 22px;box-shadow:0 6px 22px rgba(3,6,25,.22)}
+#store .card.top{border-radius:24px;padding:28px}
+.why div{border-radius:20px}details{border-radius:18px}
+/* ===== rank card layout ===== */
+#store .grid{grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}#store .w{max-width:1280px}
+.pvn{margin:-12px 0 22px;font-size:13px;color:var(--mu)}
+.rk{text-align:center;gap:0;padding-top:34px}
+.rk .star{display:flex;justify-content:center;margin:8px 0 4px}.rk .star svg{width:96px;height:96px}
+.rk h3{margin:4px 0 8px;font-size:21px}
+.pw{display:flex;flex-direction:column;align-items:center;gap:2px}.pw .was{margin:0}
+.pk{list-style:none;margin:16px 0 0;padding:0;flex:1;text-align:left}
+.pk li{display:flex;gap:10px;align-items:flex-start;margin:0 -10px;padding:8px 10px;border-radius:10px;font-size:17px;line-height:22px;color:#e3e6f6;transition:background .2s,box-shadow .2s}.pk li+li{box-shadow:inset 0 1px 0 rgba(255,255,255,.07)}.pk li span:last-child{min-width:0;overflow-wrap:break-word}.pk li:hover{background:rgba(139,124,246,.14);box-shadow:inset 2px 0 0 color-mix(in srgb,var(--t) 70%,transparent)}.gem{flex:none;width:15px;height:15px;margin-top:3.5px;image-rendering:pixelated;filter:drop-shadow(0 0 3px rgba(255,217,90,.4));transition:filter .2s}.pk li:hover .gem{filter:drop-shadow(0 0 4px rgba(255,217,90,.6)) brightness(1.1)}
+.btns{margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:10px}.btns .btn{padding:12px 8px;white-space:nowrap}
+.sale{position:absolute;top:18px;left:18px;z-index:1;background:linear-gradient(135deg,#ff8a1f,#ef4444);color:#fff;font-size:11px;font-weight:800;letter-spacing:.06em;padding:4px 10px;border-radius:999px}
+.lab{position:absolute;top:18px;right:18px;z-index:1;font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--t);background:color-mix(in srgb,var(--t) 14%,transparent);border:1px solid color-mix(in srgb,var(--t) 45%,transparent);padding:4px 10px;border-radius:999px}
+#store .card.feat{border-color:rgba(252,211,77,.5);box-shadow:0 0 30px rgba(252,211,77,.12)}
+/* ===== hero heading ===== */
+h1{font-size:clamp(40px,6vw,76px);line-height:1;letter-spacing:-.03em;margin-bottom:22px}
+#h1a,#h1c{font-size:.4em;letter-spacing:.2em;font-weight:800;color:#F8FAFC;line-height:1.5}
+#h1b{position:relative;width:fit-content;max-width:100%;background:linear-gradient(95deg,#FFD43B 0%,#FFA62B 55%,#FF7A18 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 22px rgba(255,122,24,.25))}
+#h1b::after{content:"";display:block;height:4px;margin-top:10px;background:linear-gradient(90deg,#FFD43B,#FF7A18) 0 0/62% 100% no-repeat,linear-gradient(#60A5FA,#60A5FA) 68% 0/4px 100% no-repeat,linear-gradient(#60A5FA,#60A5FA) 74% 0/4px 100% no-repeat}
+.lead{color:#a9b8d9}
+/* ===== keys ===== */
+#store #grid.kg{grid-template-columns:repeat(4,1fr)}
+@media(max-width:1100px){#store #grid.kg{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){#store #grid.kg{grid-template-columns:1fr}}
+.kc{text-align:center;gap:0}.kc .star{display:flex;justify-content:center;margin:6px 0 4px}.kc .star svg{width:72px;height:72px}
+.kc h3{margin:4px 0;font-size:20px}.kd{margin:0 0 10px}.kc .price{font-size:28px}
+.qty{display:flex;align-items:center;margin:14px auto 0;width:max-content;border:1px solid var(--gb);border-radius:12px;overflow:hidden;background:rgba(24,40,112,.35)}
+.qty button{width:38px;height:38px;border:0;background:transparent;font-size:18px;line-height:1;transition:background .2s}.qty button:hover{background:rgba(139,124,246,.22)}
+.qty input{width:52px;height:38px;border:0;border-left:1px solid var(--gb);border-right:1px solid var(--gb);background:transparent;color:var(--tx);text-align:center;font:600 16px Inter,system-ui,sans-serif;-moz-appearance:textfield;appearance:textfield}
+.qty input::-webkit-outer-spin-button,.qty input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.kt{margin:12px 0 0;font-size:14px;color:var(--mu)}.kt b{color:var(--tx);font-size:16px}.kc .btns{margin-top:14px}
+/* ===== coin shop ===== */
+#store #grid.cg{grid-template-columns:repeat(4,1fr)}
+@media(max-width:1100px){#store #grid.cg{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:479px){#store #grid.cg{grid-template-columns:1fr}}
+#store .card.cc:not(.top){text-align:center;gap:0;padding:26px 18px 18px}
+.cc .star{display:flex;justify-content:center;margin:0 0 8px}.cc .star svg{width:52px;height:52px}
+.cc h3{margin:0;font-size:15px;font-weight:600;color:var(--mu)}
+.cn{margin:6px 0 2px;font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1.1;color:#fcd34d}.cn small{display:block;margin-top:2px;font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--mu)}
+.cp{margin:10px 0 14px;font-size:22px;font-weight:800;color:#fde68a}.cc .btn{width:100%}
+@media(max-width:420px){.ign b{max-width:64px}}
+@media(max-width:800px){.hero .w{grid-template-columns:1fr}.links{display:none;position:absolute;top:64px;left:0;right:0;flex-direction:column;background:var(--bg);padding:12px 20px;border-bottom:1px solid var(--line)}.links.on{display:flex}.menu{display:block;margin-left:auto}.cartbtn{margin-left:0}.card.top{grid-column:auto}.hero{padding:56px 0}section{padding:56px 0}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}#fx{display:none}}
+@media(max-width:560px){.ign{flex:0 0 auto;padding:4px}.ign>span:last-child{display:none}}
+.toast{max-width:calc(100vw - 32px);text-align:center}
+/* ===== unified product cards (Ranks, Keys, Coin Shop) ===== */
+#store #grid{gap:18px}
+#store #grid .card:not(.top){--ph:60px;text-align:center;gap:0;padding:42px 18px 18px;border-radius:20px;background:rgba(35,45,95,.55);border:1px solid rgba(139,124,246,.28);box-shadow:0 6px 20px rgba(3,6,25,.22);transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+#store #grid .card:not(.top):hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--t) 65%,rgba(139,124,246,.4));box-shadow:0 16px 34px rgba(3,6,25,.38),0 0 22px color-mix(in srgb,var(--t) 20%,transparent)}
+#store #grid .card .star{display:flex;justify-content:center;align-items:center;height:var(--ph);margin:0 0 12px}
+#store #grid .card .star svg{width:var(--ph);height:var(--ph)}
+#store #grid .card h3{margin:0 0 6px;font-size:18px;font-weight:700;line-height:1.25;letter-spacing:-.01em;color:var(--tx)}
+#store #grid .card .sale{top:14px;left:14px}#store #grid .card .lab{top:14px;right:14px}
+#store #grid .card .pw{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:2px;min-height:60px;margin:0}
+#store #grid .card .price,#store #grid .card .cp{font-size:28px;font-weight:800;line-height:1.1;letter-spacing:-.02em}
+#store #grid .card .cp{color:var(--t);margin:6px 0 16px}
+#store #grid .card .cn{margin:2px 0 0;font-size:24px}
+#store #grid .card .kd{margin:0 0 8px;font-size:13px;line-height:1.4;color:var(--mu)}
+#store #grid .card .qty{margin:12px auto 0}#store #grid .card .kt{margin:8px 0 0}
+#store #grid .card .pk{margin:14px 0 0}
+#store #grid .card .pk li{font-size:14.5px;line-height:20px;padding:7px 10px}
+#store #grid .card .pk li svg{flex:0 0 18px;width:18px;height:18px;margin-top:1px}
+#store #grid .card .btns{margin-top:auto;padding-top:18px;display:grid;grid-template-columns:1fr;gap:8px}
+#store #grid .card .btn.p{width:100%;min-height:46px;padding:12px 16px;font-size:15px;font-weight:700;box-shadow:0 6px 18px rgba(255,138,31,.22)}
+#store #grid .card .btns .btn:not(.p){min-height:38px;padding:8px 12px;font-size:13px;font-weight:600;color:#c3cbea;background:transparent}
+#store #grid .card .btns .btn:not(.p):hover{color:var(--tx)}
+#store #grid .card.cc>.btn{margin-top:auto}
+@media(max-width:479px){#store #grid.cg{grid-template-columns:repeat(2,1fr);gap:12px}#store #grid .card.cc:not(.top){padding:38px 10px 14px}#store #grid .card.cc .cn{font-size:21px}#store #grid .card.cc .cp{font-size:23px}#store #grid .card.cc h3{font-size:16px}#store #grid .card.cc>.btn{padding:12px 6px}}
+@media(prefers-reduced-motion:reduce){#store #grid .card:not(.top):hover{transform:none}}
+@media(max-width:360px){nav .w{gap:4px;padding:0 8px}.logo b{font-size:12px}.logo img{width:34px;height:26px}.cartbtn,.menu{padding:8px 6px}}
+/* ===== cart and checkout ===== */
+.dlg.drawer{max-width:440px}
+.cl{display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:6px 12px;align-items:start;padding:14px 0;border-bottom:1px solid var(--line)}
+.ci{grid-row:span 2;width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(24,40,112,.5);border:1px solid var(--gb)}
+.ci svg{width:34px;height:34px}
+.cm b{display:block;font-size:15px;line-height:1.3;overflow-wrap:anywhere}.cm small{display:block;color:var(--mu);font-size:12.5px;line-height:1.45}
+.cs{font-weight:700;font-size:15px;text-align:right;white-space:nowrap}
+.cr{grid-column:2/4;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.cq{margin:0}.cq button{width:32px;height:32px}.cq input{width:46px;height:32px;font-size:15px}
+.qf{font-size:12.5px;color:var(--mu)}
+.rm{background:none;border:0;color:#fca5a5;font-size:13px;padding:8px 4px;text-decoration:underline;text-underline-offset:2px}.rm:hover{color:#fecaca}
+.okc{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:rgba(52,211,153,.15);border:1px solid rgba(52,211,153,.5);color:var(--ok);flex:none}
+.btn[disabled]{opacity:.55;cursor:not-allowed}
+@media(max-width:560px){#dl .row .btn{flex:1 1 100%}.dlg.drawer{max-width:none;margin:0 auto;border-radius:18px}.dlg{padding:20px 16px}.cl{grid-template-columns:44px minmax(0,1fr) auto;gap:6px 10px}.ci{width:44px;height:44px}.ci svg{width:28px;height:28px}}
+
+/* ===== hero upgrade: interactive ambient layer (spotlight, parallax, particles) ===== */
+.hero .w{z-index:1}
+.hx{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;animation:hxIn 1.4s ease-out backwards}
+.hx>*{position:absolute;will-change:transform}
+.hx-orb{border-radius:50%}
+.hx-orb.o1{width:520px;height:520px;right:-120px;top:-160px;background:radial-gradient(circle,rgba(139,92,246,.30),transparent 68%)}
+.hx-orb.o2{width:460px;height:460px;left:-140px;bottom:-200px;background:radial-gradient(circle,rgba(37,99,235,.28),transparent 68%)}
+.hx-orb.o3{width:300px;height:300px;right:24%;bottom:-120px;background:radial-gradient(circle,rgba(167,139,250,.20),transparent 68%)}
+.hx-ring{width:460px;height:460px;right:5%;top:50%;margin-top:-230px;border-radius:50%;background:radial-gradient(circle closest-side,transparent 60%,rgba(139,92,246,.20) 76%,rgba(59,130,246,.10) 88%,transparent 100%);animation:hxBreath 9s ease-in-out infinite alternate}
+.hx-glow,.hx-core{left:70%;top:38%;border-radius:50%;opacity:.6;transition:opacity .6s ease}
+.hx-glow{width:560px;height:560px;margin:-280px 0 0 -280px;background:radial-gradient(circle,rgba(139,92,246,.30) 0,rgba(79,70,229,.16) 35%,rgba(59,130,246,.07) 55%,transparent 70%)}
+.hx-core{width:180px;height:180px;margin:-90px 0 0 -90px;background:radial-gradient(circle,rgba(147,197,253,.20),rgba(167,139,250,.10) 45%,transparent 70%)}
+.hx.on .hx-glow,.hx.on .hx-core{opacity:1}
+#hxp{inset:0;width:100%;height:100%;will-change:auto}
+.hx-cube{--s:48px;width:var(--s);height:calc(var(--s)*1.1547);clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:linear-gradient(90deg,var(--l) 50%,var(--r) 50%);animation:hxBob var(--t,8s) ease-in-out infinite alternate}
+.hx-cube::before{content:"";position:absolute;inset:0;background:var(--tp);clip-path:polygon(50% 0,100% 25%,50% 50%,0 25%)}
+.hx-cube.c1{--s:64px;--l:#4c3fb8;--r:#2f2a85;--tp:#8b7cf6;--t:7s;right:20%;top:20%}
+.hx-cube.c2{--s:40px;--l:#2b5fc9;--r:#1d3f93;--tp:#60a5fa;--t:9s;right:9%;top:58%}
+.hx-cube.c3{--s:28px;--l:#6d5cf0;--r:#4535b5;--tp:#a78bfa;--t:6s;right:34%;top:68%}
+.hx-cube.c4{--s:22px;--l:#2f6fdc;--r:#2150a8;--tp:#93c5fd;--t:10s;right:31%;top:12%}
+.hx.touch .hx-glow,.hx.touch .hx-core{opacity:.9;animation:hxDrift 26s ease-in-out infinite}
+.hx.touch .hx-core{animation-duration:34s;animation-direction:reverse}
+.hx.still #hxp{display:none}
+@keyframes hxIn{from{opacity:0}}
+@keyframes hxBob{from{transform:translate3d(0,-8px,0) rotate(-3deg)}to{transform:translate3d(0,10px,0) rotate(3deg)}}
+@keyframes hxBreath{to{transform:scale(1.07)}}
+@keyframes hxDrift{33%{transform:translate3d(-38vw,14vh,0)}66%{transform:translate3d(-14vw,-6vh,0)}}
+@keyframes hxUp{from{opacity:0;transform:translateY(18px)}}
+.hero.off .hx,.hero.off .hx>*{animation-play-state:paused}
+/* heading, copy and buttons: entrance + shimmer */
+.hero h1{animation:hxUp .8s cubic-bezier(.2,.7,.2,1) backwards}
+#h1b{background:linear-gradient(95deg,#FFD43B,#FFA62B 25%,#FF7A18 50%,#FFA62B 75%,#FFD43B);background-size:200% 100%;-webkit-background-clip:text;background-clip:text}
+.hero .lead{animation:hxUp .8s .25s cubic-bezier(.2,.7,.2,1) backwards}
+.hero .bd{animation:hxUp .8s .4s cubic-bezier(.2,.7,.2,1) backwards}
+.hero .row:not(.bd){animation:hxUp .8s .55s cubic-bezier(.2,.7,.2,1) backwards}
+.hero .ghost{display:inline-block;animation:hxUp .8s .7s cubic-bezier(.2,.7,.2,1) backwards;transition:transform .2s,color .2s}
+.hero .btn{position:relative;overflow:hidden;transition:transform .2s cubic-bezier(.2,.7,.2,1),border-color .2s,box-shadow .25s}
+.hero .btn::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .25s;background:radial-gradient(110px circle at var(--bx,50%) var(--by,50%),rgba(255,255,255,.22),transparent 70%)}
+.hero .btn:active{transform:translateY(0) scale(.98)}
+.hero .bdg{transition:transform .2s,border-color .2s,box-shadow .25s}
+@media(hover:hover){
+.hero .btn:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(99,102,241,.35),0 0 22px rgba(139,92,246,.30)}
+.hero .btn.p:hover{box-shadow:0 10px 28px rgba(224,178,90,.35),0 0 24px rgba(139,92,246,.25)}
+.hero .btn:hover::before{opacity:1}
+.hero .bdg:hover{transform:translateY(-2px);border-color:rgba(167,139,250,.6);box-shadow:0 8px 24px rgba(99,102,241,.25)}
+.hero .ghost:hover{transform:translateX(4px)}}
+@media(max-width:800px){.hx-glow{width:380px;height:380px;margin:-190px 0 0 -190px}.hx-ring{width:320px;height:320px;margin-top:-160px;right:-80px;opacity:.4}.hx-cube{opacity:.4}.hx-cube.c3,.hx-cube.c4{display:none}.hx-orb.o1{width:340px;height:340px}}
+@media(prefers-reduced-motion:reduce){.hx,.hero h1,.hero .lead,.hero .bd,.hero .row,.hero .ghost{animation:none!important}.hero .btn:hover,.hero .bdg:hover,.hero .ghost:hover{transform:none}}
+/* ===== Shrinking sticky header (compact state toggled by .scrolled on <nav>) ===== */
+nav{--nh-full:96px;--nh-cmp:64px;transition:margin-bottom .25s ease}
+nav .w{transition:height .25s ease,gap .25s ease}
+nav .links{top:100%}
+nav .logo img{transition:width .25s ease,height .25s ease,margin .25s ease}
+nav .logo b{transition:font-size .25s ease,transform .2s ease;transform-origin:20% 50%}
+nav .ign{transition:border-color .2s,background .2s,padding .25s ease,gap .25s ease}
+nav .ign .av{transition:width .25s ease,height .25s ease}
+nav .ign b,nav .ign small{transition:font-size .25s ease}
+nav .cartbtn,nav .menu{transition:height .25s ease,min-width .25s ease,padding .25s ease,border-color .2s,background .2s}
+nav .links a{transition:background .2s,color .2s,border-color .2s,padding .25s ease,font-size .25s ease}
+nav.scrolled{margin-bottom:calc(var(--nh-full) - var(--nh-cmp))}
+nav.scrolled .w{height:var(--nh-cmp)}
+nav.scrolled .logo img{width:42px;height:33px;margin-right:-3px}
+nav.scrolled .logo b{font-size:18px}
+nav.scrolled .ign{gap:8px;padding:4px 12px 4px 4px}
+nav.scrolled .ign .av{width:34px;height:34px}
+nav.scrolled .ign b{font-size:13px}
+nav.scrolled .ign small{font-size:11px}
+nav.scrolled .cartbtn,nav.scrolled .menu{height:38px}
+nav.scrolled .menu{min-width:38px}
+@media(min-width:561px){nav.scrolled .cartbtn{padding:0 12px}}
+@media(min-width:1241px){nav.scrolled .links a{padding:6px 10px;font-size:13px}}
+html{scroll-padding-top:76px}
+@media(max-width:560px){
+nav{--nh-full:64px;--nh-cmp:52px}
+html{scroll-padding-top:64px}
+nav.scrolled .logo img{width:34px;height:26px}
+nav.scrolled .logo b{font-size:13px}
+nav.scrolled .ign{padding:4px}
+nav.scrolled .ign .av{width:36px;height:36px}
+}
+@media(max-width:360px){
+nav.scrolled .logo img{width:30px;height:23px}
+nav.scrolled .logo b{font-size:12px}
+}
+@media(hover:hover){nav .logo b:hover{transform:scale(1.05)}}
+nav .logo:focus-visible b{transform:scale(1.05)}
+@media(prefers-reduced-motion:reduce){nav,nav *{transition:none!important}nav .logo b:hover,nav .logo:focus-visible b{transform:none}}
+
+.product-image{width:100%;height:100%;object-fit:contain;image-rendering:auto;filter:drop-shadow(0 8px 20px color-mix(in srgb,var(--t) 28%,transparent))}
+.detail-product-image{width:96px;height:96px;object-fit:contain;filter:drop-shadow(0 6px 16px var(--t))}
+.soldout{display:inline-flex;align-items:center;justify-content:center;margin:8px 0;padding:6px 10px;border:1px solid #ef444466;border-radius:8px;color:#f87171;font-size:11px;font-weight:800;letter-spacing:.12em}
+button:disabled{opacity:.48!important;cursor:not-allowed!important;transform:none!important}
+.card.out{opacity:.82}
+</style>
+</head>
+<body>
+<canvas id="fx" aria-hidden="true"></canvas>
+<nav><div class="w">
+<a class="logo" href="#home"><img id="logo" alt="EvolutionSMP logo" height="36" hidden><i id="lm"></i><b>EvolutionSMP <span class="st">Store</span></b></a>
+<button class="ign" id="ign" aria-label="Set your IGN"><span class="av" id="av"><svg viewBox='0 0 16 16' shape-rendering='crispEdges' aria-hidden='true'><rect width='16' height='16' fill='#0b0b0f'/><rect x='1' y='1' width='1' height='1' fill='#16161c'/><rect x='2' y='1' width='12' height='1' fill='#3b3b49'/><rect x='14' y='1' width='1' height='1' fill='#16161c'/><rect x='1' y='2' width='1' height='1' fill='#3b3b49'/><rect x='2' y='2' width='2' height='1' fill='#2b2b35'/><rect x='4' y='2' width='1' height='1' fill='#5a5a6e'/><rect x='5' y='2' width='6' height='1' fill='#2b2b35'/><rect x='11' y='2' width='1' height='1' fill='#5a5a6e'/><rect x='12' y='2' width='2' height='1' fill='#2b2b35'/><rect x='14' y='2' width='1' height='1' fill='#3b3b49'/><rect x='1' y='3' width='1' height='1' fill='#3b3b49'/><rect x='2' y='3' width='4' height='1' fill='#2b2b35'/><rect x='6' y='3' width='4' height='1' fill='#8b5cf6'/><rect x='10' y='3' width='4' height='1' fill='#2b2b35'/><rect x='14' y='3' width='1' height='1' fill='#3b3b49'/><rect x='1' y='4' width='1' height='1' fill='#3b3b49'/><rect x='2' y='4' width='12' height='1' fill='#2b2b35'/><rect x='14' y='4' width='1' height='1' fill='#3b3b49'/><rect x='1' y='5' width='1' height='1' fill='#3b3b49'/><rect x='2' y='5' width='1' height='1' fill='#2b2b35'/><rect x='13' y='5' width='1' height='1' fill='#2b2b35'/><rect x='14' y='5' width='1' height='1' fill='#3b3b49'/><rect x='1' y='6' width='1' height='1' fill='#3b3b49'/><rect x='2' y='6' width='1' height='1' fill='#2b2b35'/><rect x='4' y='6' width='2' height='1' fill='#22d3ee'/><rect x='6' y='6' width='1' height='1' fill='#16161c'/><rect x='9' y='6' width='1' height='1' fill='#16161c'/><rect x='10' y='6' width='2' height='1' fill='#22d3ee'/><rect x='13' y='6' width='1' height='1' fill='#2b2b35'/><rect x='14' y='6' width='1' height='1' fill='#3b3b49'/><rect x='1' y='7' width='1' height='1' fill='#3b3b49'/><rect x='2' y='7' width='1' height='1' fill='#2b2b35'/><rect x='7' y='7' width='2' height='1' fill='#16161c'/><rect x='13' y='7' width='1' height='1' fill='#2b2b35'/><rect x='14' y='7' width='1' height='1' fill='#3b3b49'/><rect x='1' y='8' width='1' height='1' fill='#3b3b49'/><rect x='2' y='8' width='1' height='1' fill='#2b2b35'/><rect x='4' y='8' width='2' height='1' fill='#16161c'/><rect x='10' y='8' width='2' height='1' fill='#16161c'/><rect x='13' y='8' width='1' height='1' fill='#2b2b35'/><rect x='14' y='8' width='1' height='1' fill='#3b3b49'/><rect x='1' y='9' width='1' height='1' fill='#3b3b49'/><rect x='2' y='9' width='2' height='1' fill='#2b2b35'/><rect x='12' y='9' width='2' height='1' fill='#2b2b35'/><rect x='14' y='9' width='1' height='1' fill='#3b3b49'/><rect x='1' y='10' width='1' height='1' fill='#3b3b49'/><rect x='2' y='10' width='3' height='1' fill='#2b2b35'/><rect x='6' y='10' width='4' height='1' fill='#16161c'/><rect x='11' y='10' width='3' height='1' fill='#2b2b35'/><rect x='14' y='10' width='1' height='1' fill='#3b3b49'/><rect x='1' y='11' width='1' height='1' fill='#3b3b49'/><rect x='2' y='11' width='4' height='1' fill='#2b2b35'/><rect x='10' y='11' width='4' height='1' fill='#2b2b35'/><rect x='14' y='11' width='1' height='1' fill='#3b3b49'/><rect x='1' y='12' width='1' height='1' fill='#16161c'/><rect x='2' y='12' width='2' height='1' fill='#2b2b35'/><rect x='4' y='12' width='1' height='1' fill='#8b5cf6'/><rect x='5' y='12' width='6' height='1' fill='#2b2b35'/><rect x='11' y='12' width='1' height='1' fill='#8b5cf6'/><rect x='12' y='12' width='2' height='1' fill='#2b2b35'/><rect x='14' y='12' width='1' height='1' fill='#16161c'/><rect x='1' y='13' width='1' height='1' fill='#16161c'/><rect x='2' y='13' width='1' height='1' fill='#3b3b49'/><rect x='3' y='13' width='10' height='1' fill='#2b2b35'/><rect x='13' y='13' width='1' height='1' fill='#3b3b49'/><rect x='14' y='13' width='1' height='1' fill='#16161c'/><rect x='2' y='14' width='1' height='1' fill='#16161c'/><rect x='3' y='14' width='10' height='1' fill='#3b3b49'/><rect x='13' y='14' width='1' height='1' fill='#16161c'/></svg></span><span><b id="ign1">Set your IGN</b><small id="ign2">Click here</small></span></button>
+<button class="menu" id="mb" aria-expanded="false" aria-controls="lk" aria-label="Menu">☰</button>
+<div class="links" id="lk"><a href="#home" data-k="home">Home</a><a href="#store" data-cat="Ranks" data-k="Ranks">Ranks</a><a href="#store" data-cat="Keys" data-k="Keys">Keys</a><a href="#store" data-cat="Coin Shop" data-k="Coin Shop">Coin Shop</a><a href="#faq" data-k="faq">FAQ</a><a href="#support" data-k="support">Support</a><a href="#policies" data-k="policies">Policies</a></div>
+<button class="cartbtn" id="cb">🛒<span class="ct"> Cart</span> (<span id="cc">0</span>)</button>
+</div></nav>
+
+<header class="hero" id="home"><div class="hx" aria-hidden="true"><div class="hx-orb o1" data-d="28"></div><div class="hx-orb o2" data-d="20"></div><div class="hx-orb o3" data-d="36"></div><div class="hx-ring" data-d="16"></div><div class="hx-glow"></div><div class="hx-core"></div><canvas id="hxp"></canvas><span class="hx-cube c1" data-d="46"></span><span class="hx-cube c2" data-d="32"></span><span class="hx-cube c3" data-d="56"></span><span class="hx-cube c4" data-d="40"></span></div><div class="w">
+<div><h1 aria-label="LEVEL UP YOUR EvolutionSMP EXPERIENCE"><span id="h1a" aria-hidden="true">LEVEL UP YOUR</span><span id="h1b" aria-hidden="true">EvolutionSMP</span><span id="h1c" aria-hidden="true">EXPERIENCE</span></h1>
+<p class="lead">Unlock exclusive ranks, rewards, crates, and coins to enhance your Minecraft adventure.</p>
+<div class="row bd"><span class="bdg" role="status" aria-live="polite"><span class="dot" id="sd"></span><span id="st">Checking status…</span></span><span class="bdg"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 12h4M8 10v4"/><circle cx="15" cy="13" r="1" fill="#fff"/><circle cx="18" cy="11" r="1" fill="#fff"/><path d="M17.3 5H6.7a4 4 0 0 0-3.9 3.1l-1.6 7A3 3 0 0 0 4 19a3 3 0 0 0 2.2-1l1.6-1.8a2 2 0 0 1 1.5-.7h5.4a2 2 0 0 1 1.5.7L18 18a3 3 0 0 0 2.2 1 3 3 0 0 0 2.8-3.9l-1.6-7A4 4 0 0 0 17.3 5Z"/></svg><span><span class="ipt" id="ipv">play.evolutionsmp.fun</span> <small>Port 25598</small></span></span></div>
+<div class="row"><button class="btn p yo" id="cp"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy Server IP</button><a class="btn dc" id="dc" href="#"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189z"/></svg> Join Discord</a></div>
+<p style="margin:18px 0 0"><a class="ghost" href="#store" data-cat="Ranks">Explore ranks →</a></p></div>
+
+</div></header>
+
+<section id="store"><div class="w">
+<h2>Store</h2><p class="sub">Pick a category. Only products that are configured appear here.</p>
+<div class="tabs" role="tablist" id="tabs"></div>
+<p class="pvn" id="pvn">Preview mode: example perks, struck-through "sale" prices and "/monthly" are placeholders for design review. Checkout uses the configured prices.</p>
+<div id="grid" class="grid" role="tabpanel"></div>
+</div></section>
+
+<section id="ranks"><div class="w">
+<h2>Why players support EvolutionSMP</h2><p class="sub">Store purchases are how players back the server they play on.</p>
+<div class="why">
+<div><h3>Tied to your username</h3><p>Every order is linked to the Minecraft username you enter at checkout.</p></div>
+<div><h3>Clear pricing in INR</h3><p>Prices are shown in rupees before you add anything to your cart.</p></div>
+<div><h3>Delivery you can verify</h3><p>Staff deliver your items only after your payment is verified in your ticket.</p></div>
+</div></div></section>
+
+<section id="crates"><div class="w">
+<h2>Keys and Coin Shop</h2><p class="sub">Browse crate keys and coin packages.</p>
+<div class="row"><button class="btn" data-cat="Keys">View Keys</button><button class="btn" data-cat="Coin Shop">View Coin Shop</button></div>
+</div></section>
+
+<section id="about"><div class="w">
+<h2>Join the community</h2><p class="sub">Questions, updates and support happen on Discord.</p>
+<a class="btn" id="dj" href="#" aria-disabled="true">Discord invite not configured yet</a>
+</div></section>
+
+<section id="support"><div class="w"><h2>Support</h2><p class="sub">How purchases are handled. Need help? Join the <a class="dsl" href="#" style="color:var(--v);font-weight:600">EvolutionSMP Discord server</a> and open a ticket.</p><div class="why"><div><h3>Check your username</h3><p>Review your Minecraft username in the cart before paying. The store never changes it for you.</p></div><div><h3>Payment verification</h3><p>An order counts as paid only after the payment provider or staff verifies it. Clicking a button or sending a screenshot does not mark it paid.</p></div><div><h3>Wrong username or missing rank</h3><p>Open a ticket in the <a class="dsl" href="#" style="color:var(--v);font-weight:600">EvolutionSMP Discord server</a> with your order reference.</p></div><div><h3>Delivery</h3><p>Items are delivered manually by staff after they verify your payment in your ticket.</p></div></div></div></section>
+<section id="faq"><div class="w">
+<h2>Frequently asked questions</h2><p class="sub"></p>
+<details><summary>How do I buy a rank?</summary><p>Open a rank, enter your exact Minecraft username, then add it to your cart or buy it now.</p></details>
+<details><summary>Can I pay right now?</summary><p>Not on this website. Checkout sends your order as a request in a private Discord ticket. Staff then give you payment instructions and verify payment manually.</p></details>
+<details><summary>When will my rank arrive?</summary><p>Staff deliver your items manually after they verify your payment in your ticket.</p></details>
+<details><summary>Which server do I join?</summary><p>Use play.evolutionsmp.fun with port 25598.</p></details>
+<details><summary>Where do I get help?</summary><p>You can get help in the <a class="dsl" href="#" style="color:var(--v);font-weight:600">EvolutionSMP Discord server</a>. Open a ticket there and include your Minecraft username and order reference.</p></details>
+</div></section>
+
+<section id="policies"><div class="w"><h2>Policies</h2><p class="sub">Our Store Terms, Privacy Policy and Refund Policy are published below.</p><div class="row"><button class="btn" data-pol="Store Terms">Store Terms</button><button class="btn" data-pol="Privacy Policy">Privacy Policy</button><button class="btn" data-pol="Refund Policy">Refund Policy</button></div></div></section>
+<footer><div class="w"><div><img id="flogo" class="flogo" alt="EvolutionSMP logo" hidden>© EvolutionSMP. Not affiliated with Mojang or Microsoft.</div>
+<nav2><button class="l" data-pol="Store Terms">Store Terms</button><button class="l" data-pol="Privacy Policy">Privacy Policy</button><button class="l" data-pol="Refund Policy">Refund Policy</button><a href="#support">Support</a><button class="l" data-pol="Discord">Discord</button></nav2></div></footer>
+
+<div class="ov" id="ov"><div class="dlg" id="dl" role="dialog" aria-modal="true"></div></div>
+<div class="toast" id="ts" role="status"></div>
+
+<script>
+// Edit here until the admin dashboard exists. Prices in INR. Perks/durations are empty on purpose: add only real ones.
+const CATS=["Ranks","Keys","Coin Shop"];
+const PRODUCTS=[
+{id:"hunter",cat:"Ranks",name:"Hunter",price:70,c:"#4ade80",desc:"Rank 1 of 7.",perks:[],duration:""},
+{id:"champions",cat:"Ranks",name:"Champions",price:120,c:"#ff6b6b",desc:"Rank 2 of 7.",perks:[],duration:""},
+{id:"gladiator",cat:"Ranks",name:"Gladiator",price:160,c:"#4d9bff",desc:"Rank 3 of 7.",perks:[],duration:""},
+{id:"warlord",cat:"Ranks",name:"Warlord",price:220,c:"#fb923c",desc:"Rank 4 of 7.",perks:[],duration:""},
+{id:"titan",cat:"Ranks",name:"Titan",price:300,c:"#22d3ee",desc:"Rank 5 of 7.",perks:[],duration:""},
+{id:"hyper",cat:"Ranks",name:"Hyper",price:400,c:"#a78bfa",desc:"Rank 6 of 7.",perks:[],duration:""},
+{id:"hyperplus",cat:"Ranks",name:"Hyper+",price:450,c:"#fcd34d",desc:"The top rank, 7 of 7.",perks:[],duration:"",feat:true},
+// SAMPLE key products (names from the brief; prices and discounts are placeholders). Replace with real key data. rewards:[] = crate preview list.
+{id:"rare-key",cat:"Keys",kind:"key",sample:true,name:"Rare Crate Key",rarity:"RARE",price:50,c:"#4d9bff",desc:"One key for the Rare Crate.",rewards:[]},
+{id:"legendary-key",cat:"Keys",kind:"key",sample:true,name:"Legendary Crate Key",rarity:"LEGENDARY",price:120,was:150,c:"#fb923c",desc:"One key for the Legendary Crate.",rewards:[]},
+{id:"spawner-key",cat:"Keys",kind:"key",sample:true,name:"Spawner Crate Key",rarity:"SPAWNER",price:250,was:300,c:"#a78bfa",desc:"One key for the Spawner Crate.",rewards:[]},
+{id:"monthly-key",cat:"Keys",kind:"key",sample:true,name:"Monthly Crate Key",rarity:"MONTHLY",price:200,c:"#22d3ee",desc:"One key for the Monthly Crate.",rewards:[]},
+// SAMPLE coin packages: coin amounts and prices are placeholders, edit here. Add best:true to flag the best-value package (none set).
+{id:"coins-1000",cat:"Coin Shop",kind:"coin",sample:true,name:"Coin Pouch",coins:1000,price:50,c:"#fbbf24"},
+{id:"coins-2500",cat:"Coin Shop",kind:"coin",sample:true,name:"Coin Bag",coins:2500,price:110,c:"#fbbf24"},
+{id:"coins-5000",cat:"Coin Shop",kind:"coin",sample:true,name:"Coin Chest",coins:5000,price:200,c:"#fbbf24"},
+{id:"coins-10000",cat:"Coin Shop",kind:"coin",sample:true,name:"Coin Vault",coins:10000,price:380,c:"#fbbf24"}];
+
+// PREVIEW DATA - placeholders for design review only. Not real benefits, not used by cart or checkout (they use PRODUCTS[].price).
+const PREVIEW={
+hunter:{was:100,period:"/monthly",perks:["Starter Rank","4 Homes","8 Auction House Slots","4 Vaults","8 Orders","/nick, /craft, /anvil"]},
+champions:{was:170,period:"/monthly",perks:["Champion Rank","8 Homes","16 Auction House Slots","8 Vaults","16 Orders","Exclusive Champion Prefix"]},
+gladiator:{was:230,period:"/monthly",perks:["Gladiator Rank","12 Homes","32 Auction House Slots","12 Vaults","24 Orders","Exclusive Gladiator Prefix"]},
+warlord:{was:310,period:"/monthly",perks:["Warlord Rank","24 Homes","64 Auction House Slots","24 Vaults","32 Orders","Exclusive Warlord Prefix"]},
+titan:{was:420,period:"/monthly",perks:["Titan Rank","32 Homes","96 Auction House Slots","32 Vaults","40 Orders","Exclusive Titan Prefix"]},
+hyper:{was:550,period:"/monthly",perks:["Hyper Rank","48 Homes","128 Auction House Slots","48 Vaults","56 Orders","Exclusive Hyper Prefix"]},
+hyperplus:{was:630,period:"/monthly",perks:["Hyper+ Rank","64 Homes","192 Auction House Slots","64 Vaults","80 Orders","Exclusive Hyper+ Prefix"]}};
+// Set PREVIEW_MODE=false before launch: hides sample keys/coins, example perks and placeholder "sale" prices, so only real products show.
+const PREVIEW_MODE=false;
+if(!PREVIEW_MODE){Object.keys(PREVIEW).forEach(k=>delete PREVIEW[k]);for(let i=PRODUCTS.length-1;i>=0;i--)if(PRODUCTS[i].sample)PRODUCTS.splice(i,1)}
+const CHK='<svg class="gem" viewBox="0 0 7 7" width="15" height="15" shape-rendering="crispEdges" aria-hidden="true"><rect x="3" y="0" width="1" height="1" fill="#ffd95a"/><rect x="2" y="1" width="3" height="1" fill="#ffd95a"/><rect x="1" y="2" width="5" height="1" fill="#ffd95a"/><rect x="0" y="3" width="7" height="1" fill="#ffd95a"/><rect x="1" y="4" width="5" height="1" fill="#ffd95a"/><rect x="2" y="5" width="3" height="1" fill="#ffd95a"/><rect x="3" y="6" width="1" height="1" fill="#ffd95a"/><rect x="3" y="0" width="1" height="1" fill="#fff1b0"/><rect x="2" y="1" width="1" height="1" fill="#fff1b0"/><rect x="1" y="2" width="1" height="1" fill="#fff1b0"/><rect x="5" y="3" width="2" height="1" fill="#e3a51c"/><rect x="4" y="4" width="1" height="1" fill="#e3a51c"/><rect x="3" y="5" width="1" height="1" fill="#e3a51c"/><rect x="3" y="6" width="1" height="1" fill="#e3a51c"/></svg>';
+const KQ={};
+function keyArtOld(c){const P="7,1 8,1 9,1 6,2 10,2 6,3 10,3 7,4 8,4 9,4 6,5 7,5 5,6 6,6 4,7 5,7 3,8 4,8 2,9 3,9 4,9 1,10 2,10".split(" ");return `<svg viewBox="0 0 12 12" shape-rendering="crispEdges" aria-hidden="true">${P.map(q=>{const[x,y]=q.split(",");return `<rect x="${x}" y="${y}" width="1" height="1" fill="${c}"/>`}).join("")}<rect x="7" y="1" width="1" height="1" fill="#fff" opacity=".55"/><rect x="6" y="2" width="1" height="1" fill="#fff" opacity=".4"/></svg>`}
+function coinArt(){const R=[[3,6],[2,7],[1,8],[0,9],[0,9],[0,9],[0,9],[1,8],[2,7],[3,6]];let o="";R.forEach(([a,b],y)=>{for(let x=a;x<=b;x++){const rim=x==a||x==b||y==0||y==9;let c=rim?"#c98a12":"#fbbf24";if(!rim&&x>=3&&x<=6&&y>=3&&y<=6)c=(x>=4&&x<=5&&y>=4&&y<=5)?"#ffd95a":"#e8ad1a";if(!rim&&((x==2&&y==2)||(x==3&&y==2)||(x==2&&y==3)||(x==1&&y==4)))c="#ffe58a";o+=`<rect x="${x}" y="${y}" width="1" height="1" fill="${c}"/>`}});return `<svg viewBox="0 0 10 10" shape-rendering="crispEdges" aria-hidden="true">${o}</svg>`}
+function coinCard(p){return `<article class="card cc" style="--t:${p.c}">${p.best?'<span class="lab">BEST VALUE</span>':""}<div class="star">${coinArt()}</div><h3>${p.name}</h3><div class="cn">${p.coins.toLocaleString("en-IN")}<small>coins</small></div><div class="cp">${inr(p.price)}</div><button class="btn p yo" data-buy="${p.id}">Buy Now</button></article>`}
+function keyCard(p){const q=KQ[p.id]||1;return `<article class="card kc" style="--t:${p.c}">${p.was?'<span class="sale">SALE</span>':""}<span class="lab">${p.rarity}</span><div class="star">${keyArt(p)}</div><h3>${p.name}</h3><p class="kd">${p.desc}</p><div class="pw">${p.was?`<s class="was">${inr(p.was)}</s>`:""}<div class="price" style="color:${p.c}">${inr(p.price)}<small class="per">/ key</small></div></div><div class="qty" role="group" aria-label="Quantity for ${p.name}"><button data-qm="${p.id}" aria-label="Decrease quantity">−</button><input type="number" min="1" max="99" inputmode="numeric" value="${q}" data-qi="${p.id}" aria-label="Quantity for ${p.name}"><button data-qp="${p.id}" aria-label="Increase quantity">+</button></div><div class="kt">Total <b id="kt-${p.id}">${inr(p.price*q)}</b></div><div class="btns"><button class="btn p yo" data-buy="${p.id}">Buy Now</button><button class="btn" data-crates="${p.id}">Show Crates</button></div></article>`}
+const $=s=>document.querySelector(s),inr=n=>"₹"+n.toLocaleString("en-IN");
+// Optional per-product fields: was (old price, struck through), period (e.g. "/monthly"). Empty until configured.
+function pr(p,card){const v=card?(PREVIEW[p.id]||{}):{},was=p.was||v.was,per=p.period||v.period,w=was?`<s class="was">${inr(was)}</s>`:"";return card?`<div class="pw">${w}<div class="price" style="color:${p.c}">${inr(p.price)}${per?`<small class="per">${per}</small>`:""}</div></div>`:`<div class="price" style="color:${p.c}">${w}${inr(p.price)}${per?`<small class="per">${per}</small>`:""}</div>`}
+let cat="Ranks",cart=[];try{cart=JSON.parse(localStorage.getItem("evo-cart")||"[]")}catch(e){}
+// Drop anything in the saved cart that is no longer valid (removed product, bad username or quantity) so a stale or edited cart cannot break the page.
+cart=(Array.isArray(cart)?cart:[]).filter(c=>c&&typeof c.id=="string"&&PRODUCTS.some(p=>p.id==c.id)&&typeof c.user=="string"&&/^[A-Za-z0-9_]{3,16}$/.test(c.user)&&(c.qty==null||(Number.isInteger(c.qty)&&c.qty>=1&&c.qty<=99)));
+const save=()=>{try{localStorage.setItem("evo-cart",JSON.stringify(cart))}catch(e){}$("#cc").textContent=cart.reduce((n,c)=>n+(Number.isInteger(c.qty)&&c.qty>0?c.qty:1),0)};
+function toast(m){const t=$("#ts");t.textContent=m;t.style.display="block";clearTimeout(toast.t);toast.t=setTimeout(()=>t.style.display="none",2400)}
+// Original pixel crystal art, taller/more facets for higher tiers
+// Rank crown emblems (original SVG). Each rank has its own silhouette; shared gradients are embedded in every svg so no other markup is needed.
+const CD=`<defs><linearGradient id="kGo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff4d2"/><stop offset=".35" stop-color="#e8cc8c"/><stop offset=".7" stop-color="#b8883a"/><stop offset="1" stop-color="#6f4d1b"/></linearGradient><linearGradient id="kSi" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset=".4" stop-color="#d4d8e3"/><stop offset=".75" stop-color="#8e94a8"/><stop offset="1" stop-color="#4b5064"/></linearGradient><linearGradient id="kSt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#eaf1ff"/><stop offset=".45" stop-color="#a3b4d4"/><stop offset=".8" stop-color="#5a6a90"/><stop offset="1" stop-color="#2a3250"/></linearGradient><linearGradient id="kOb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4a4360"/><stop offset=".5" stop-color="#1a1626"/><stop offset="1" stop-color="#07050c"/></linearGradient><linearGradient id="kEm" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8df5c8"/><stop offset=".5" stop-color="#22b982"/><stop offset="1" stop-color="#0a5a42"/></linearGradient><linearGradient id="kAm" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e6d4ff"/><stop offset=".5" stop-color="#a874ff"/><stop offset="1" stop-color="#4f23a8"/></linearGradient><linearGradient id="kCr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffa3ad"/><stop offset=".55" stop-color="#c9434f"/><stop offset="1" stop-color="#6a1421"/></linearGradient><linearGradient id="kBl" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c4dcff"/><stop offset=".5" stop-color="#5290ff"/><stop offset="1" stop-color="#1b409a"/></linearGradient><linearGradient id="kCh" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6a6480"/><stop offset=".35" stop-color="#15121e"/><stop offset=".6" stop-color="#4a4460"/><stop offset="1" stop-color="#0b0910"/></linearGradient><filter id="kGl" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="2.5"/></filter></defs>`;
+const CROWNS={
+// 1 Hunter: small, slim three-point crown, silver with emerald
+hunter:`<path d="M28 92 22 56l20 14 18-28 18 28 20-14-6 36z" fill="url(#kSi)"/><path d="M28 92 22 56l20 14 18-28" fill="none" stroke="#fff" stroke-opacity=".5"/><path d="M28 92h64l-1.5 9h-61z" fill="url(#kSi)"/><circle cx="22" cy="54" r="4" fill="url(#kEm)"/><circle cx="60" cy="40" r="4.5" fill="url(#kEm)"/><circle cx="98" cy="54" r="4" fill="url(#kEm)"/><path d="m60 62 7 9-7 9-7-9z" fill="url(#kEm)" stroke="#e8ecf5"/><circle cx="40" cy="96.5" r="2.5" fill="url(#kEm)"/><circle cx="80" cy="96.5" r="2.5" fill="url(#kEm)"/>`,
+// 2 Champions: silver arched (imperial) crown with crimson gems
+champions:`<path d="M20 62Q60 -2 100 62" fill="none" stroke="url(#kSi)" stroke-width="6" stroke-linecap="round"/><path d="M20 94 14 52l24 16 22-24 22 24 24-16-6 42z" fill="url(#kSi)"/><path d="M14 52l24 16 22-24" fill="none" stroke="#fff" stroke-opacity=".5"/><path d="M20 94h80l-2 11H22z" fill="url(#kSi)"/><circle cx="60" cy="16" r="6" fill="url(#kCr)" stroke="#e8ecf5"/><circle cx="14" cy="50" r="4.5" fill="url(#kCr)"/><circle cx="106" cy="50" r="4.5" fill="url(#kCr)"/><path d="m60 62 8 10-8 10-8-10z" fill="url(#kCr)" stroke="#e8ecf5" stroke-width="1.5"/><circle cx="36" cy="99.5" r="2.8" fill="url(#kCr)"/><circle cx="60" cy="99.5" r="2.8" fill="url(#kCr)"/><circle cx="84" cy="99.5" r="2.8" fill="url(#kCr)"/>`,
+// 3 Gladiator: angular steel crown of blade spikes, blue inlay
+gladiator:`<path d="M14 96 10 46l20 20 8-38 14 40 8-52 8 52 14-40 8 38 20-20-4 50z" fill="url(#kSt)"/><path d="M10 46l20 20 8-38 14 40 8-52" fill="none" stroke="#fff" stroke-opacity=".55"/><path d="M60 14v52M38 28l6 38M82 28l-6 38" stroke="#5290ff" stroke-opacity=".8" stroke-width="2"/><path d="M14 96h92l-1 10H15z" fill="url(#kSt)"/><path d="M14 96h92" stroke="#5290ff" stroke-width="2.5"/><path d="m60 70 8 10-8 10-8-10z" fill="url(#kBl)" stroke="#eaf1ff" stroke-width="1.5"/><rect x="26" y="98" width="6" height="4" rx="1.5" fill="url(#kBl)"/><rect x="88" y="98" width="6" height="4" rx="1.5" fill="url(#kBl)"/>`,
+// 4 Warlord: bold royal gold crown, cross finial, engraved metalwork
+warlord:`<path d="M60 4v18M52 11h16" stroke="url(#kGo)" stroke-width="5" stroke-linecap="round"/><path d="M14 94 6 40l30 24 24-40 24 40 30-24-8 54z" fill="url(#kGo)"/><path d="M60 24 84 64l30-24-8 54H60z" fill="#5a3b10" opacity=".25"/><path d="M14 94 6 40l30 24 24-40" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="1.5"/><path d="M24 84c8-14 16-14 24 0M48 84c8-14 16-14 24 0M72 84c8-14 16-14 24 0" fill="none" stroke="#7a5420" stroke-opacity=".6" stroke-width="2"/><path d="M60 30v50M36 64l-6 20M84 64l6 20" stroke="#7a5420" stroke-opacity=".45"/><path d="M12 94h96l-3 13H15z" fill="url(#kGo)"/><path d="M12 94h96" stroke="#fff3d2" stroke-opacity=".8" stroke-width="1.5"/><circle cx="6" cy="38" r="5.5" fill="url(#kGo)"/><circle cx="60" cy="22" r="6" fill="url(#kGo)"/><circle cx="114" cy="38" r="5.5" fill="url(#kGo)"/><circle cx="60" cy="100.5" r="3.4" fill="url(#kCr)"/><circle cx="36" cy="100.5" r="3" fill="url(#kAm)"/><circle cx="84" cy="100.5" r="3" fill="url(#kAm)"/>`,
+// 5 Titan: heavy obsidian castle-crown with violet energy
+titan:`<path d="M12 100V34h24v18h14V34h20v18h14V34h24v66z" fill="url(#kOb)" stroke="#6b6679" stroke-width="2.5" stroke-linejoin="round"/><path d="M12 100V34h24v18h14" fill="none" stroke="#fff" stroke-opacity=".22"/><path d="M12 84h96" stroke="#6b6679" stroke-width="2.5"/><path d="M60 52v26" stroke="#a874ff" stroke-width="7" stroke-linecap="round" filter="url(#kGl)"/><path d="m60 50 9 14-9 14-9-14z" fill="url(#kAm)" stroke="#d9c2ff"/><path d="M24 60v18M96 60v18M36 66v12M84 66v12" stroke="#a874ff" stroke-width="3" stroke-linecap="round" opacity=".85"/><path d="M12 100h96" stroke="#8a84a0" stroke-width="3"/>`,
+// 6 Hyper: futuristic amethyst crown of glowing shards on a slim neon band
+hyper:`<path d="M60 6 74 44 60 86 46 44z" fill="#a874ff" filter="url(#kGl)" opacity=".8"/><path d="M10 98 6 58l26 18 8-24 20 20 20-20 8 24 26-18-4 40z" fill="url(#kOb)" stroke="#a874ff" stroke-width="2" stroke-linejoin="round"/><path d="M6 58l26 18 8-24 20 20" fill="none" stroke="#fff" stroke-opacity=".25"/><path d="M8 90h104" stroke="#a874ff" stroke-width="2"/><path d="M60 6 74 44 60 86 46 44z" fill="url(#kAm)"/><path d="M60 6 74 44 60 50 46 44z" fill="#fff" fill-opacity=".45"/><path d="M60 50 74 44 60 86z" fill="#26085c" fill-opacity=".4"/><path d="M40 22 49 52 40 64 31 52z" fill="url(#kAm)"/><path d="M80 22 89 52 80 64 71 52z" fill="url(#kAm)"/><path d="M6 36 13 58 6 68 -1 58z" fill="url(#kAm)"/><path d="M114 36 121 58 114 68 107 58z" fill="url(#kAm)"/><path d="M40 22 49 52 40 52z" fill="#fff" fill-opacity=".35"/><path d="M14 95h92" stroke="#d9c2ff" stroke-width="1.5" stroke-linecap="round"/><circle cx="34" cy="82" r="2.5" fill="#d9c2ff"/><circle cx="60" cy="86" r="0" /><circle cx="86" cy="82" r="2.5" fill="#d9c2ff"/>`,
+// 7 Hyper+: most elaborate: black chrome, gold arches/halo, violet gems, side crystals, sparkles
+hyperplus:`<path d="M8 46Q60-20 112 46" fill="none" stroke="url(#kGo)" stroke-width="2.5" stroke-linecap="round"/><path d="M22 62Q60 6 98 62" fill="none" stroke="url(#kGo)" stroke-width="3.5" stroke-linecap="round"/><path d="M14 100 6 52l24 18 8-34 14 28 8-34 8 34 14-28 8 34 24-18-8 48z" fill="url(#kCh)" stroke="url(#kGo)" stroke-width="2" stroke-linejoin="round"/><path d="M6 52l24 18 8-34M46 64l14-30" stroke="#fff" stroke-opacity=".3" fill="none"/><path d="M12 90h96l2 13H10z" fill="url(#kGo)"/><path d="M12 90h96" stroke="#fff3d2" stroke-opacity=".8"/><path d="M22 84c8-10 14-10 22 0M76 84c8-10 14-10 22 0" fill="none" stroke="#e8cc8c" stroke-width="1.5"/><circle cx="6" cy="50" r="4.5" fill="url(#kGo)"/><circle cx="38" cy="34" r="4.5" fill="url(#kGo)"/><circle cx="82" cy="34" r="4.5" fill="url(#kGo)"/><circle cx="114" cy="50" r="4.5" fill="url(#kGo)"/><path d="m60 4 14 24-14 36-14-36z" fill="#a874ff" filter="url(#kGl)" opacity=".8"/><path d="m60 4 14 24-14 36-14-36z" fill="url(#kAm)" stroke="url(#kGo)" stroke-width="2.5" stroke-linejoin="round"/><path d="m60 4 14 24H46z" fill="#fff" fill-opacity=".4"/><path d="m36 62 5 7-5 7-5-7zM84 62l5 7-5 7-5-7z" fill="url(#kAm)" stroke="#f3dfae"/><circle cx="30" cy="97" r="3" fill="url(#kAm)"/><circle cx="60" cy="97" r="3" fill="url(#kAm)"/><circle cx="90" cy="97" r="3" fill="url(#kAm)"/><path d="m14 12 2 5 5 2-5 2-2 5-2-5-5-2 5-2zM106 12l2 5 5 2-5 2-2 5-2-5-5-2 5-2z" fill="#f3dfae"/>`};
+// Key emblems (original SVG), one per existing key product. Reuses the gradients in CD (see CROWNS above).
+const KS='<rect x="55" y="62" width="10" height="42" rx="4" fill="url(#kSi)"/>';
+const KEYS={
+// Rare Crate Key: sapphire crystal bow on a polished silver key
+"rare-key":`<path d="M60 8 86 22v28L60 64 34 50V22z" fill="url(#kBl)" stroke="url(#kSi)" stroke-width="5" stroke-linejoin="round"/><path d="M60 8 86 22 60 36 34 22z" fill="#fff" fill-opacity=".42"/><path d="M60 36 86 22v28L60 64z" fill="#0b1e5a" fill-opacity=".3"/><rect x="48" y="62" width="24" height="7" rx="3" fill="url(#kSi)"/>${KS}<path d="M65 82h17v8H65zM65 94h11v7H65z" fill="url(#kSi)"/>`,
+// Legendary Crate Key: luxurious gold, trefoil bow with ruby, scrolled collars
+"legendary-key":`<circle cx="60" cy="22" r="14" fill="url(#kGo)"/><circle cx="41" cy="40" r="14" fill="url(#kGo)"/><circle cx="79" cy="40" r="14" fill="url(#kGo)"/><circle cx="60" cy="38" r="17" fill="url(#kGo)"/><circle cx="60" cy="22" r="6" fill="#5a3b10"/><circle cx="41" cy="40" r="6" fill="#5a3b10"/><circle cx="79" cy="40" r="6" fill="#5a3b10"/><path d="m60 28 8 10-8 10-8-10z" fill="url(#kCr)" stroke="#fff3d2" stroke-width="1.5"/><rect x="53" y="54" width="14" height="50" rx="5" fill="url(#kGo)"/><rect x="48" y="60" width="24" height="6" rx="3" fill="url(#kGo)"/><rect x="48" y="74" width="24" height="6" rx="3" fill="url(#kGo)"/><path d="M67 88h19v7h-8v7H67z" fill="url(#kGo)"/><path d="M57 54v48" stroke="#fff" stroke-opacity=".45" stroke-width="2"/>`,
+// Spawner Crate Key: dark iron mob-spawner cage bow with a glowing violet core
+"spawner-key":`<path d="M60 6 90 22v30L60 68 30 52V22z" fill="url(#kOb)" stroke="#8a84a0" stroke-width="4" stroke-linejoin="round"/><path d="M30 22l30 16 30-16M60 38v30" stroke="#6b6679" stroke-width="3" fill="none"/><circle cx="60" cy="40" r="12" fill="#a874ff" filter="url(#kGl)"/><circle cx="60" cy="40" r="7" fill="url(#kAm)"/><rect x="54" y="66" width="12" height="38" rx="3" fill="url(#kOb)" stroke="#8a84a0" stroke-width="2.5"/><path d="M60 72v26" stroke="#a874ff" stroke-width="2.5" stroke-linecap="round"/><path d="M66 84h16v8H66zM66 96h10v6H66z" fill="url(#kOb)" stroke="#8a84a0" stroke-width="2"/>`,
+// Monthly Crate Key: calendar-page bow in cool cyan-silver, today's date lit
+"monthly-key":`<defs><linearGradient id="kCy" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c2f7ff"/><stop offset=".5" stop-color="#22d3ee"/><stop offset="1" stop-color="#0b6a80"/></linearGradient></defs><rect x="26" y="12" width="68" height="52" rx="9" fill="url(#kSi)"/><path d="M26 21a9 9 0 0 1 9-9h50a9 9 0 0 1 9 9v10H26z" fill="url(#kCy)"/><rect x="40" y="4" width="7" height="16" rx="3.5" fill="url(#kSt)"/><rect x="73" y="4" width="7" height="16" rx="3.5" fill="url(#kSt)"/><g fill="#6d7790"><rect x="37" y="38" width="10" height="9" rx="2"/><rect x="55" y="38" width="10" height="9" rx="2"/><rect x="73" y="38" width="10" height="9" rx="2"/><rect x="37" y="51" width="10" height="9" rx="2"/><rect x="73" y="51" width="10" height="9" rx="2"/></g><rect x="55" y="51" width="10" height="9" rx="2" fill="url(#kCy)"/>${KS}<path d="M65 82h17v8H65zM65 94h11v7H65z" fill="url(#kSi)"/>`};
+const KEYR={RARE:"rare-key",LEGENDARY:"legendary-key",SPAWNER:"spawner-key",MONTHLY:"monthly-key"};
+function keyArt(p){const k=KEYS[p.id]||KEYS[KEYR[p.rarity]];return k?`<svg data-key="${p.id}" viewBox="0 0 120 120" aria-hidden="true">${CD}${k}</svg>`:keyArtOld(p.c)}
+function art(p){if(CROWNS[p.id])return `<svg data-crown="${p.id}" viewBox="0 0 120 120" aria-hidden="true">${CD}${CROWNS[p.id]}</svg>`;const i=PRODUCTS.indexOf(p),h=3+Math.min(i,6);let r="";const w=7;
+for(let y=0;y<h*2;y++){const half=Math.min(y,h*2-1-y)+1,o=Math.max(0,3-Math.floor(half/2)*0);const cw=Math.min(half,4);for(let x=0;x<cw*2-1+0;x++){const xx=3-(cw-1)+x;r+=`<rect x="${xx}" y="${y}" width="1" height="1" fill="${p.c}" opacity="${x<cw/2?1:.75}"/>`}}
+return `<svg viewBox="0 0 ${w} ${h*2}" aria-hidden="true">${r}<rect x="3" y="1" width="1" height="1" fill="#fff" opacity=".6"/></svg>`}
+function imgUrl(p){if(!p||!p.image_path)return "";const path=String(p.image_path).replace(/^\/+/, "").split("/").map(encodeURIComponent).join("/");return SB_URL+"/storage/v1/object/public/rank-images/"+path}
+function soldOut(p){return !!(p&&p.stock!==null&&p.stock!==undefined&&Number(p.stock)<=0)}
+function productVisual(p,klass=""){/* Rank cards must keep their original custom crown artwork. Uploaded preview images belong only to Show Kits. */if(p&&p.cat==="Ranks")return art(p);const u=imgUrl(p);return u?`<img class="${klass}" src="${u}" alt="${esc(p.name)}" loading="lazy" onerror="this.style.display='none'">`:artFor(p)}
+function kitList(p){const a=Array.isArray(p&&p.show_kit)?p.show_kit:[];return a.map(x=>typeof x==="string"?x:(x&&typeof x.name==="string"?x.name:"")).filter(Boolean)}
+function kitImageUrl(p){if(!p||!p.show_kit_image_path)return "";const path=String(p.show_kit_image_path).replace(/^\/+/,"").split("/").map(encodeURIComponent).join("/");return SB_URL+"/storage/v1/object/public/show-kit-images/"+path}
+function showKit(id){const p=PRODUCTS.find(x=>x.id===id);if(!p)return;const a=kitList(p),u=kitImageUrl(p);open(`<h3>${esc(p.name)} — Show Kit</h3>${u?`<img src="${u}" alt="${esc(p.name)} Show Kit preview" style="display:block;max-width:100%;max-height:360px;object-fit:contain;border-radius:12px;margin:12px auto 18px" onerror="this.style.display='none'">`:""}${a.length?`<ul>${a.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:'<p style="color:var(--mu)">No kit contents have been added for this product yet.</p>'}`)}
+function render(){const pn=$("#pvn");pn.textContent=cat=="Ranks"?'Preview mode: example perks, struck-through "sale" prices and "/monthly" are placeholders for design review. Checkout uses the configured prices.':cat=="Keys"?"Sample keys: names are placeholders and the prices and discounts are examples until your real key products are added.":cat=="Coin Shop"?"Sample packages: coin amounts and prices are placeholders until your real coin packages are added.":"";if(!PREVIEW_MODE)pn.textContent="";pn.hidden=!pn.textContent;$("#grid").className="grid"+(cat=="Keys"?" kg":"")+(cat=="Coin Shop"?" cg":"");
+$("#tabs").innerHTML=CATS.map(c=>`<button role="tab" aria-selected="${c==cat}" data-cat="${c}">${c}</button>`).join("");
+const L=PRODUCTS.filter(p=>p.cat==cat);
+$("#grid").innerHTML=L.length?L.map((p,i)=>{if(p.kind=="key")return keyCard(p);if(p.kind=="coin")return coinCard(p);const v=PREVIEW[p.id]||{},was=p.was||v.was;return `<article class="card rk${p.feat?" feat":""}" data-id="${p.id}" style="--t:${p.c}">${was?'<span class="sale">SALE</span>':""}<span class="lab">RANK ${i+1}</span><div class="star">${productVisual(p,"product-image")}</div><h3>${esc(p.name)}</h3>${pr(p,1)}<ul class="pk">${(p.perks||[]).map(x=>`<li>${CHK}<span>${esc(x)}</span></li>`).join("")}</ul>${soldOut(p)?'<span class="soldout">SOLD OUT</span>':""}<div class="btns"><button class="btn p yo" data-v="${p.id}" ${soldOut(p)?"disabled":""}>${soldOut(p)?"Sold Out":"Buy Now"}</button><button class="btn" data-kit="${p.id}">Show Kits</button></div></article>`}).join(""):`<div class="empty" style="grid-column:1/-1"><b>No ${cat} products yet</b>Nothing is available in this category right now. Ask in our Discord if you need something specific.</div>`}
+let lastFocus=null;
+function open(h){if(!$("#ov").classList.contains("on"))lastFocus=document.activeElement;$("#dl").className="dlg";$("#dl").innerHTML=`<button class="x" aria-label="Close" data-close>✕</button>`+h;$("#ov").classList.add("on");{const h3=$("#dl h3");if(h3)$("#dl").setAttribute("aria-label",h3.textContent)}const f=$("#dl").querySelector("input,button:not(.x)");f&&f.focus()}
+function close(){$("#ov").classList.remove("on");if(lastFocus&&lastFocus.focus&&document.contains(lastFocus))lastFocus.focus();lastFocus=null}
+const okName=n=>/^[A-Za-z0-9_]{3,16}$/.test(n);
+function nameErr(n){if(!n)return"Enter your Minecraft username.";if(n.length<3||n.length>16)return"Usernames are 3 to 16 characters.";if(!okName(n))return"Use only letters, numbers and underscores.";return""}
+function detail(id){const p=PRODUCTS.find(x=>x.id==id),pk=Array.isArray(p.perks)?p.perks:[];open(`<div style="--t:${p.c};text-align:center;margin:8px 0 12px">${productVisual(p,"detail-product-image")}</div><h3>${esc(p.name)}</h3>${pr(p)}<p style="color:var(--mu);margin:8px 0">${p.desc}</p>
+<b style="font-size:14px">Perks</b><p style="color:var(--mu);font-size:14px;margin:4px 0">${pk.length?"":"The perks list for this product has not been added yet."}</p>${pk.length?"<ul>"+pk.map(x=>`<li>${x}</li>`).join("")+"</ul>":""}
+<b style="font-size:14px">Duration</b><p style="color:var(--mu);font-size:14px;margin:4px 0">${p.duration||"Not specified yet."}</p>
+<label for="un">Minecraft username</label><input type="text" id="un" autocomplete="off" maxlength="16" value="${ign}" placeholder="Steve_123"><div class="err" id="ue" role="alert"></div>
+<div class="note">Ranks are one per player, so no quantity is needed. Staff deliver your rank to this username manually after verifying your payment in a Discord ticket.</div>
+<div class="row"><button class="btn" id="ac">Add to Cart</button><button class="btn p" id="bn">Buy Now</button></div>`);
+const go=buy=>{const n=$("#un").value.trim(),e=nameErr(n);$("#ue").textContent=e;if(e)return;cart=cart.filter(c=>c.id!=id);cart.push({id,user:n});if(!ign)setIgn(n);save();buy?checkout():(close(),toast(p.name+" added to cart"))};
+$("#ac").onclick=()=>go(false);$("#bn").onclick=()=>go(true)}
+const esc=v=>String(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const REFC="ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+const artFor=p=>p.kind=="key"?keyArt(p):p.kind=="coin"?coinArt():art(p);
+// Clean the saved cart: drops unknown products and bad usernames/quantities, merges duplicate lines, and caps ranks at 1 per player. Returns how many lines were dropped.
+function fixCart(){const seen=new Map(),res=[];let dropped=0;cart.forEach(c=>{const p=c&&PRODUCTS.find(x=>x.id==c.id);let q=Number(c&&c.qty==null?1:c&&c.qty);if(!p||soldOut(p)||!Number.isFinite(p.price)||p.price<=0||!Number.isInteger(q)||q<1||q>99||typeof c.user!="string"||!okName(c.user)){dropped++;return}if(p.cat=="Ranks")q=1;const k=c.id+"|"+c.user,e=seen.get(k);if(e)e.qty=p.cat=="Ranks"?1:Math.min(99,e.qty+q);else{const n={id:c.id,user:c.user,qty:q};seen.set(k,n);res.push(n)}});cart=res;save();return dropped}
+// Prices always come from PRODUCTS, never from the stored cart.
+function lines(){const out=[],bad=[];cart.forEach((c,i)=>{const p=PRODUCTS.find(x=>x.id==c.id),q=Number(c.qty==null?1:c.qty);if(!p||soldOut(p)||!Number.isFinite(p.price)||p.price<=0||!Number.isInteger(q)||q<1||q>99){bad.push(c.id);return}out.push({p,q,i,user:c.user,sub:p.price*q})});return{out,bad,total:out.reduce((a,l)=>a+l.sub,0)}}
+const total=()=>lines().total;
+const CKI='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+let ckBusy=false;
+function cartRow(l){const p=l.p,nm=esc(p.name);return `<div class="cl" data-i="${l.i}"><div class="ci" style="--t:${p.c}">${artFor(p)}</div><div class="cm"><b>${nm}</b><small>for ${esc(l.user)}${p.sample?" · sample price":""}</small><small>${inr(p.price)} each</small></div><div class="cs" id="cs-${l.i}">${inr(l.sub)}</div><div class="cr">${p.cat=="Ranks"?`<span class="qf">Qty 1 · one per player</span>`:`<div class="qty cq" role="group" aria-label="Quantity for ${nm}"><button data-cqm="${l.i}" aria-label="Decrease quantity of ${nm}">−</button><input type="number" min="1" max="99" inputmode="numeric" value="${l.q}" data-cqi="${l.i}" aria-label="Quantity of ${nm}"><button data-cqp="${l.i}" aria-label="Increase quantity of ${nm}">+</button></div>`}<button class="rm" data-rm="${esc(l.p.id)}" data-ru="${esc(l.user)}" aria-label="Remove ${nm} from cart">Remove</button></div></div>`}
+function cartView(){const dropped=fixCart(),L=lines();
+open(`<h3>Your cart</h3>`+(dropped?`<div class="note" role="alert">${dropped} item${dropped>1?"s were":" was"} no longer available or invalid and ${dropped>1?"were":"was"} removed from your cart.</div>`:"")+(L.out.length?`<p style="color:var(--mu);font-size:13px;margin:2px 0 4px">${L.out.reduce((s,l)=>s+l.q,0)} item${L.out.reduce((s,l)=>s+l.q,0)>1?"s":""}</p><div id="cls">${L.out.map(cartRow).join("")}</div><div class="tot"><span>Total</span><span id="ctot" aria-live="polite">${inr(L.total)}</span></div><p style="color:var(--mu);font-size:12.5px;margin:-6px 0 14px">Nothing is charged on this website. Payment is arranged with staff in a Discord ticket.</p><button class="btn p" id="co" style="width:100%">Checkout</button><button class="btn" id="cs2" style="width:100%;margin-top:8px">Continue shopping</button>`:`<div class="empty" style="margin-top:16px"><b>Your cart is empty</b>Pick a rank, key or coin package from the store to get started.</div><button class="btn p" id="bs" style="width:100%;margin-top:14px">Browse the store</button>`));
+$("#dl").classList.add("drawer");const b=$("#co");b&&(b.onclick=checkout);const c2=$("#cs2");c2&&(c2.onclick=close);const bs=$("#bs");bs&&(bs.onclick=()=>{close();cat="Ranks";render();setAct("Ranks");$("#store").scrollIntoView()})}
+// Quantity changes update the line, the total and the badge in place (no reload of the cart).
+function setLineQty(i,v){const c=cart[i];if(!c)return;const p=PRODUCTS.find(x=>x.id==c.id);if(!p||p.cat=="Ranks")return;v=Math.max(1,Math.min(99,Math.floor(Number(v))||1));c.qty=v;save();const inp=document.querySelector(`[data-cqi="${i}"]`),s=$("#cs-"+i),t=$("#ctot");if(inp)inp.value=v;if(s)s.textContent=inr(p.price*v);if(t)t.textContent=inr(total())}
+document.addEventListener("click",e=>{const m=e.target.closest("[data-cqm],[data-cqp]");if(!m)return;const i=m.dataset.cqm!==undefined?m.dataset.cqm:m.dataset.cqp,c=cart[i];if(c)setLineQty(i,(c.qty||1)+(m.dataset.cqm!==undefined?-1:1))});
+document.addEventListener("change",e=>{const q=e.target.closest&&e.target.closest("[data-cqi]");if(q)setLineQty(q.dataset.cqi,q.value)});
+function getOrder(){try{return JSON.parse(localStorage.getItem("evo-order")||"null")}catch(e){return null}}
+function newRef(avoid){for(let t=0;t<5;t++){const a=new Uint8Array(8);if(window.crypto&&crypto.getRandomValues)crypto.getRandomValues(a);else for(let i=0;i<8;i++)a[i]=Math.random()*256;const r="EVO-"+[...a].slice(0,6).map(n=>REFC[n%REFC.length]).join("");if(r!=avoid)return r}return "EVO-"+Date.now().toString(36).toUpperCase().slice(-6)}
+const orderSig=(n,L)=>JSON.stringify([n,L.out.map(l=>[l.p.id,l.q,l.p.price])]);
+// One order reference per unchanged order: re-opening checkout reuses it, so staff see one order, not duplicates. The saved snapshot keeps the products, quantities and total.
+function makeOrder(n,L){const sig=orderSig(n,L),prev=getOrder(),same=prev&&prev.sig==sig&&prev.ref;const o={sig,ref:same?prev.ref:newRef(prev&&prev.ref),ign:n,created:same&&prev.created?prev.created:new Date().toISOString(),items:L.out.map(l=>({id:l.p.id,name:l.p.name,qty:l.q,unit:l.p.price,sub:l.sub,sample:!!l.p.sample})),total:L.total,sent:same&&prev.sent?prev.sent:0};return o}
+function saveOrder(o){try{localStorage.setItem("evo-order",JSON.stringify(o))}catch(e){}}
+function orderText(o){return["EvolutionSMP order request","Reference: "+o.ref,"IGN: "+o.ign,"Items:",...o.items.map(l=>`- ${l.name} x${l.qty} @ ${inr(l.unit)} = ${inr(l.sub)}`),"Total: "+inr(o.total),"Status: payment pending (manual verification by staff)","Created: "+o.created].concat(o.items.some(l=>l.sample)?["Note: includes sample/placeholder items"]:[]).join("\n")}
+function checkout(){const dropped=fixCart();let L=lines();if(!L.out.length)return cartView();const name=ign||(cart[0]&&cart[0].user)||"",prev=getOrder(),again=prev&&prev.sent&&prev.sig==orderSig(name,L),tg=target();
+open(`<h3>Checkout</h3><p style="color:var(--mu);font-size:14px;margin:4px 0 0">Review your order. It goes to staff as a request in a private Discord ticket. Nothing is charged on this website.</p>`+(dropped?`<div class="note" role="alert">${dropped} unavailable item${dropped>1?"s were":" was"} removed from your cart.</div>`:"")+(again?`<div class="note">Order <b style="color:var(--tx)">${esc(prev.ref)}</b> was already prepared for this exact cart. Continuing reuses the same reference, so staff see one order, not a duplicate.</div>`:"")+`<label for="oi">Minecraft IGN</label><input type="text" id="oi" autocomplete="off" maxlength="16" value="${esc(name)}" placeholder="Steve_123"><div class="err" id="oe" role="alert"></div><small style="display:block;color:var(--mu);margin-top:-2px">Your items are delivered to this username, so check the spelling.</small><div style="margin-top:8px">`+L.out.map(l=>`<div class="it"><div>${esc(l.p.name)}${l.q>1?` × ${l.q}`:""}<small>${inr(l.p.price)} each${l.p.sample?" · sample price":""}</small></div><div>${inr(l.sub)}</div></div>`).join("")+`</div><div class="tot"><span>Total</span><span>${inr(L.total)}</span></div><label style="display:flex;gap:8px;align-items:flex-start;font-weight:400"><input type="checkbox" id="tc" style="margin-top:5px"><span>I understand payment stays pending until staff verify it manually in my ticket.</span></label><div class="err" id="ce" role="alert">${tg?"":"The Discord support link is not set up yet, so checkout cannot continue. Please contact staff."}</div><button class="btn p yo" id="co2" style="width:100%"${tg?"":" disabled"}>${CKLBL()}</button><button class="btn" id="cb2" style="width:100%;margin-top:8px">← Back to cart</button>`);
+$("#cb2").onclick=cartView;
+$("#co2").onclick=async()=>{if(ckBusy)return;const n=$("#oi").value.trim(),e=nameErr(n);$("#oe").textContent=e;$("#ce").textContent="";if(e)return;if(!$("#tc").checked){$("#ce").textContent="Please confirm that payment is pending until staff verify it.";return}const t=target();if(!t){$("#ce").textContent="The Discord support link is not set up yet, so checkout cannot continue. Please contact staff.";return}
+ckBusy=true;const bt=$("#co2");bt.disabled=true;bt.textContent="Preparing your order…";
+try{cart.forEach(c=>c.user=n);setIgn(n);fixCart();const L2=lines();if(!L2.out.length){ckBusy=false;return cartView()}const o=dbReady()?await submitDb(n,L2):makeOrder(n,L2);const txt=orderText(o);if(!o.db)extLink(t.url);let copied=false;try{await navigator.clipboard.writeText(txt);copied=true}catch(er){}o.sent=o.sent||Date.now();saveOrder(o);handoff(o,copied)}
+catch(er){bt.disabled=false;bt.textContent=CKLBL();$("#ce").textContent=(er&&er.userMsg)||"Something went wrong while preparing your order. Nothing was sent. Please try again."}finally{ckBusy=false}}}
+function handoff(o,copied){const tg=target(),txt=orderText(o);
+open(`<div style="display:flex;align-items:center;gap:10px"><span class="okc">${CKI}</span><h3 style="margin:0">Order request ready</h3></div><p style="margin:10px 0 0;color:var(--mu);font-size:14px">Reference <b id="rf" style="color:var(--tx);font:700 16px ui-monospace,Menlo,monospace">${esc(o.ref)}</b></p>${o.db?`<div class="note"><b style="color:var(--tx)">Your order is recorded.</b> Payment is <b>not</b> verified yet. Staff verify it manually, and only after you open a ticket do they give payment instructions.</div>`:""}<div class="note"><b style="color:var(--tx)">No ticket has been created yet.</b> This website cannot create Discord tickets by itself and cannot see whether you opened one. Opening the Discord link does not create a ticket or send your cart: you click the Paid Support button there and paste your order details.</div><ol style="color:var(--mu);font-size:14px;padding-left:18px;line-height:1.7;margin:10px 0"><li>Copy your order details.</li><li>Open our Discord and choose <b style="color:var(--tx)">Paid Support</b> in the ticket panel.</li><li>Paste the order details into the ticket and send them.</li><li>Staff reply with payment instructions. Your items are delivered only after staff verify payment.</li></ol>`+o.items.map(l=>`<div class="it"><div>${esc(l.name)}${l.qty>1?` × ${l.qty}`:""}<small>${inr(l.unit)} each</small></div><div>${inr(l.sub)}</div></div>`).join("")+`<div class="tot"><span>Total</span><span>${inr(o.total)}</span></div><textarea id="ot" readonly rows="8" aria-label="Order details to paste into your ticket" style="width:100%;background:var(--bg);color:var(--tx);border:1px solid var(--line);border-radius:10px;padding:10px;font:13px/1.5 ui-monospace,Menlo,monospace;resize:vertical"></textarea><div class="row" style="margin-top:12px"><button class="btn p yo" id="oc">Copy order details</button>${tg?`<a class="btn" href="${tg.url}" target="_blank" rel="noopener noreferrer">${tg.label}</a>`:`<button class="btn" disabled>Discord link not set yet</button>`}${tg&&tg.url!=DISCORD_URL&&inviteOk(DISCORD_URL)?`<a class="btn" href="${DISCORD_URL}" target="_blank" rel="noopener noreferrer">Not in the server? Join first</a>`:""}</div><div class="err" id="ok" style="color:var(--mu)" role="status">${copied?"Order details copied automatically. Paste them into your ticket.":"Could not copy automatically. Use the button above or select the text and copy it."}</div><div class="row" style="margin-top:6px"><button class="btn" id="cc2">I've submitted my ticket: clear cart</button></div>`);
+$("#ov").scrollTop=0;$("#ot").value=txt;$("#oc").onclick=()=>{navigator.clipboard.writeText(txt).then(()=>{$("#ok").textContent="Copied. Paste it into your ticket."},()=>{$("#ot").select();$("#ok").textContent="Copy failed. Select the text above and copy it manually."})};
+$("#cc2").onclick=()=>{cart=[];save();close();toast("Cart cleared")}}
+document.addEventListener("click",e=>{const t=e.target.closest("button,a");if(!t){if(e.target.id=="ov")close();const cd=e.target.closest(".card[data-id]");if(cd)pickOpen(cd.dataset.id,cd);return}
+if(t.dataset.close!==undefined)close();
+else if(t.dataset.cat){cat=t.dataset.cat;render();setAct(cat);$("#lk").classList.remove("on");$("#store").scrollIntoView()}
+else if(t.dataset.qm)setQ(t.dataset.qm,(KQ[t.dataset.qm]||1)-1);else if(t.dataset.qp)setQ(t.dataset.qp,(KQ[t.dataset.qp]||1)+1);else if(t.dataset.buy)buyKey(t.dataset.buy);else if(t.dataset.crates)crates(t.dataset.crates);else if(t.dataset.kit)showKit(t.dataset.kit);else if(t.dataset.v)pickOpen(t.dataset.v,t);
+else if(t.dataset.rm){cart=cart.filter(c=>!(c.id==t.dataset.rm&&c.user==t.dataset.ru));save();cartView()}
+else if(POLICIES[t.dataset.pol])open(POLICIES[t.dataset.pol]);
+else if(t.dataset.pol=="Discord"&&inviteOk(DISCORD_URL))extLink(DISCORD_URL);
+else if(t.dataset.pol)open(`<h3>${t.dataset.pol}</h3><p style="color:var(--mu)">${t.dataset.pol=="Discord"?"The Discord invite has not been set yet.":"This page has not been written yet. Add it in admin settings before launch."}</p>`);
+else if(t.id=="cb")cartView();else if(t.id=="ign")ignModal();else if(t.id=="dc"&&!inviteOk(DISCORD_URL)){e.preventDefault();open('<h3>Discord</h3><p style="color:var(--mu)">The Discord invite has not been set yet. Add it to DISCORD_URL on this page.</p>')}
+else if(t.id=="mb"){const o=$("#lk").classList.toggle("on");t.setAttribute("aria-expanded",o)}
+else if(t.closest("#lk"))$("#lk").classList.remove("on");
+else if(t.id=="join"||t.id=="cp"){navigator.clipboard.writeText("play.evolutionsmp.fun").then(()=>toast("IP copied: play.evolutionsmp.fun"),()=>toast("Copy failed. Select the IP and copy it manually."));if(t.id=="join")$("#ipv").scrollIntoView({block:"center"})}});
+document.addEventListener("keydown",e=>{if(e.key=="Escape")close()});
+render();save();
+const LOGO_SRC="data:image/webp;base64,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";
+if(LOGO_SRC){const im=$("#logo");im.src=LOGO_SRC;im.hidden=false;$("#lm").hidden=true;const fl=$("#flogo");fl.src=LOGO_SRC;fl.hidden=false}
+const STATUS_API="https://api.mcsrvstat.us/3/play.evolutionsmp.fun:25598"; // live status source; shows "Status unavailable" if it cannot be reached
+async function chk(){const d=$("#sd"),t=$("#st");try{const r=await fetch(STATUS_API,{cache:"no-store"});if(!r.ok)throw 0;const j=await r.json();if(typeof j.online!="boolean")throw 0;d.className="dot "+(j.online?"on":"off");t.textContent=j.online?"Online"+(j.players&&Number.isInteger(j.players.online)&&Number.isInteger(j.players.max)?" · "+j.players.online+"/"+j.players.max+" players":""):"Offline"}catch(e){d.className="dot";t.textContent="Status unavailable"}}
+chk();setInterval(()=>{if(!document.hidden)chk()},60000);
+// Opens an external link in a new tab. (The page defines its own open() for dialogs, so window.open must not be used.)
+function extLink(u){const a=document.createElement("a");a.href=u;a.target="_blank";a.rel="noopener noreferrer";document.body.appendChild(a);a.click();a.remove()}
+// ---- Discord configuration (edit these two values) ----
+const TICKET_PANEL_URL="https://discordapp.com/channels/1500902294462664774/1529849005813530674/1558003237007786048"; // link to the Ticket King Paid Support panel message
+const DISCORD_URL="https://discord.gg/bSCEP9YvKZ"; // server invite (fallback)
+const panelOk=u=>/^https:\/\/(discord|discordapp)\.com\/channels\/\d{15,25}\/\d{15,25}(\/\d{15,25})?$/.test(u||"");
+const inviteOk=u=>/^https:\/\/(discord\.gg|(discord|discordapp)\.com\/invite)\/[A-Za-z0-9-]{2,32}$/.test(u||"");
+function target(){return panelOk(TICKET_PANEL_URL)?{url:TICKET_PANEL_URL,label:"Open Paid Support panel"}:inviteOk(DISCORD_URL)?{url:DISCORD_URL,label:"Open Discord server"}:null}
+[["TICKET_PANEL_URL",TICKET_PANEL_URL,panelOk],["DISCORD_URL",DISCORD_URL,inviteOk]].forEach(([n,v,ok])=>{if(v&&!ok(v))console.warn(n+" is set but is not a valid Discord link, so it is ignored.")});
+{document.querySelectorAll(".dsl").forEach(a=>{if(inviteOk(DISCORD_URL)){a.href=DISCORD_URL;a.target="_blank";a.rel="noopener noreferrer"}else a.addEventListener("click",e=>e.preventDefault())});const dc=$("#dc"),dj=$("#dj");if(inviteOk(DISCORD_URL)){[dc,dj].forEach(a=>{if(!a)return;a.href=DISCORD_URL;a.target="_blank";a.rel="noopener noreferrer"});if(dj){dj.textContent="Join our Discord";dj.removeAttribute("aria-disabled")}}else if(dj)dj.addEventListener("click",e=>e.preventDefault())}
+// Quick check from the browser console: discordConfigCheck()
+window.discordConfigCheck=()=>{const r={TICKET_PANEL_URL:panelOk(TICKET_PANEL_URL)?"valid":(TICKET_PANEL_URL?"INVALID (ignored)":"not set"),DISCORD_URL:inviteOk(DISCORD_URL)?"valid":(DISCORD_URL?"INVALID (ignored)":"not set"),checkoutWillOpen:(target()||{url:"nothing (no valid link)"}).url};console.table(r);return r};
+// ---- Published policies (add more entries here; any policy not listed shows the "not written yet" message) ----
+const POLICIES={"Refund Policy":`<h3>Refund Policy</h3><div style="max-height:60vh;overflow:auto;padding-right:6px;color:var(--mu);font-size:14px;line-height:1.7">
+<p style="margin:10px 0">At EvolutionSMP Store, all purchases are for digital Minecraft products, including ranks, crate keys, coins, and other in-game items.</p>
+<p style="margin:10px 0">All refund requests must be submitted through our official EvolutionSMP Discord server using the Store Support ticket system.</p>
+<ul style="padding-left:18px;margin:10px 0">
+<li><b style="color:var(--tx)">Successful Delivery:</b> Refunds are generally not available once purchased items have been successfully delivered and used.</li>
+<li><b style="color:var(--tx)">Failed Delivery:</b> If you have paid but have not received your items, please open a Store Support ticket so our team can investigate.</li>
+<li><b style="color:var(--tx)">Incorrect or Duplicate Payments:</b> Contact our support team with your order details and payment reference.</li>
+<li><b style="color:var(--tx)">Wrong Purchases:</b> Refunds for accidental purchases are reviewed on a case-by-case basis.</li>
+<li><b style="color:var(--tx)">Server Punishments:</b> Being banned or punished on the server does not automatically qualify you for a refund.</li></ul>
+<p style="margin:10px 0">Approved refunds will be processed through an appropriate payment method, subject to applicable payment provider rules.</p>
+<p style="margin:10px 0">To request assistance, provide your Minecraft username, order details, and payment transaction reference in a Store Support ticket.</p>
+<p style="margin:10px 0">EvolutionSMP reserves the right to review refund requests individually. This policy does not exclude any refund rights that apply under relevant law.</p>
+<p style="margin:10px 0;color:var(--tx)">Need help? Open a Store Support ticket on our official Discord server.</p></div>`};
+POLICIES["Privacy Policy"]=`<h3>Privacy Policy</h3><div style="max-height:60vh;overflow:auto;padding-right:6px;color:var(--mu);font-size:14px;line-height:1.7">
+<p style="margin:6px 0"><small>Last updated: 17 October 2026</small></p>
+<p style="margin:6px 0">This policy explains what the EvolutionSMP Store website does with information when you browse the store and place an order request. The store sells digital Minecraft items for the EvolutionSMP server and is not affiliated with Mojang or Microsoft.</p>
+<h4 style="margin:18px 0 4px;font-size:15px;color:var(--tx)">1. Information we collect</h4>
+<p style="margin:6px 0">This website does not have accounts and does not take payments. The information involved is limited to:</p>
+<ul style="padding-left:18px;margin:6px 0"><li><b style="color:var(--tx)">Minecraft username (IGN):</b> entered by you for your cart and order.</li>
+<li><b style="color:var(--tx)">Order details:</b> the items, quantities, total and reference number generated for your order request.</li>
+<li><b style="color:var(--tx)">Technical data:</b> like any website, your IP address and browser details are visible to the hosting provider and to the third-party services listed below when your browser loads them.</li></ul>
+<h4 style="margin:18px 0 4px;font-size:15px;color:var(--tx)">2. Information stored in your browser</h4>
+<p style="margin:6px 0">To remember your cart, username and last order reference, the site saves this data in your browser's local storage on your own device. It is not sent to us by the website. You can remove it at any time by clearing your site data in your browser settings. The website does not include advertising or analytics tools.</p>
+<h4 style="margin:18px 0 4px;font-size:15px;color:var(--tx)">3. How information is used</h4>
+<p style="margin:6px 0">Your username and order details are used to prepare your order request and to help staff identify and deliver the correct items. When you choose to continue, the website prepares the order text for you to copy. Nothing is sent to staff until you paste it into a ticket yourself.</p>
+<h4 style="margin:18px 0 4px;font-size:15px;color:var(--tx)">4. Orders, tickets and payments</h4>
+<p style="margin:6px 0">Order requests are handled by staff in a private ticket on our Discord server. Payment instructions are given in that ticket and payment is verified manually. Anything you post there, including your order details and any payment reference, is visible to the staff handling the ticket and is subject to Discord's own terms and privacy policy.</p>
+<h4 style="margin:18px 0 4px;font-size:15px;color:var(--tx)">5. Third-party services</h4>
+<ul style="padding-left:18px;margin:6px 0"><li><b style="color:var(--tx)">Discord:</b> used for support tickets and the community. Links on this site take you to Discord.</li>
+<li><b style="color:var(--tx)">Google Fonts:</b> the site loads its typeface from Google, which may receive your IP address and browser details.</li>
+<li><b style="color:var(--tx)">mcsrvstat.us:</b> the site requests the server's online status from this service, which may receive your IP address and browser details.</li>
+<li><b style="color:var(--tx)">Payment providers:</b> if you pay, the provider staff give you has its own privacy practices, which we do not control.</li></ul>
+<p style="margin:6px 0">We do not control these services, so please review their policies if you have concerns.</p>
+<h4 style="margin:18px 0 4px;font-size:15px;color:var(--tx)">6. Data protection</h4>
+<p style="margin:6px 0">We try to limit the information involved to what is needed to process orders, and the website does not ask for passwords or card details. No website or online service can be guaranteed completely secure, so please do not share sensitive information in tickets beyond what staff ask for.</p>
+<h4 style="margin:18px 0 4px;font-size:15px;color:var(--tx)">7. Your privacy requests</h4>
+<p style="margin:6px 0">You can ask staff what order information they hold about you, ask them to correct it, or ask them to delete it where possible. Open a ticket on our official Discord server and include your Minecraft username and order reference. We may need to keep some records where required for payment, fraud-prevention or legal reasons. This policy does not limit any rights you have under applicable law.</p>
+<h4 style="margin:18px 0 4px;font-size:15px;color:var(--tx)">8. Children</h4>
+<p style="margin:6px 0">Minecraft is played by many young people. If you are under the age of majority where you live, please get a parent or guardian's permission before placing an order or contacting support.</p>
+<h4 style="margin:18px 0 4px;font-size:15px;color:var(--tx)">9. Changes</h4>
+<p style="margin:6px 0">We may update this policy as the store changes. The date above shows when it was last updated.</p></div>`;
+POLICIES["Store Terms"]=`<h3>Terms of Service</h3><div style="max-height:60vh;overflow:auto;padding-right:6px;color:var(--mu);font-size:14px;line-height:1.7;overflow-wrap:anywhere">
+<p style="margin:6px 0"><small>Last updated: 17 October 2026</small></p>
+<p style="margin:6px 0">These Terms of Service apply to the EvolutionSMP Store website and to purchases made for the EvolutionSMP Minecraft server. Please read them together with our Refund Policy and Privacy Policy.</p>
+<h4 style="margin:18px 0 4px;font-size:15px;color:var(--tx)">1. Acceptance of terms</h4>
+<p style="margin:6px 0">By using this website or placing an order request, you agree to these terms. If you do not agree, please do not use the store. If you are under the age of majority where you live, get a parent or guardian's permission before ordering.</p>
+<h4 style="margin:18px 0 4px;font-size:15px;color:var(--tx)">2. Minecraft ranks and digital products</h4>
+<p style="margin:6px 0">The store sells digital in-game items for the EvolutionSMP server, such as ranks, crate keys and coins. These items have no real-world value, cannot be exchanged for money, and exist only on the server. Descriptions and perks shown on the website are for information, and the server may add, change or rebalance in-game features over time. EvolutionSMP is not affiliated with Mojang or Microsoft.</p>
+<h4 style="margin:18px 0 4px;font-size:15px;color:var(--tx)">3. Orders and payments</h4>
+<ul style="padding-left:18px;margin:6px 0"><li>Nothing is charged on this website. Checkout prepares an order request that you paste into a private ticket on our official Discord server.</li>
+<li>Staff reply in the ticket with payment instructions. An order counts as paid only after staff or the payment provider verify the payment.</li>
+<li>Clicking a button, copying order details or sending a screenshot does not mark an order as paid.</li>
+<li>Prices are shown in Indian rupees (₹). Staff may decline or cancel an order, for example if the details are incorrect or the payment cannot be verified.</li>
+<li>Payment providers have their own terms and fees, which we do not control.</li></ul>
+<h4 style="margin:18px 0 4px;font-size:15px;color:var(--tx)">4. Product delivery</h4>
+<p style="margin:6px 0">Items are delivered manually by staff after they verify your payment in your ticket. Delivery is not instant, and we do not promise a specific delivery time. Your order is linked to the Minecraft username you enter, so check it carefully before you order. If you paid and have not received your items, open a ticket and staff will investigate.</p>
+<h4 style="margin:18px 0 4px;font-size:15px;color:var(--tx)">5. Refunds</h4>
+<p style="margin:6px 0">Refunds are handled under our Refund Policy. In short, refunds are generally not available once items have been delivered and used, and being banned or punished does not automatically qualify you for a refund. Each request is reviewed individually, and nothing in these terms limits any refund rights you have under applicable law.</p>
+<h4 style="margin:18px 0 4px;font-size:15px;color:var(--tx)">6. Server rules and punishments</h4>
+<p style="margin:6px 0">All players must follow the EvolutionSMP server rules and staff decisions. <b style="color:var(--tx)">Buying a rank, key, coins or any other item does not give you immunity from bans, mutes or other punishments.</b> Purchased items and perks are subject to the same rules as everyone else, and staff may suspend or remove a player's access or items for breaking the rules. Refunds after a punishment are covered in our Refund Policy.</p>
+<h4 style="margin:18px 0 4px;font-size:15px;color:var(--tx)">7. Account responsibility</h4>
+<ul style="padding-left:18px;margin:6px 0"><li>You are responsible for entering the correct Minecraft username and for keeping your Minecraft and Discord accounts secure.</li>
+<li>Staff will never need your account passwords. Do not share them in a ticket.</li>
+<li>Items cannot be transferred or changed to another username unless staff agree after reviewing your ticket.</li></ul>
+<h4 style="margin:18px 0 4px;font-size:15px;color:var(--tx)">8. Prohibited activities</h4>
+<p style="margin:6px 0">You agree not to:</p>
+<ul style="padding-left:18px;margin:6px 0"><li>Use stolen, unauthorized or fraudulent payment methods, or give false order or payment details.</li>
+<li>Abuse the store, ticket system or staff, including spamming or creating duplicate tickets.</li>
+<li>Exploit bugs, interfere with the website, or try to access it in ways that were not intended.</li>
+<li>Impersonate staff or other players.</li>
+<li>Sell, trade or advertise server items for real money outside the official store.</li></ul>
+<p style="margin:6px 0">Breaking these terms may lead to orders being cancelled and to access to the store or server being restricted.</p>
+<h4 style="margin:18px 0 4px;font-size:15px;color:var(--tx)">9. Service changes and downtime</h4>
+<p style="margin:6px 0">The website and server may be unavailable at times for maintenance, updates or reasons outside our control. We may change, pause or remove products, prices, features or these terms, and the date above shows the latest update. Continued use of the store after a change means you accept the updated terms. Changes do not alter orders that were already paid and delivered.</p>
+<h4 style="margin:18px 0 4px;font-size:15px;color:var(--tx)">10. Limitation of liability</h4>
+<p style="margin:6px 0">The store and server are provided on an "as is" and "as available" basis. To the extent allowed by law, EvolutionSMP is not responsible for losses caused by downtime, server changes, lost progress, third-party services such as Discord or payment providers, or events outside our reasonable control. Nothing in these terms excludes liability that cannot be excluded by law or limits your statutory rights.</p>
+<h4 style="margin:18px 0 4px;font-size:15px;color:var(--tx)">11. Privacy and contact</h4>
+<p style="margin:6px 0">How we handle information is described in our Privacy Policy. For questions about these terms or your order, open a ticket on our official Discord server.</p></div>`;
+const RM=()=>matchMedia("(prefers-reduced-motion:reduce)").matches;
+let snd=false,ac; // sound effects are off: there is no toggle in the header
+function ctx(){try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();if(ac.state=="suspended")return ac.resume().then(()=>ac)}catch(e){}return Promise.resolve(ac)}
+// Synthesised soft tick (placeholder for a licensed sample). Silent until the browser allows audio after a tap or key press.
+function sfx(k){if(!snd||document.hidden||!ac||ac.state!="running")return;const t=ac.currentTime;if(sfx.l&&t-sfx.l<.04)return;sfx.l=t;const n=Math.floor(ac.sampleRate*.03),b=ac.createBuffer(1,n,ac.sampleRate),d=b.getChannelData(0);for(let i=0;i<n;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/n,3);const s=ac.createBufferSource();s.buffer=b;const f=ac.createBiquadFilter();f.type="bandpass";f.Q.value=1.2;f.frequency.value=k=="type"?2000+Math.random()*700:1100;const g=ac.createGain();g.gain.value=k=="type"?.1:.08;s.connect(f);f.connect(g);g.connect(ac.destination);s.start(t)}
+addEventListener("pointerdown",()=>{if(snd)ctx()},{once:true});addEventListener("keydown",()=>{if(snd)ctx()},{once:true});
+function typeHL(){const E=[$("#h1a"),$("#h1b"),$("#h1c")],T=["LEVEL UP YOUR","EvolutionSMP","EXPERIENCE"],n=typeHL.n=(typeHL.n||0)+1;if(RM()){E.forEach((e,i)=>e.textContent=T[i]);return}E.forEach(e=>e.textContent="");let l=0,c=0;(function step(){if(n!=typeHL.n||l>=3)return;E[l].textContent+=T[l][c];if(T[l][c]!=" ")sfx("type");c++;if(c>=T[l].length){l++;c=0}setTimeout(step,55+Math.random()*35)})()}
+typeHL();
+const AV=$("#av").innerHTML;
+let ign="";try{ign=localStorage.getItem("evo-ign")||""}catch(e){}
+function paintIgn(){$("#ign1").textContent=ign||"Set your IGN";$("#ign2").textContent=ign?"Click to change":"Click here"}
+function setIgn(n){ign=n;try{localStorage.setItem("evo-ign",n)}catch(e){}paintIgn()}
+function ignModal(cb){open(`<h3>Set your IGN</h3><p style="color:var(--mu);margin:4px 0 0">Your in-game name is used for your cart and checkout.</p><div class="av" style="width:72px;height:72px;margin:16px auto 0">${AV}</div><label for="in">Minecraft username</label><input type="text" id="in" autocomplete="off" maxlength="16" value="${ign}" placeholder="Steve_123"><div class="err" id="ie" role="alert"></div><div class="note">Avatars from an online service are not loaded on this page, so a default avatar is shown.</div><button class="btn p" id="is" style="width:100%">Save IGN</button>`);const sv=()=>{const n=$("#in").value.trim(),e=nameErr(n);$("#ie").textContent=e;if(e)return;setIgn(n);close();toast("IGN saved: "+n);if(cb)cb()};$("#is").onclick=sv;$("#in").onkeydown=ev=>{if(ev.key=="Enter")sv()}}
+function setAct(k){document.querySelectorAll("#lk a").forEach(a=>{const on=a.dataset.k==k;a.classList.toggle("act",on);on?a.setAttribute("aria-current","page"):a.removeAttribute("aria-current")})}
+if("IntersectionObserver" in window){const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)setAct(e.target.id=="store"?cat:e.target.id)}),{rootMargin:"-40% 0px -55% 0px"});["home","store","faq","support","policies"].forEach(i=>{const el=document.getElementById(i);el&&io.observe(el)})}
+paintIgn();setAct("home");
+function setQ(id,v){v=Math.max(1,Math.min(99,Math.floor(Number(v))||1));KQ[id]=v;const p=PRODUCTS.find(x=>x.id==id),i=document.querySelector(`[data-qi="${id}"]`),t=$("#kt-"+id);if(i)i.value=v;if(t&&p)t.textContent=inr(p.price*v)}
+function addKey(id){const p=PRODUCTS.find(x=>x.id==id);if(soldOut(p)){toast("This product is sold out");return}const q=KQ[id]||1,ex=cart.find(c=>c.id==id&&c.user==ign);if(ex)ex.qty=Math.min(99,(ex.qty||1)+q);else cart.push({id,user:ign,qty:q});save();toast(q+" × "+p.name+" added to cart")}
+function buyKey(id){const pp=PRODUCTS.find(x=>x.id===id);if(soldOut(pp)){toast("This product is sold out");return}const go=()=>{addKey(id);cartView()};if(!ign){ignModal(go);return}go()}
+function crates(id){const p=PRODUCTS.find(x=>x.id==id);open(`<h3>${p.name}</h3><p style="color:var(--mu);margin:6px 0 0">${p.rewards&&p.rewards.length?"Possible rewards:":"No crate preview images or rewards have been added for this key yet."}</p>${p.rewards&&p.rewards.length?"<ul>"+p.rewards.map(x=>`<li>${x}</li>`).join("")+"</ul>":""}`)}
+document.addEventListener("input",e=>{const i=e.target.closest&&e.target.closest("[data-qi]");if(i&&i.value!=="")setQ(i.dataset.qi,i.value)});
+document.addEventListener("change",e=>{const i=e.target.closest&&e.target.closest("[data-qi]");if(i)setQ(i.dataset.qi,i.value)});
+let busy=0;
+function pickOpen(id,el){const c=el.closest(".card");if(busy||!c)return;const pp=PRODUCTS.find(x=>x.id===id);if(soldOut(pp)){toast("This product is sold out");return}busy=1;c.classList.add("sel");sfx("click");if(!RM())for(let i=0;i<8;i++){const s=document.createElement("span");s.className="spk";s.style.left="50%";s.style.top="40%";c.appendChild(s);const a=i/8*6.28,r=40+Math.random()*30;s.animate([{transform:"translate(0,0)",opacity:1},{transform:`translate(${Math.cos(a)*r}px,${Math.sin(a)*r}px)`,opacity:0}],{duration:600,easing:"ease-out"}).onfinish=()=>s.remove()}setTimeout(()=>detail(id),RM()?0:170);setTimeout(()=>{c.classList.remove("sel");busy=0},700)}
+// particles: drifting pixel embers
+(function(){const c=$("#fx"),x=c.getContext("2d");if(matchMedia("(prefers-reduced-motion:reduce)").matches)return;let w,h,P=[];
+function rs(){w=c.width=c.offsetWidth;h=c.height=c.offsetHeight;P=Array.from({length:Math.min(120,Math.round(w/14))},()=>({x:Math.random()*w,y:Math.random()*h,s:1+Math.random()*2|0,v:.15+Math.random()*.4,k:["255,255,255","200,190,255","255,210,120"][Math.random()*3|0]}))}
+rs();addEventListener("resize",rs);(function f(){if(document.hidden){requestAnimationFrame(f);return}x.clearRect(0,0,w,h);P.forEach(p=>{p.y-=p.v;if(p.y<-5){p.y=h+5;p.x=Math.random()*w}x.fillStyle=`rgba(${p.k},${(.35+.45*Math.abs(Math.sin(performance.now()/900+p.x))).toFixed(2)})`;x.fillRect(p.x|0,p.y|0,p.s,p.s)});requestAnimationFrame(f)})()})();
+
+// ---- hero interactive layer: cursor spotlight, depth parallax, soft particles. Touch gets a CSS-only drifting glow; reduced motion gets a static scene. ----
+(function(){
+const hero=$("#home"),hx=hero&&hero.querySelector(".hx"),cv=$("#hxp");if(!hero||!hx||!cv)return;
+const g=cv.getContext("2d"),glow=hx.querySelector(".hx-glow"),core=hx.querySelector(".hx-core"),fine=matchMedia("(hover:hover) and (pointer:fine)"),rmq=matchMedia("(prefers-reduced-motion:reduce)");
+const layers=[...hx.querySelectorAll("[data-d]")].map(el=>({el,d:+el.dataset.d}));
+let W=0,H=0,P=[],vis=true,raf=0,inter=false,fr=0,rt=0;
+const M={x:0,y:0,on:false},G={x:0,y:0},C={x:0,y:0},S={x:0,y:0};
+const spr=c=>{const s=document.createElement("canvas");s.width=s.height=32;const x=s.getContext("2d"),r=x.createRadialGradient(16,16,0,16,16,16);r.addColorStop(0,`rgba(${c},1)`);r.addColorStop(.35,`rgba(${c},.35)`);r.addColorStop(1,`rgba(${c},0)`);x.fillStyle=r;x.fillRect(0,0,32,32);return s};
+const SP=["196,181,253","147,197,253","255,255,255"].map(spr);
+const mk=()=>({x:Math.random()*W,y:Math.random()*H,r:4+Math.random()*9,v:.08+Math.random()*.28,a:.3+Math.random()*.45,p:Math.random()*6.28,k:Math.random()*3|0,ox:0,oy:0});
+function size(){const r=hero.getBoundingClientRect(),d=Math.min(devicePixelRatio||1,fine.matches?1.5:1);W=r.width;H=r.height;cv.width=W*d|0;cv.height=H*d|0;g.setTransform(d,0,0,d,0,0);const n=fine.matches?Math.max(14,Math.min(24,Math.round(W*H/44000))):Math.max(8,Math.min(14,Math.round(W*H/50000)));P=Array.from({length:n},mk)}
+function apply(){const rm=rmq.matches;inter=fine.matches&&!rm;hx.classList.toggle("touch",!inter&&!rm);hx.classList.toggle("still",rm);[glow,core].forEach(e=>{e.style.left=e.style.top=inter?"0":"";e.style.transform=""});layers.forEach(l=>l.el.style.translate="");size();G.x=C.x=W*.7;G.y=C.y=H*.38;if(rm)g.clearRect(0,0,W,H);start()}
+function start(){if(!raf&&!rmq.matches&&vis&&!document.hidden)raf=requestAnimationFrame(tick)}
+function tick(t){raf=0;if(rmq.matches||!vis||document.hidden)return;
+if(!inter){fr^=1;if(fr){raf=requestAnimationFrame(tick);return}}
+if(inter){const tx=M.on?M.x:W*.7,ty=M.on?M.y:H*.38,nx=M.on?M.x/W*2-1:0,ny=M.on?M.y/H*2-1:0;
+const mv=Math.abs(tx-G.x)+Math.abs(ty-G.y)+Math.abs(nx-S.x)+Math.abs(ny-S.y);G.x+=(tx-G.x)*.07;G.y+=(ty-G.y)*.07;C.x+=(tx-C.x)*.16;C.y+=(ty-C.y)*.16;S.x+=(nx-S.x)*.06;S.y+=(ny-S.y)*.06;
+if(mv>.02){glow.style.transform=`translate3d(${G.x.toFixed(1)}px,${G.y.toFixed(1)}px,0)`;core.style.transform=`translate3d(${C.x.toFixed(1)}px,${C.y.toFixed(1)}px,0)`;
+layers.forEach(l=>{l.el.style.translate=`${(-S.x*l.d).toFixed(1)}px ${(-S.y*l.d).toFixed(1)}px`})}}
+g.clearRect(0,0,W,H);
+for(const p of P){p.y-=p.v;p.x+=Math.sin(t/2600+p.p)*.12;
+if(inter&&M.on){const dx=p.x-M.x,dy=p.y-M.y,d2=dx*dx+dy*dy;if(d2<19600&&d2>1){const d=Math.sqrt(d2),f=(1-d/140)*1.6;p.ox+=dx/d*f;p.oy+=dy/d*f}}
+p.ox*=.92;p.oy*=.92;if(p.y<-20){p.y=H+20;p.x=Math.random()*W}
+g.globalAlpha=p.a*(.6+.4*Math.sin(t/1400+p.p));g.drawImage(SP[p.k],p.x+p.ox-p.r,p.y+p.oy-p.r,p.r*2,p.r*2)}
+g.globalAlpha=1;raf=requestAnimationFrame(tick)}
+hero.addEventListener("pointermove",e=>{if(e.pointerType!=="mouse"||rmq.matches)return;const b=e.target.closest&&e.target.closest(".btn");if(b){const br=b.getBoundingClientRect();b.style.setProperty("--bx",(e.clientX-br.left)+"px");b.style.setProperty("--by",(e.clientY-br.top)+"px")}
+if(!inter)return;const r=hero.getBoundingClientRect();M.x=e.clientX-r.left;M.y=e.clientY-r.top;if(!M.on){M.on=true;hx.classList.add("on")}start()},{passive:true});
+hero.addEventListener("pointerleave",()=>{M.on=false;hx.classList.remove("on");start()});
+if("IntersectionObserver" in window)new IntersectionObserver(es=>{vis=es[0].isIntersecting;hero.classList.toggle("off",!vis);if(vis)start()}).observe(hero);
+document.addEventListener("visibilitychange",start);
+if("ResizeObserver" in window)new ResizeObserver(()=>{cancelAnimationFrame(rt);rt=requestAnimationFrame(()=>{size();G.x=Math.min(G.x,W)})}).observe(hero);else addEventListener("resize",size);
+[rmq,fine].forEach(q=>q.addEventListener&&q.addEventListener("change",apply));
+apply();
+})();
+
+// ---- Supabase connection (public store). Use ONLY the anon public key here. NEVER put a service_role key in this file. ----
+const SB_URL="https://wlpmcjatloutoukokhiu.supabase.co",SB_KEY="sb_publishable_f807S9Bi46izhfi_s7cPog_R4CLi-uV";  // Publishable key only (safe in the browser). NEVER put an sb_secret_ or service_role key here.
+let DB_OK=false;
+const dbReady=()=>!!(SB_URL&&SB_KEY&&DB_OK),CKLBL=()=>dbReady()?"Submit order request":"Continue to Discord";
+async function sbFetch(path,opt){let tm;
+ try{const r=await Promise.race([fetch(SB_URL+"/rest/v1/"+path,{...opt,headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",...(opt&&opt.headers)}}),new Promise((_,rej)=>{tm=setTimeout(()=>rej(new Error("timeout")),12000)})]);
+  const j=await r.json().catch(()=>null);if(!r.ok){const e=new Error((j&&j.message)||("HTTP "+r.status));e.http=r.status;throw e}return j}
+ catch(e){if(!e.http)e.net=true;throw e}finally{clearTimeout(tm)}}
+// Products: the database is the source of truth for name, price, old price, description and availability. Look (colour, perks, rewards) stays in this file.
+async function loadDB(){if(!SB_URL||!SB_KEY)return;const g=$("#grid");
+ let nb=$("#dbn");if(!nb){nb=document.createElement("div");nb.className="note";nb.id="dbn";nb.hidden=true;nb.setAttribute("role","status");g.parentNode.insertBefore(nb,g)}
+ g.innerHTML='<div class="empty"><b>Loading store…</b>Fetching current prices.</div>';
+ try{const rows=await sbFetch("products?select=id,cat,name,description,price,was_price,stock,sample,sort,image_path,perks,show_kit,show_kit_image_path&active=eq.true&order=sort.asc");
+  if(!Array.isArray(rows)||!rows.length)throw new Error("No active products returned");
+  const by=new Map(PRODUCTS.map(p=>[p.id,p])),COL={Ranks:"#8b7cf6",Keys:"#4d9bff","Coin Shop":"#fbbf24"};
+  const next=rows.filter(r=>CATS.includes(r.cat)&&Number.isInteger(r.price)&&r.price>0).map(r=>{const b=by.get(r.id)||{},p={perks:[],duration:"",rewards:[],...b,id:r.id,cat:r.cat,name:r.name,desc:r.description||"",price:r.price,was:r.was_price||undefined,sample:!!r.sample,stock:r.stock,image_path:r.image_path||null,perks:Array.isArray(r.perks)?r.perks.filter(x=>typeof x==="string"):[],show_kit:Array.isArray(r.show_kit)?r.show_kit:[],show_kit_image_path:r.show_kit_image_path||null};
+   if(!b.c)p.c=COL[r.cat];if(r.cat=="Keys"){p.kind="key";p.rarity=p.rarity||"KEY"}else if(r.cat=="Coin Shop"){p.kind="coin";p.coins=b.coins||parseInt(String(r.description).replace(/,/g,""))||0}else delete p.kind;return p});
+  if(!next.length)throw new Error("No valid products");
+  PRODUCTS.splice(0,PRODUCTS.length,...next);DB_OK=true;nb.hidden=true;
+  const d=fixCart();save();render();if(d)toast(d+" cart item"+(d>1?"s were":" was")+" removed: no longer available")
+ }catch(e){DB_OK=false;console.warn("Store database unavailable, using built-in products:",e&&e.message);
+  nb.hidden=false;nb.textContent="Live prices could not be loaded, so the last saved prices are shown. Checkout uses the manual Discord method until this is fixed.";render()}}
+function dbErr(e){const m=String((e&&e.message)||""),x=(u)=>{const r=new Error(m);r.userMsg=u;return r};
+ if(e&&e.net)return x("Could not reach the store database. Nothing was recorded. Check your connection and try again.");
+ if(/Product unavailable/.test(m)){loadDB();return x("An item in your cart is no longer available. The store was refreshed. Please review your cart and try again.")}
+ if(/Not enough stock/.test(m))return x(m.replace(/^.*Not enough stock:/,"Not enough stock:"));
+ if(/Invalid Minecraft username/.test(m))return x("Please enter a valid Minecraft username (3 to 16 letters, numbers or underscores).");
+ if(/Invalid (quantity|cart)/.test(m))return x("Your cart has an invalid quantity or item. Please review your cart.");
+ if(/Too many pending|store is busy/.test(m))return x(m);
+ return x("The order could not be saved. Nothing was sent. Please try again.")}
+const newKey=()=>window.crypto&&crypto.randomUUID?crypto.randomUUID():[...Array(4)].map(()=>Math.random().toString(16).slice(2,10).padEnd(8,"0")).join("");
+// Sends ONLY product ids and quantities. The database looks up prices, calculates the total, sets the reference and forces the status to "pending verification".
+async function submitDb(n,L){const prev=getOrder(),sig=orderSig(n,L),same=prev&&prev.db&&prev.key&&prev.ref&&prev.sig==sig;
+ if(same)return prev;   // unchanged cart: reuse the order already recorded, no second submission
+ // Retry safety: a failed attempt keeps its key, so retrying the SAME cart reuses it and the database returns the order it already saved instead of making a duplicate.
+ let pk=null;try{pk=JSON.parse(localStorage.getItem("evo-pk")||"null")}catch(e){}
+ const key=pk&&pk.sig==sig&&typeof pk.key=="string"&&pk.key?pk.key:newKey();let r;
+ try{localStorage.setItem("evo-pk",JSON.stringify({sig,key}))}catch(e){}
+ try{r=await sbFetch("rpc/create_order",{method:"POST",body:JSON.stringify({p_ign:n,p_items:L.out.map(l=>({id:l.p.id,qty:l.q})),p_key:key})})}catch(e){throw dbErr(e)}
+ if(!r||typeof r.ref!="string"||!Array.isArray(r.items)||!Number.isInteger(r.total))throw dbErr(new Error("bad response"));
+ try{localStorage.removeItem("evo-pk")}catch(e){}   // order confirmed: the key is no longer needed
+ if(r.total!==L.total){toast("Prices changed. Your order uses the current prices.");loadDB()}
+ return{sig,ref:r.ref,ign:n,created:r.created_at,items:r.items.map(i=>({id:i.id,name:i.name,qty:i.qty,unit:i.unit,sub:i.sub,sample:!!(PRODUCTS.find(x=>x.id==i.id)||{}).sample})),total:r.total,sent:0,db:true,key}}
+loadDB();
+
+/* Shrinking sticky header: toggles .scrolled on <nav> (hysteresis avoids flicker near the threshold) */
+(function(){const nv=document.querySelector("nav");if(!nv)return;let on=false,tick=false;
+function upd(){tick=false;const y=window.pageYOffset||document.documentElement.scrollTop||0;if(!on&&y>80){on=true;nv.classList.add("scrolled")}else if(on&&y<30){on=false;nv.classList.remove("scrolled")}}
+function req(){if(!tick){tick=true;requestAnimationFrame(upd)}}
+addEventListener("scroll",req,{passive:true});addEventListener("resize",req);upd()})();
+</script>
+</body>
+</html>
