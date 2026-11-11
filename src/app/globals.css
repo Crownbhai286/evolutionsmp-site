@@ -1,0 +1,310 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #0a0d22;
+  --bg-2: #0f1433;
+  --panel: #141a42;
+  --panel-2: #1b2254;
+  --panel-3: #232c6a;
+  --line: rgba(255, 255, 255, 0.08);
+  --line-2: rgba(255, 255, 255, 0.14);
+  --line-indigo: rgba(130, 150, 255, 0.24);
+  --text: #f4f6ff;
+  --muted: #a3abd6;
+  --dim: #6f78a8;
+  --orange: #ff9a1f;
+  --pink: #ff3d5a;
+  --blue: #3aa0ff;
+  --navy: #0b1030;
+  --yellow: #ffc23d;
+  --green: #2fd47a;
+  --purple: #a46bff;
+  --grad: linear-gradient(135deg, #ffb02e 0%, #ff7a1f 45%, #ff3d5a 100%);
+  --grad-blue: linear-gradient(135deg, #5cc0ff 0%, #3a7dff 100%);
+  --radius: 16px;
+  --radius-s: 10px;
+  --shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+  --head: 'Lilita One', 'Arial Black', system-ui, sans-serif;
+  --body: 'Inter', system-ui, -apple-system, sans-serif;
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Playbex Background Mesh Grid */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(1200px 600px at 85% -10%, rgba(255, 61, 90, 0.12), transparent 60%),
+    radial-gradient(900px 500px at -10% 20%, rgba(58, 160, 255, 0.10), transparent 60%),
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px) 0 0 / 48px 48px,
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px) 0 0 / 48px 48px;
+  pointer-events: none;
+  z-index: -1;
+}
+
+h1, h2, h3, h4, .font-head {
+  font-family: var(--head);
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  line-height: 1.1;
+}
+
+/* Gradient Text (.g) */
+.g {
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
+}
+
+.g-blue {
+  background: var(--grad-blue);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
+}
+
+/* Playbex Kicker Badge */
+.kicker {
+  display: inline-block;
+  font-family: var(--body);
+  font-weight: 800;
+  font-size: 12px;
+  line-height: 1;
+  letter-spacing: 2.4px;
+  text-transform: uppercase;
+  color: var(--orange);
+  background: rgba(255, 154, 31, 0.1);
+  border: 1px solid rgba(255, 154, 31, 0.25);
+  padding: 7px 11px;
+  border-radius: 999px;
+  margin-bottom: 14px;
+}
+
+/* Playbex Button System */
+.btn {
+  --b: #c2410c;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 13px 22px;
+  border: 0;
+  border-radius: 12px;
+  font-family: var(--body);
+  font-weight: 800;
+  font-size: 15px;
+  line-height: 1;
+  letter-spacing: 0.3px;
+  color: #fff;
+  background: var(--grad);
+  box-shadow: 0 5px 0 var(--b), 0 12px 24px rgba(255, 61, 90, 0.25);
+  cursor: pointer;
+  transition: transform 0.1s, box-shadow 0.1s, filter 0.15s;
+  text-decoration: none;
+}
+.btn:hover {
+  filter: brightness(1.08);
+  color: #fff;
+}
+.btn:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 var(--b);
+}
+
+.btn.glass {
+  background: rgba(15, 20, 50, 0.72);
+  border: 1px solid rgba(130, 150, 255, 0.24);
+  box-shadow: 0 5px 0 rgba(0, 0, 0, 0.35), 0 12px 24px rgba(0, 0, 0, 0.3);
+  color: #fff;
+}
+.btn.glass:hover {
+  background: rgba(22, 29, 68, 0.85);
+  border-color: rgba(130, 150, 255, 0.4);
+}
+.btn.glass:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.35);
+}
+
+.btn.white {
+  background: #fff;
+  color: #0b1030;
+  box-shadow: 0 5px 0 #cbd5e1;
+}
+.btn.white:hover {
+  background: #f8fafc;
+  color: #0b1030;
+}
+.btn.white:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 #cbd5e1;
+}
+
+.btn.small {
+  padding: 8px 14px;
+  font-size: 13px;
+  border-radius: 9px;
+}
+
+/* Playbex IP Card */
+.ipcard {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 10px 10px 12px;
+  border-radius: 18px;
+  background: rgba(15, 20, 50, 0.72);
+  border: 1px solid rgba(130, 150, 255, 0.24);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 20px 50px -20px rgba(0, 0, 0, 0.7);
+  width: max-content;
+  max-width: 100%;
+}
+.ipcard .ico {
+  width: 48px;
+  height: 48px;
+  border-radius: 13px;
+  display: grid;
+  place-items: center;
+  background: var(--grad);
+  color: #fff;
+  flex-shrink: 0;
+}
+.ipcard small {
+  display: block;
+  color: var(--muted);
+  font-size: 11px;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+.ipcard b {
+  font-size: 18px;
+  letter-spacing: 0.4px;
+  color: #fff;
+  font-family: var(--head);
+}
+.ipcard .copy {
+  padding: 11px 18px;
+  border-radius: 12px;
+  background: var(--panel-3);
+  border: 1px solid rgba(130, 150, 255, 0.3);
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+.ipcard .copy:hover {
+  background: #2b367d;
+}
+.ipcard .copy.ok {
+  background: #166534;
+  border-color: #22c55e;
+  color: #fff;
+}
+
+/* Live pulsating indicator dot */
+.live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--dim);
+  flex-shrink: 0;
+}
+.live-dot.on {
+  background: var(--green);
+  box-shadow: 0 0 0 4px rgba(47, 212, 122, 0.18);
+  animation: pulse-dot 2s infinite;
+}
+@keyframes pulse-dot {
+  50% { box-shadow: 0 0 0 7px rgba(47, 212, 122, 0); }
+}
+
+/* Mouse Scroll indicator */
+.mouse {
+  position: absolute;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
+  width: 26px;
+  height: 42px;
+  border-radius: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  display: block;
+}
+.mouse::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 8px;
+  width: 4px;
+  height: 8px;
+  margin-left: -2px;
+  border-radius: 2px;
+  background: #fff;
+  animation: wheel 1.8s infinite;
+}
+@keyframes wheel {
+  to { transform: translateY(12px); opacity: 0; }
+}
+
+/* Background Drift Animation */
+@keyframes drift {
+  0% { transform: scale(1.04) translate(0, 0); }
+  100% { transform: scale(1.08) translate(-1%, -1.5%); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.animate-fadeIn {
+  animation: fadeIn 0.25s ease-out forwards;
+}
+
+/* Pixelated image rendering for Minecraft avatar/skin renders */
+.image-rendering-pixelated {
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+/* Sleek Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0d22;
+}
+::-webkit-scrollbar-thumb {
+  background: #1b2254;
+  border-radius: 4px;
+  border: 2px solid #0a0d22;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #ff7a1f;
+}
