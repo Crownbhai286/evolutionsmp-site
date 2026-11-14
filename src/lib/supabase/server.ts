@@ -18,7 +18,7 @@ export function isSupabaseAdminConfigured(): boolean {
     isSupabasePublicConfigured() &&
     Boolean(serviceKey) &&
     !serviceKey.includes("your-supabase-service-role-key") &&
-    serviceKey.startsWith("eyJ")
+    (serviceKey.startsWith("eyJ") || serviceKey.startsWith("sb_secret_"))
   );
 }
 

@@ -67,7 +67,11 @@ export async function updateAdminSession(request: NextRequest) {
   let isActiveAdmin = false;
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim() || "";
 
-  if (serviceKey && !serviceKey.includes("your-supabase-service-role-key") && serviceKey.startsWith("eyJ")) {
+  if (
+    serviceKey &&
+    !serviceKey.includes("your-supabase-service-role-key") &&
+    (serviceKey.startsWith("eyJ") || serviceKey.startsWith("sb_secret_"))
+  ) {
     try {
       const adminClient = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, serviceKey, {
         auth: { autoRefreshToken: false, persistSession: false },
@@ -87,12 +91,27 @@ export async function updateAdminSession(request: NextRequest) {
 
   // Fallback to checking via authenticated SSR client (using RLS is_active_admin())
   if (!isActiveAdmin) {
-    const { data: adminRow } = await supabase
-      .from("admin_users")
-      .select("id, is_active")
-      .eq("user_id", user.id)
-      .maybeSingle();
-    isActiveAdmin = Boolean(adminRow?.is_active);
+    try {
+      const { data: adminRow } = await supabase
+        .from("admin_users")
+        .select("id, is_active")
+        .eq("user_id", user.id)
+        .maybeSingle();
+      isActiveAdmin = Boolean(adminRow?.is_active);
+
+      if (!isActiveAdmin && user.email) {
+        const { data: emailRow } = await supabase
+          .from("admin_users")
+          .select("id, is_active, user_id")
+          .ilike("email", user.email)
+          .maybeSingle();
+        if (emailRow && (!emailRow.user_id || emailRow.user_id === user.id)) {
+          isActiveAdmin = Boolean(emailRow.is_active);
+        }
+      }
+    } catch {
+      // Fallback ignore
+    }
   }
 
   if (!isActiveAdmin) {

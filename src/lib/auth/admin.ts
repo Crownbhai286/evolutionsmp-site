@@ -46,20 +46,56 @@ export async function getCurrentAdminProfile(): Promise<AdminUserProfile | null>
     } = await ssrClient.auth.getUser();
     if (!user) return null;
 
-    const db = createSupabaseAdminClient() ?? ssrClient;
-    let { data } = await db
-      .from("admin_users")
-      .select("id, user_id, email, display_name, role, is_active, last_login_at")
-      .eq("user_id", user.id)
-      .maybeSingle();
+    const adminDb = isSupabaseAdminConfigured() ? createSupabaseAdminClient() : null;
+    let data: any = null;
 
-    if (!data && db !== ssrClient) {
-      const fallback = await ssrClient
-        .from("admin_users")
-        .select("id, user_id, email, display_name, role, is_active, last_login_at")
-        .eq("user_id", user.id)
-        .maybeSingle();
-      if (fallback.data) data = fallback.data;
+    // 1. Try admin client if available
+    if (adminDb) {
+      try {
+        const res = await adminDb
+          .from("admin_users")
+          .select("id, user_id, email, display_name, role, is_active, last_login_at")
+          .eq("user_id", user.id)
+          .maybeSingle();
+        if (!res.error && res.data) {
+          data = res.data;
+        }
+      } catch {
+        // Fallback below
+      }
+    }
+
+    // 2. Fallback to SSR client (RLS is_active_admin())
+    if (!data) {
+      try {
+        const res = await ssrClient
+          .from("admin_users")
+          .select("id, user_id, email, display_name, role, is_active, last_login_at")
+          .eq("user_id", user.id)
+          .maybeSingle();
+        if (!res.error && res.data) {
+          data = res.data;
+        }
+      } catch {
+        // Fallback below
+      }
+    }
+
+    // 3. Fallback matching verified user email
+    if (!data && user.email) {
+      const emailDb = adminDb ?? ssrClient;
+      try {
+        const res = await emailDb
+          .from("admin_users")
+          .select("id, user_id, email, display_name, role, is_active, last_login_at")
+          .ilike("email", user.email)
+          .maybeSingle();
+        if (!res.error && res.data && (!res.data.user_id || res.data.user_id === user.id)) {
+          data = res.data;
+        }
+      } catch {
+        // Ignore fallback error
+      }
     }
 
     if (!data || !data.is_active) return null;
@@ -107,28 +143,70 @@ export async function requireAdminSession(
     }
 
     const adminDb = isSupabaseAdminConfigured() ? createSupabaseAdminClient() : null;
-    let db = adminDb ?? ssrClient;
+    let activeDb: SupabaseClient = ssrClient;
+    let adminRow: any = null;
 
-    let { data: adminRow, error: rowError } = await db
-      .from("admin_users")
-      .select("id, user_id, email, display_name, role, is_active, last_login_at")
-      .eq("user_id", user.id)
-      .maybeSingle();
-
-    if (rowError && adminDb && ssrClient) {
-      const fallback = await ssrClient
-        .from("admin_users")
-        .select("id, user_id, email, display_name, role, is_active, last_login_at")
-        .eq("user_id", user.id)
-        .maybeSingle();
-      if (!fallback.error && fallback.data) {
-        adminRow = fallback.data;
-        rowError = null;
-        db = ssrClient;
+    // 1. Try adminDb (service role) if configured
+    if (adminDb) {
+      try {
+        const { data, error } = await adminDb
+          .from("admin_users")
+          .select("id, user_id, email, display_name, role, is_active, last_login_at")
+          .eq("user_id", user.id)
+          .maybeSingle();
+        if (!error && data) {
+          adminRow = data;
+          activeDb = adminDb;
+        }
+      } catch {
+        // Fallback to ssrClient below
       }
     }
 
-    if (rowError || !adminRow || !adminRow.is_active) {
+    // 2. Fallback to authenticated SSR client (respects RLS is_active_admin())
+    if (!adminRow) {
+      try {
+        const { data, error } = await ssrClient
+          .from("admin_users")
+          .select("id, user_id, email, display_name, role, is_active, last_login_at")
+          .eq("user_id", user.id)
+          .maybeSingle();
+        if (!error && data) {
+          adminRow = data;
+          activeDb = ssrClient;
+        }
+      } catch {
+        // Continue to email fallback
+      }
+    }
+
+    // 3. Fallback matching verified session email if user_id was unset or mismatched
+    if (!adminRow && user.email) {
+      try {
+        const queryDb = adminDb ?? ssrClient;
+        const { data, error } = await queryDb
+          .from("admin_users")
+          .select("id, user_id, email, display_name, role, is_active, last_login_at")
+          .ilike("email", user.email)
+          .maybeSingle();
+        if (!error && data && (!data.user_id || data.user_id === user.id)) {
+          adminRow = data;
+          activeDb = queryDb;
+
+          // If user_id wasn't linked yet, link it now if using adminDb
+          if (!data.user_id && adminDb) {
+            await adminDb
+              .from("admin_users")
+              .update({ user_id: user.id })
+              .eq("id", data.id);
+          }
+        }
+      } catch {
+        // Ignore fallback update errors
+      }
+    }
+
+    if (!adminRow || !adminRow.is_active) {
       return {
         ok: false,
         response: NextResponse.json({ error: "Admin permissions required." }, { status: 403 }),
@@ -146,7 +224,7 @@ export async function requireAdminSession(
       };
     }
 
-    return { ok: true, admin: profile, db };
+    return { ok: true, admin: profile, db: activeDb };
   } catch {
     return {
       ok: false,
