@@ -68,16 +68,25 @@ export async function updateAdminSession(request: NextRequest) {
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim() || "";
 
   if (serviceKey && !serviceKey.includes("your-supabase-service-role-key")) {
-    const adminClient = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, serviceKey, {
-      auth: { autoRefreshToken: false, persistSession: false },
-    });
-    const { data: adminRow } = await adminClient
-      .from("admin_users")
-      .select("id, is_active")
-      .eq("user_id", user.id)
-      .maybeSingle();
-    isActiveAdmin = Boolean(adminRow?.is_active);
-  } else {
+    try {
+      const adminClient = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, serviceKey, {
+        auth: { autoRefreshToken: false, persistSession: false },
+      });
+      const { data: adminRow, error: adminErr } = await adminClient
+        .from("admin_users")
+        .select("id, is_active")
+        .eq("user_id", user.id)
+        .maybeSingle();
+      if (!adminErr && adminRow) {
+        isActiveAdmin = Boolean(adminRow.is_active);
+      }
+    } catch {
+      // Fallback to ssr client below
+    }
+  }
+
+  // Fallback to checking via authenticated SSR client (using RLS is_active_admin())
+  if (!isActiveAdmin) {
     const { data: adminRow } = await supabase
       .from("admin_users")
       .select("id, is_active")

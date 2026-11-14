@@ -47,11 +47,20 @@ export async function getCurrentAdminProfile(): Promise<AdminUserProfile | null>
     if (!user) return null;
 
     const db = createSupabaseAdminClient() ?? ssrClient;
-    const { data } = await db
+    let { data } = await db
       .from("admin_users")
       .select("id, user_id, email, display_name, role, is_active, last_login_at")
       .eq("user_id", user.id)
       .maybeSingle();
+
+    if (!data && db !== ssrClient) {
+      const fallback = await ssrClient
+        .from("admin_users")
+        .select("id, user_id, email, display_name, role, is_active, last_login_at")
+        .eq("user_id", user.id)
+        .maybeSingle();
+      if (fallback.data) data = fallback.data;
+    }
 
     if (!data || !data.is_active) return null;
     return data as AdminUserProfile;
@@ -98,13 +107,26 @@ export async function requireAdminSession(
     }
 
     const adminDb = isSupabaseAdminConfigured() ? createSupabaseAdminClient() : null;
-    const db = adminDb ?? ssrClient;
+    let db = adminDb ?? ssrClient;
 
-    const { data: adminRow, error: rowError } = await db
+    let { data: adminRow, error: rowError } = await db
       .from("admin_users")
       .select("id, user_id, email, display_name, role, is_active, last_login_at")
       .eq("user_id", user.id)
       .maybeSingle();
+
+    if (rowError && adminDb && ssrClient) {
+      const fallback = await ssrClient
+        .from("admin_users")
+        .select("id, user_id, email, display_name, role, is_active, last_login_at")
+        .eq("user_id", user.id)
+        .maybeSingle();
+      if (!fallback.error && fallback.data) {
+        adminRow = fallback.data;
+        rowError = null;
+        db = ssrClient;
+      }
+    }
 
     if (rowError || !adminRow || !adminRow.is_active) {
       return {
