@@ -67,7 +67,7 @@ export async function updateAdminSession(request: NextRequest) {
   let isActiveAdmin = false;
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim() || "";
 
-  if (serviceKey && !serviceKey.includes("your-supabase-service-role-key")) {
+  if (serviceKey && !serviceKey.includes("your-supabase-service-role-key") && serviceKey.startsWith("eyJ")) {
     try {
       const adminClient = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, serviceKey, {
         auth: { autoRefreshToken: false, persistSession: false },
