@@ -2,12 +2,53 @@
 
 import React, { useState } from "react";
 import { ChevronRight, Copy, Check } from "lucide-react";
-import { SERVER_CONFIG } from "@/lib/data";
+import { SERVER_CONFIG as DEFAULT_SERVER_CONFIG } from "@/lib/data";
 import { copyToClipboard } from "@/lib/utils";
 import { useToast } from "./NotificationToast";
 import { ScrollReveal, StaggerReveal, StaggerItem } from "./ScrollReveal";
+import type { HomepageSectionData, WebsiteSettingsData } from "@/lib/types";
 
-export default function HowToJoinSection() {
+interface HowToJoinSectionProps {
+  settings?: WebsiteSettingsData;
+  section?: HomepageSectionData;
+}
+
+export default function HowToJoinSection({
+  settings,
+  section,
+}: HowToJoinSectionProps = {}) {
+  const SERVER_CONFIG = {
+    ...DEFAULT_SERVER_CONFIG,
+    javaIp: settings?.javaIp || DEFAULT_SERVER_CONFIG.javaIp,
+    bedrockIp: settings?.bedrockIp || DEFAULT_SERVER_CONFIG.bedrockIp,
+    bedrockPort: settings?.bedrockPort || DEFAULT_SERVER_CONFIG.bedrockPort,
+  };
+  const kicker = section?.kicker || "Get Started";
+  const title = section?.title || "How to Join";
+  const subtitle =
+    section?.subtitle ||
+    "Joining Evolution Survival SMP takes less than 30 seconds. Connect from any Java or Bedrock device.";
+  const step1Title =
+    typeof section?.content?.step1Title === "string" && section.content.step1Title
+      ? section.content.step1Title
+      : "Launch Minecraft";
+  const step1Desc =
+    typeof section?.content?.step1Desc === "string" && section.content.step1Desc
+      ? section.content.step1Desc
+      : "Java or Bedrock, version 1.20 to 1.21+. Seamless crossplay on PC, Console, iOS, and Android.";
+  const step2Title =
+    typeof section?.content?.step2Title === "string" && section.content.step2Title
+      ? section.content.step2Title
+      : "Add the Server";
+  const step3Title =
+    typeof section?.content?.step3Title === "string" && section.content.step3Title
+      ? section.content.step3Title
+      : "Begin Your Survival";
+  const step3Desc =
+    typeof section?.content?.step3Desc === "string" && section.content.step3Desc
+      ? section.content.step3Desc
+      : "Join the Survival world, claim your grief-free territory, establish your chest shops, and build with the community.";
+
   const [copiedJava, setCopiedJava] = useState(false);
   const [copiedBedrock, setCopiedBedrock] = useState(false);
   const { showToast } = useToast();
@@ -31,12 +72,12 @@ export default function HowToJoinSection() {
       <div className="max-w-[1200px] mx-auto">
         {/* Section Header */}
         <ScrollReveal direction="up" duration={0.65} className="text-center max-w-2xl mx-auto mb-14">
-          <span className="kicker">Get Started</span>
+          <span className="kicker">{kicker}</span>
           <h2 className="font-head text-[clamp(32px,4.5vw,52px)] text-white tracking-wide uppercase mb-3">
-            How to Join
+            {title}
           </h2>
           <p className="text-[#a3abd6] text-base leading-relaxed">
-            Joining Evolution Survival SMP takes less than 30 seconds. Connect from any Java or Bedrock device.
+            {subtitle}
           </p>
         </ScrollReveal>
 
@@ -50,10 +91,10 @@ export default function HowToJoinSection() {
                   1
                 </div>
                 <h3 className="font-head text-2xl text-white tracking-wide mb-2">
-                  Launch Minecraft
+                  {step1Title}
                 </h3>
                 <p className="text-sm text-[#a3abd6] leading-relaxed">
-                  Java or Bedrock, version 1.20 to 1.21+. Seamless crossplay on PC, Console, iOS, and Android.
+                  {step1Desc}
                 </p>
               </div>
 
@@ -69,7 +110,7 @@ export default function HowToJoinSection() {
                   2
                 </div>
                 <h3 className="font-head text-2xl text-white tracking-wide mb-2">
-                  Add the Server
+                  {step2Title}
                 </h3>
                 <p className="text-sm text-[#a3abd6] leading-relaxed">
                   Enter Java IP:{" "}
@@ -107,10 +148,10 @@ export default function HowToJoinSection() {
                   3
                 </div>
                 <h3 className="font-head text-2xl text-white tracking-wide mb-2">
-                  Begin Your Survival
+                  {step3Title}
                 </h3>
                 <p className="text-sm text-[#a3abd6] leading-relaxed">
-                  Join the Survival world, claim your grief-free territory, establish your chest shops, and build with the community.
+                  {step3Desc}
                 </p>
               </div>
             </div>

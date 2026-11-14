@@ -3,14 +3,32 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { Trophy, Crown, Coins, Clock, Pickaxe } from "lucide-react";
-import { LEADERBOARD_DATA } from "@/lib/data";
+import { LEADERBOARD_DATA as DEFAULT_LEADERBOARD_DATA } from "@/lib/data";
 import { getPlayerBody, formatNumber } from "@/lib/utils";
 import { ScrollReveal, StaggerReveal, StaggerItem } from "./ScrollReveal";
+import type { HomepageSectionData, LeaderboardPlayer } from "@/lib/types";
 
-export default function LeaderboardPodium() {
+interface LeaderboardPodiumProps {
+  boardData?: {
+    money: LeaderboardPlayer[];
+    playtime: LeaderboardPlayer[];
+    blocksMined: LeaderboardPlayer[];
+  };
+  section?: HomepageSectionData;
+}
+
+export default function LeaderboardPodium({
+  boardData,
+  section,
+}: LeaderboardPodiumProps = {}) {
   const [board, setBoard] = useState<"money" | "playtime" | "blocksMined">("money");
-
-  const rows = LEADERBOARD_DATA[board] || [];
+  const activeBoard = boardData || DEFAULT_LEADERBOARD_DATA;
+  const rows = activeBoard[board] || [];
+  const kicker = section?.kicker || "Hall of Fame";
+  const title = section?.title || "The Best of EvolutionSMP";
+  const subtitle =
+    section?.subtitle ||
+    "Official survival leaderboards synced directly from the EvolutionSMP database.";
   // Playbex order: Rank 2 on left, Rank 1 in center (taller), Rank 3 on right
   const p1 = rows.find((r) => r.rank === 1) || rows[0];
   const p2 = rows.find((r) => r.rank === 2) || rows[1];
@@ -24,12 +42,12 @@ export default function LeaderboardPodium() {
       <div className="max-w-[1200px] mx-auto">
         {/* Header */}
         <ScrollReveal direction="up" duration={0.65} className="text-center max-w-2xl mx-auto mb-10">
-          <span className="kicker">Hall of Fame</span>
+          <span className="kicker">{kicker}</span>
           <h2 className="font-head text-[clamp(32px,4.5vw,52px)] text-white tracking-wide uppercase mb-3">
-            The Best of EvolutionSMP
+            {title}
           </h2>
           <p className="text-[#a3abd6] text-base leading-relaxed">
-            Official survival leaderboards synced every 5 minutes directly from the network.
+            {subtitle}
           </p>
 
           {/* Board switch pills */}

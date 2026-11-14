@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { X, ZoomIn } from "lucide-react";
 import ProgressiveImage from "./ProgressiveImage";
 import { ScrollReveal, StaggerReveal, StaggerItem } from "./ScrollReveal";
+import type { HomepageSectionData } from "@/lib/types";
 
 interface GalleryItem {
   id: string;
@@ -12,49 +13,69 @@ interface GalleryItem {
   desc?: string;
 }
 
-export default function GallerySection() {
-  const [activeZoom, setActiveZoom] = useState<GalleryItem | null>(null);
+const DEFAULT_GALLERY_ITEMS: GalleryItem[] = [
+  {
+    id: "spawn",
+    img: "/images/survival-spawn-hub-v2.jpg",
+    caption: "Main EvolutionSMP Survival Spawn with community trading hubs",
+  },
+  {
+    id: "nether",
+    img: "/images/survival-claims-towns-v2.jpg",
+    caption: "Survival wilderness with protected player land claims & towns",
+  },
+  {
+    id: "arena",
+    img: "/images/survival-community-events.jpg",
+    caption: "Community colosseum for player events & seasonal gatherings",
+  },
+  {
+    id: "dungeons",
+    img: "/images/survival-dungeons.jpg",
+    caption: "Ancient survival dungeons with custom bosses and rare loot",
+  },
+  {
+    id: "world",
+    img: "/images/survival-world-terrain.jpg",
+    caption: "Custom World Terrain Generation",
+    desc: "Unique landscapes, natural biomes, and immersive survival exploration.",
+  },
+];
 
-  const galleryItems: GalleryItem[] = [
-    {
-      id: "spawn",
-      img: "/images/survival-spawn-hub-v2.jpg",
-      caption: "Main EvolutionSMP Survival Spawn with community trading hubs",
-    },
-    {
-      id: "nether",
-      img: "/images/survival-claims-towns-v2.jpg",
-      caption: "Survival wilderness with protected player land claims & towns",
-    },
-    {
-      id: "arena",
-      img: "/images/survival-community-events.jpg",
-      caption: "Community colosseum for player events & seasonal gatherings",
-    },
-    {
-      id: "dungeons",
-      img: "/images/survival-dungeons.jpg",
-      caption: "Ancient survival dungeons with custom bosses and rare loot",
-    },
-    {
-      id: "world",
-      img: "/images/survival-world-terrain.jpg",
-      caption: "Custom World Terrain Generation",
-      desc: "Unique landscapes, natural biomes, and immersive survival exploration.",
-    },
-  ];
+export default function GallerySection({ section }: { section?: HomepageSectionData } = {}) {
+  const [activeZoom, setActiveZoom] = useState<GalleryItem | null>(null);
+  const kicker = section?.kicker || "Gallery";
+  const title = section?.title || "A Glimpse of the World";
+  const subtitle =
+    section?.subtitle ||
+    "Explore authentic screenshots captured directly inside the Evolution Survival SMP realm.";
+
+  const rawItems = Array.isArray(section?.content?.items)
+    ? (section.content.items as Record<string, unknown>[])
+    : [];
+  const galleryItems: GalleryItem[] =
+    rawItems.length > 0
+      ? rawItems
+          .map((item, idx) => ({
+            id: String(item.id || `gallery-${idx + 1}`),
+            img: String(item.img || ""),
+            caption: String(item.caption || "EvolutionSMP Screenshot"),
+            desc: typeof item.desc === "string" && item.desc.trim() ? item.desc : undefined,
+          }))
+          .filter((item) => Boolean(item.img))
+      : DEFAULT_GALLERY_ITEMS;
 
   return (
     <section id="gallery" className="py-20 px-5 relative">
       <div className="max-w-[1200px] mx-auto">
         {/* Header */}
         <ScrollReveal direction="up" duration={0.65} className="text-center max-w-2xl mx-auto mb-14">
-          <span className="kicker">Gallery</span>
+          <span className="kicker">{kicker}</span>
           <h2 className="font-head text-[clamp(32px,4.5vw,52px)] text-white tracking-wide uppercase mb-3">
-            A Glimpse of the World
+            {title}
           </h2>
           <p className="text-[#a3abd6] text-base leading-relaxed">
-            Explore authentic screenshots captured directly inside the Evolution Survival SMP realm.
+            {subtitle}
           </p>
         </ScrollReveal>
 

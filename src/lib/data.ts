@@ -10,6 +10,7 @@ export const SERVER_CONFIG = {
   domain: "evolutionsmp.fun",
   storeDomain: "store.evolutionsmp.fun",
   discordInvite: "https://discord.gg/uT5KsTKBuQ",
+  discordTicketPanelUrl: "https://discord.com/channels/1325336468415184947/1567940098140676159",
   discordGuildId: "123456789012345678", // Replace with actual Discord Server ID for live widget
   tiktokUrl: "https://tiktok.com/@evolutionsmp",
   youtubeUrl: "https://youtube.com/@evolutionsmp",

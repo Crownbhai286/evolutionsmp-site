@@ -15,23 +15,53 @@ import {
   ChevronDown,
   Globe,
 } from "lucide-react";
-import { SERVER_CONFIG } from "@/lib/data";
+import { SERVER_CONFIG as DEFAULT_SERVER_CONFIG } from "@/lib/data";
 import { copyToClipboard, formatNumber } from "@/lib/utils";
+import type { WebsiteSettingsData } from "@/lib/types";
+import {
+  CART_UPDATED_EVENT,
+  computeOrderLines,
+  readCartFromStorage,
+} from "@/lib/checkout";
 import { useToast } from "./NotificationToast";
 
 interface NavbarProps {
   onOpenCart?: () => void;
   cartCount?: number;
+  settings?: WebsiteSettingsData;
 }
 
-export default function Navbar({ onOpenCart, cartCount = 0 }: NavbarProps) {
+export default function Navbar({ onOpenCart, cartCount = 0, settings }: NavbarProps) {
+  const SERVER_CONFIG = {
+    ...DEFAULT_SERVER_CONFIG,
+    name: settings?.serverName || DEFAULT_SERVER_CONFIG.name,
+    javaIp: settings?.javaIp || DEFAULT_SERVER_CONFIG.javaIp,
+    discordInvite: settings?.discordInviteUrl || DEFAULT_SERVER_CONFIG.discordInvite,
+  };
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [copied, setCopied] = useState(false);
   const [serverOnline, setServerOnline] = useState(true);
   const [onlineCount, setOnlineCount] = useState(1148);
+  const [storedCartCount, setStoredCartCount] = useState(0);
   const pathname = usePathname();
   const { showToast } = useToast();
+
+  useEffect(() => {
+    const syncCartCount = () => {
+      const { items } = readCartFromStorage();
+      setStoredCartCount(computeOrderLines(items).totalCount);
+    };
+    syncCartCount();
+    window.addEventListener(CART_UPDATED_EVENT, syncCartCount);
+    window.addEventListener("storage", syncCartCount);
+    return () => {
+      window.removeEventListener(CART_UPDATED_EVENT, syncCartCount);
+      window.removeEventListener("storage", syncCartCount);
+    };
+  }, []);
+
+  const displayedCartCount = cartCount > 0 ? cartCount : storedCartCount;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -154,13 +184,19 @@ export default function Navbar({ onOpenCart, cartCount = 0 }: NavbarProps) {
           {/* Cart Button */}
           <Link
             href="/store#cart"
+            onClick={() => {
+              if (onOpenCart) onOpenCart();
+              if (typeof window !== "undefined") {
+                window.dispatchEvent(new Event("evo-open-cart"));
+              }
+            }}
             className="relative flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-[#1b2254] hover:bg-[#232c6a] border border-[rgba(130,150,255,0.24)] text-xs font-bold text-white transition-all shadow-sm"
           >
             <ShoppingCart className="h-4 w-4 text-[#ff9a1f]" />
             <span className="hidden sm:inline">Cart</span>
-            {cartCount > 0 && (
+            {displayedCartCount > 0 && (
               <span className="flex items-center justify-center h-4 w-4 rounded-full bg-[#ff3d5a] text-[10px] font-bold text-white">
-                {cartCount}
+                {displayedCartCount}
               </span>
             )}
           </Link>
@@ -196,7 +232,7 @@ export default function Navbar({ onOpenCart, cartCount = 0 }: NavbarProps) {
                       className="w-full h-full object-contain filter drop-shadow-[0_1px_6px_rgba(58,160,255,0.6)]"
                     />
                   </div>
-                  <span className="font-head text-xl text-white">EvolutionSMP</span>
+                  <span className="font-head text-xl text-white">{SERVER_CONFIG.name}</span>
                 </div>
                 <button
                   onClick={() => setMobileMenuOpen(false)}

@@ -1,9 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import SiteChrome from "@/components/SiteChrome";
 import { ToastProvider } from "@/components/NotificationToast";
 import { SERVER_CONFIG } from "@/lib/data";
+import { getHomepageSections, getWebsiteSettings } from "@/lib/services/public-data";
+
+export const dynamic = "force-dynamic";
 
 export const viewport: Viewport = {
   themeColor: "#0a0d22",
@@ -62,11 +64,17 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const [settings, sections] = await Promise.all([
+    getWebsiteSettings(),
+    getHomepageSections(),
+  ]);
+  const footerSection = sections.find((s) => s.sectionKey === "footer");
+
   return (
     <html lang="en" className="dark">
       <head>
@@ -83,14 +91,9 @@ export default function RootLayout({
       </head>
       <body className="home min-h-screen bg-[#0a0d22] text-[#f4f6ff] antialiased relative selection:bg-[#ff7a1f]/30 selection:text-white">
         <ToastProvider>
-          {/* Main Navigation */}
-          <Navbar />
-
-          {/* Main Content Area */}
-          <main className="relative z-10">{children}</main>
-
-          {/* Footer */}
-          <Footer />
+          <SiteChrome settings={settings} footerSection={footerSection}>
+            {children}
+          </SiteChrome>
         </ToastProvider>
       </body>
     </html>

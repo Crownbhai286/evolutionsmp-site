@@ -3,13 +3,30 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Copy, Check, ExternalLink } from "lucide-react";
-import { SERVER_CONFIG } from "@/lib/data";
+import { Copy, Check, ExternalLink, LifeBuoy } from "lucide-react";
+import { SERVER_CONFIG as DEFAULT_SERVER_CONFIG } from "@/lib/data";
+import type { HomepageSectionData, WebsiteSettingsData } from "@/lib/types";
 import { copyToClipboard } from "@/lib/utils";
 import { useToast } from "./NotificationToast";
 import { ScrollReveal } from "./ScrollReveal";
 
-export default function Footer() {
+interface FooterProps {
+  settings?: WebsiteSettingsData;
+  footerSection?: HomepageSectionData;
+}
+
+export default function Footer({ settings, footerSection }: FooterProps = {}) {
+  const SERVER_CONFIG = {
+    ...DEFAULT_SERVER_CONFIG,
+    name: settings?.serverName || DEFAULT_SERVER_CONFIG.name,
+    javaIp: settings?.javaIp || DEFAULT_SERVER_CONFIG.javaIp,
+    discordInvite: settings?.discordInviteUrl || DEFAULT_SERVER_CONFIG.discordInvite,
+    discordTicketPanelUrl:
+      settings?.discordTicketUrl || DEFAULT_SERVER_CONFIG.discordTicketPanelUrl,
+    youtubeUrl: settings?.youtubeUrl || DEFAULT_SERVER_CONFIG.youtubeUrl,
+    tiktokUrl: settings?.tiktokUrl || DEFAULT_SERVER_CONFIG.tiktokUrl,
+    twitterUrl: settings?.twitterUrl || DEFAULT_SERVER_CONFIG.twitterUrl,
+  };
   const [copied, setCopied] = useState(false);
   const { showToast } = useToast();
 
@@ -22,9 +39,52 @@ export default function Footer() {
     }
   };
 
+  const helpEnabled = footerSection?.isEnabled !== false;
+  const helpKicker = footerSection?.kicker || "24/7 Discord Support";
+  const helpTitle = footerSection?.title || "Need Help?";
+  const helpSubtitle =
+    footerSection?.subtitle ||
+    "Have questions about ranks, store purchases, bug reports, or account issues? Open a ticket directly through our Ticket King support panel on Discord.";
+  const helpCtaLabel =
+    typeof footerSection?.content?.ctaLabel === "string" && footerSection.content.ctaLabel.trim()
+      ? footerSection.content.ctaLabel
+      : "GET SUPPORT";
+  const brandDescription =
+    settings?.footerDescription ||
+    "The premier Minecraft Survival network for Java & Bedrock. You can't imagine what's coming next. Experience player economy, custom features, teams, crates, and community.";
+  const copyrightText =
+    settings?.footerCopyright || `${SERVER_CONFIG.name} Network. All rights reserved.`;
+
   return (
     <footer className="relative bg-[#0a0d22] border-t border-white/[0.08] pt-16 pb-12 text-[#a3abd6] text-sm overflow-hidden">
       <ScrollReveal direction="up" duration={0.65} className="max-w-[1200px] mx-auto px-5">
+        {/* Need Help? Support Section */}
+        {helpEnabled && (
+          <div className="relative overflow-hidden isolate rounded-[22px] p-6 sm:p-8 mb-12 bg-gradient-to-r from-[#1b2254] via-[#141a42] to-[#191b4b] border border-[rgba(130,150,255,0.24)] shadow-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6 transition-all duration-300 hover:border-[#ff9a1f]/50 hover:shadow-[#ff9a1f]/10">
+            <div className="absolute -top-16 -right-16 w-56 h-56 rounded-full bg-gradient-to-br from-[#ff9a1f]/20 via-[#ff3d5a]/15 to-transparent blur-3xl pointer-events-none -z-10" />
+            <div className="max-w-2xl">
+              <span className="kicker mb-2">{helpKicker}</span>
+              <h3 className="font-head text-2xl sm:text-3xl text-white uppercase tracking-wide">
+                {helpTitle}
+              </h3>
+              <p className="text-sm text-[#c3c9ee] mt-1.5 leading-relaxed">
+                {helpSubtitle}
+              </p>
+            </div>
+
+            <a
+              href={SERVER_CONFIG.discordTicketPanelUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn w-full md:w-auto shrink-0 group"
+            >
+              <LifeBuoy className="h-4 w-4 transition-transform duration-200 group-hover:rotate-12" />
+              <span>{helpCtaLabel}</span>
+              <ExternalLink className="h-4 w-4 opacity-85 transition-transform duration-200 group-hover:translate-x-0.5" />
+            </a>
+          </div>
+        )}
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-white/[0.08]">
           {/* Col 1: Brand Info */}
           <div className="lg:col-span-2 flex flex-col gap-4">
@@ -44,8 +104,7 @@ export default function Footer() {
             </Link>
 
             <p className="text-sm text-[#a3abd6] leading-relaxed max-w-sm">
-              The premier Minecraft Survival network for Java &amp; Bedrock. You can&apos;t imagine what&apos;s coming next.
-              Experience player economy, custom features, teams, crates, and community.
+              {brandDescription}
             </p>
 
             {/* Playbex Clickable Copy IP Pill */}
@@ -146,7 +205,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href={SERVER_CONFIG.discordInvite}
+                  href={SERVER_CONFIG.discordTicketPanelUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-white transition-colors"
@@ -156,7 +215,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href={SERVER_CONFIG.discordInvite}
+                  href={SERVER_CONFIG.discordTicketPanelUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-white transition-colors"
@@ -171,7 +230,7 @@ export default function Footer() {
         {/* Legal & Mojang Disclaimers */}
         <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-[#6f78a8]">
           <p>
-            &copy; {new Date().getFullYear()} EvolutionSMP Network. All rights reserved.
+            &copy; {new Date().getFullYear()} {copyrightText}
           </p>
 
           <p className="text-center md:text-right max-w-xl text-[11px]">

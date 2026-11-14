@@ -1,10 +1,20 @@
 import { NextResponse } from "next/server";
-import { COIN_CONFIG } from "@/lib/data";
+import { calculateDynamicCoinPrice, getCoinConfig } from "@/lib/services/public-data";
+import { checkRateLimit, getRequestIp } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
   try {
+    const ip = getRequestIp(req);
+    const rl = checkRateLimit(`calc-coins:${ip}`, 90, 60_000);
+    if (!rl.allowed) {
+      return NextResponse.json(
+        { error: "Too many requests. Please slow down." },
+        { status: 429 }
+      );
+    }
+
     let body: any = {};
     try {
       body = await req.json();
@@ -15,9 +25,9 @@ export async function POST(req: Request) {
       );
     }
 
+    const coinConfig = await getCoinConfig();
     const rawCoins = body.coins;
     const rawUsername = typeof body.username === "string" ? body.username.trim() : "";
-    // Strict sanitization: Minecraft usernames are 1-16 chars alphanumeric/underscore (plus optional Bedrock prefix)
     const isValidUsername = /^[a-zA-Z0-9_.*~-]{1,16}$/.test(rawUsername);
     const username = isValidUsername ? rawUsername : "";
 
@@ -30,36 +40,32 @@ export async function POST(req: Request) {
 
     const coins = Math.floor(Number(rawCoins));
 
-    // Admin Configured Limits
-    if (coins < COIN_CONFIG.minCustomCoins) {
+    if (coins < coinConfig.minCustomCoins) {
       return NextResponse.json(
         {
-          error: `Minimum purchase limit is ${COIN_CONFIG.minCustomCoins.toLocaleString()} Coins.`,
-          minCoins: COIN_CONFIG.minCustomCoins,
-          maxCoins: COIN_CONFIG.maxCustomCoins,
+          error: `Minimum purchase limit is ${coinConfig.minCustomCoins.toLocaleString()} Coins.`,
+          minCoins: coinConfig.minCustomCoins,
+          maxCoins: coinConfig.maxCustomCoins,
         },
         { status: 400 }
       );
     }
 
-    if (coins > COIN_CONFIG.maxCustomCoins) {
+    if (coins > coinConfig.maxCustomCoins) {
       return NextResponse.json(
         {
-          error: `Maximum purchase limit is ${COIN_CONFIG.maxCustomCoins.toLocaleString()} Coins per order.`,
-          minCoins: COIN_CONFIG.minCustomCoins,
-          maxCoins: COIN_CONFIG.maxCustomCoins,
+          error: `Maximum purchase limit is ${coinConfig.maxCustomCoins.toLocaleString()} Coins per order.`,
+          minCoins: coinConfig.minCustomCoins,
+          maxCoins: coinConfig.maxCustomCoins,
         },
         { status: 400 }
       );
     }
 
-    // Authoritative Server-Side Price Calculation
-    const pricing = COIN_CONFIG.calculatePrice(coins);
-
-    // Tebex delivery command template & package integration
-    const deliveryCommand = username
-      ? `eco give ${username} ${coins}`
-      : `eco give {username} ${coins}`;
+    const pricing = calculateDynamicCoinPrice(coins, coinConfig);
+    const deliveryCommand = coinConfig.deliveryCommandTemplate
+      .replace("{username}", username || "{username}")
+      .replace("{coins}", String(coins));
 
     return NextResponse.json({
       success: true,
@@ -69,15 +75,14 @@ export async function POST(req: Request) {
       discountPercent: pricing.discountPercent,
       unitPrice: Math.round((pricing.price / coins) * 10000) / 10000,
       limits: {
-        min: COIN_CONFIG.minCustomCoins,
-        max: COIN_CONFIG.maxCustomCoins,
+        min: coinConfig.minCustomCoins,
+        max: coinConfig.maxCustomCoins,
       },
       delivery: {
-        system: "Tebex / In-game Economy Delivery",
+        system: coinConfig.tebexPackageId ? "Tebex Package Delivery" : "Staff Verified / In-game Economy",
         command: deliveryCommand,
-        tebexPackageId: "coins-custom-amount",
+        tebexPackageId: coinConfig.tebexPackageId || "coins-custom-amount",
         currency: "USD",
-        executionTime: "instant",
       },
     });
   } catch (error: any) {

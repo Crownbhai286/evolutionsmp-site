@@ -127,6 +127,104 @@ export interface NewsPost {
   authorSkin: string;
   coverImage: string;
   content: string[];
+  contentHtml?: string;
   tags: string[];
   likes: number;
+  status?: "draft" | "published";
+}
+
+export interface SocialLinkItem {
+  label: string;
+  url: string;
+}
+
+export interface HeroButtonItem {
+  label: string;
+  url: string;
+  style: "primary" | "glass" | "white";
+  external: boolean;
+}
+
+export interface WebsiteSettingsData {
+  serverName: string;
+  websiteName: string;
+  websiteTagline: string;
+  javaIp: string;
+  bedrockIp: string;
+  bedrockPort: number;
+  minecraftVersion: string;
+  seasonName: string;
+  serverDescription: string;
+  domain: string;
+  storeDomain: string;
+  discordInviteUrl: string;
+  discordTicketUrl: string;
+  discordGuildId: string;
+  youtubeUrl: string;
+  tiktokUrl: string;
+  twitterUrl: string;
+  socialLinks: SocialLinkItem[];
+  announcementEnabled: boolean;
+  announcementText: string;
+  announcementUrl: string;
+  heroTitle: string;
+  heroSubtitle: string;
+  heroBgImage: string;
+  heroButtons: HeroButtonItem[];
+  footerDescription: string;
+  footerCopyright: string;
+}
+
+export interface StoreCategoryItem {
+  id: string;
+  slug: "RANKS" | "KEYS" | "COINS" | "BUNDLES";
+  name: string;
+  description: string;
+  sortOrder: number;
+  isEnabled: boolean;
+}
+
+export interface CoinDiscountTier {
+  minCoins: number;
+  unitRate: number;
+}
+
+export interface CoinConfigData {
+  minCustomCoins: number;
+  maxCustomCoins: number;
+  baseRatePerCoin: number;
+  discountTiers: CoinDiscountTier[];
+  deliveryCommandTemplate: string;
+  tebexPackageId: string;
+}
+
+export interface HomepageSectionData {
+  sectionKey: "hero" | "modes" | "gallery" | "join" | "leaderboards" | "discord" | "footer";
+  kicker: string;
+  title: string;
+  subtitle: string;
+  isEnabled: boolean;
+  sortOrder: number;
+  content: Record<string, unknown>;
+}
+
+export interface ServerStatisticsData {
+  totalRegisteredPlayers: number;
+  onlinePlayers: number;
+  maxPlayers: number;
+  totalVotes: number;
+  javaOnline: boolean;
+  bedrockOnline: boolean;
+  dataSource: "manual" | "mcstatus_api" | "minecraft_plugin";
+  lastSyncedAt: string | null;
+}
+
+export interface StoreCatalogItem extends StoreItem {
+  dbId?: string;
+  slug?: string;
+  imageUrl?: string | null;
+  deliveryCommand?: string;
+  tebexPackageId?: string;
+  isEnabled?: boolean;
+  sortOrder?: number;
 }

@@ -13,8 +13,9 @@ import {
   ShoppingCart,
   CheckCircle2,
 } from "lucide-react";
-import { SERVER_CONFIG } from "@/lib/data";
+import { formatNumber } from "@/lib/utils";
 import { ScrollReveal, StaggerReveal, StaggerItem } from "./ScrollReveal";
+import type { HomepageSectionData } from "@/lib/types";
 
 interface PillarItem {
   id: string;
@@ -26,7 +27,49 @@ interface PillarItem {
   accentColor: string;
 }
 
-export default function GameModesSection() {
+interface GameModesSectionProps {
+  section?: HomepageSectionData;
+  onlinePlayers?: number;
+  online?: boolean;
+}
+
+export default function GameModesSection({
+  section,
+  onlinePlayers = 1148,
+  online = true,
+}: GameModesSectionProps = {}) {
+  const kicker = section?.kicker || "Pure Minecraft Experience";
+  const title = section?.title || "Survival SMP";
+  const subtitle =
+    section?.subtitle ||
+    "EvolutionSMP is dedicated exclusively to delivering an authentic, high-performance Survival SMP. Claim your land, master the player economy, forge custom enchantments, and build with an active community.";
+  const bannerUrl =
+    typeof section?.content?.bannerUrl === "string" && section.content.bannerUrl
+      ? section.content.bannerUrl
+      : "/images/survival-showcase-v2.jpg";
+  const versionLabel =
+    typeof section?.content?.versionLabel === "string" && section.content.versionLabel
+      ? section.content.versionLabel
+      : "1.20 - 1.21.x Seamless Crossplay (Java & Bedrock)";
+  const showcaseTitle =
+    typeof section?.content?.showcaseTitle === "string" && section.content.showcaseTitle
+      ? section.content.showcaseTitle
+      : "Evolution Survival SMP";
+  const showcaseDescription =
+    typeof section?.content?.showcaseDescription === "string" && section.content.showcaseDescription
+      ? section.content.showcaseDescription
+      : "Our flagship survival realm engineered for peak stability, balanced longevity, and fair gameplay. Establish safe land claims, build massive towns with your team, participate in a player-driven chest shop economy, conquer seasonal dungeon catacombs, and unlock mythic vote crates.";
+  const highlights =
+    Array.isArray(section?.content?.highlights) && section.content.highlights.length > 0
+      ? section.content.highlights.map((item) => String(item))
+      : [
+          "Player-Run Chest Shops",
+          "Grief-Free Land Claims",
+          "45+ Custom Enchants",
+          "Seasonal Dungeon Bosses",
+          "Daily Free Vote Crates",
+          "Java & Bedrock Crossplay",
+        ];
   const pillars: PillarItem[] = [
     {
       id: "economy",
@@ -80,13 +123,12 @@ export default function GameModesSection() {
       <div className="max-w-[1200px] mx-auto">
         {/* Section Header */}
         <ScrollReveal direction="up" duration={0.65} className="text-center max-w-2xl mx-auto mb-12">
-          <span className="kicker">Pure Minecraft Experience</span>
+          <span className="kicker">{kicker}</span>
           <h2 className="font-head text-[clamp(32px,4.5vw,52px)] text-white tracking-wide uppercase mb-3">
-            Survival SMP
+            {title}
           </h2>
           <p className="text-[#a3abd6] text-base leading-relaxed">
-            EvolutionSMP is dedicated exclusively to delivering an authentic, high-performance Survival SMP.
-            Claim your land, master the player economy, forge custom enchantments, and build with an active community.
+            {subtitle}
           </p>
         </ScrollReveal>
 
@@ -97,7 +139,7 @@ export default function GameModesSection() {
             <div
               className="absolute inset-0 -z-10 bg-cover bg-center transition-transform duration-700 hover:scale-105"
               style={{
-                backgroundImage: "url('/images/survival-showcase-v2.jpg')",
+                backgroundImage: `url('${bannerUrl}')`,
               }}
             />
 
@@ -107,53 +149,38 @@ export default function GameModesSection() {
             {/* Badges Row */}
             <div className="flex flex-wrap items-center gap-3 mb-6">
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-wider bg-[#0a0d22]/85 backdrop-blur-md border border-[rgba(130,150,255,0.24)]">
-                <span className="live-dot on" />
-                <span className="text-[#2fd47a]">Online &bull; 1,148 Players Active</span>
+                <span className={`live-dot ${online ? "on" : ""}`} />
+                <span className="text-[#2fd47a]">
+                  {online ? "Online" : "Maintenance"} &bull; {formatNumber(onlinePlayers)} Players Active
+                </span>
               </div>
 
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-wider bg-[#0a0d22]/85 backdrop-blur-md border border-[rgba(130,150,255,0.24)] text-[#a3abd6]">
-                <span>1.20 - 1.21.x Seamless Crossplay (Java &amp; Bedrock)</span>
+                <span>{versionLabel}</span>
               </div>
             </div>
 
             {/* Main Info */}
             <div className="max-w-3xl">
               <h3 className="font-head text-[clamp(28px,3.8vw,44px)] text-white tracking-wide uppercase leading-tight mb-4">
-                Evolution Survival SMP
+                {showcaseTitle}
               </h3>
 
               <p className="text-base text-[#d1d7f0] leading-relaxed mb-6 font-normal">
-                Our flagship survival realm engineered for peak stability, balanced longevity, and fair gameplay.
-                Establish safe land claims, build massive towns with your team, participate in a player-driven chest shop
-                economy, conquer seasonal dungeon catacombs, and unlock mythic vote crates.
+                {showcaseDescription}
               </p>
 
               {/* Micro Highlights */}
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mb-8 text-xs font-bold text-white">
-                <div className="flex items-center gap-2 bg-white/[0.06] backdrop-blur-sm px-3.5 py-2 rounded-xl border border-white/[0.08]">
-                  <CheckCircle2 className="h-4 w-4 text-[#ff9a1f] shrink-0" />
-                  <span>Player-Run Chest Shops</span>
-                </div>
-                <div className="flex items-center gap-2 bg-white/[0.06] backdrop-blur-sm px-3.5 py-2 rounded-xl border border-white/[0.08]">
-                  <CheckCircle2 className="h-4 w-4 text-[#ff9a1f] shrink-0" />
-                  <span>Grief-Free Land Claims</span>
-                </div>
-                <div className="flex items-center gap-2 bg-white/[0.06] backdrop-blur-sm px-3.5 py-2 rounded-xl border border-white/[0.08]">
-                  <CheckCircle2 className="h-4 w-4 text-[#ff9a1f] shrink-0" />
-                  <span>45+ Custom Enchants</span>
-                </div>
-                <div className="flex items-center gap-2 bg-white/[0.06] backdrop-blur-sm px-3.5 py-2 rounded-xl border border-white/[0.08]">
-                  <CheckCircle2 className="h-4 w-4 text-[#ff9a1f] shrink-0" />
-                  <span>Seasonal Dungeon Bosses</span>
-                </div>
-                <div className="flex items-center gap-2 bg-white/[0.06] backdrop-blur-sm px-3.5 py-2 rounded-xl border border-white/[0.08]">
-                  <CheckCircle2 className="h-4 w-4 text-[#ff9a1f] shrink-0" />
-                  <span>Daily Free Vote Crates</span>
-                </div>
-                <div className="flex items-center gap-2 bg-white/[0.06] backdrop-blur-sm px-3.5 py-2 rounded-xl border border-white/[0.08]">
-                  <CheckCircle2 className="h-4 w-4 text-[#ff9a1f] shrink-0" />
-                  <span>Java &amp; Bedrock Crossplay</span>
-                </div>
+                {highlights.map((highlight) => (
+                  <div
+                    key={highlight}
+                    className="flex items-center gap-2 bg-white/[0.06] backdrop-blur-sm px-3.5 py-2 rounded-xl border border-white/[0.08]"
+                  >
+                    <CheckCircle2 className="h-4 w-4 text-[#ff9a1f] shrink-0" />
+                    <span>{highlight}</span>
+                  </div>
+                ))}
               </div>
 
               {/* CTAs */}
