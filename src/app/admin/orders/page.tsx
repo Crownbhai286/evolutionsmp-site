@@ -418,11 +418,16 @@ export default function AdminOrdersPage() {
                         <div>
                           <b className="text-white block">{item.name}</b>
                           <span className="text-[#a3abd6] text-[11px]">
-                            Qty: {item.quantity} &bull; ${item.unitPriceUsd?.toFixed(2)} USD each
+                            Qty: {item.quantity} &bull; ₹{Math.max(1, Math.round((item.unitPriceUsd || 0) * 88)).toLocaleString("en-IN")} (${item.unitPriceUsd?.toFixed(2)} USD) each
                           </span>
                         </div>
-                        <span className="font-bold text-white">
-                          ${item.subtotalUsd?.toFixed(2)} USD
+                        <span className="font-bold text-white text-right">
+                          <span className="block text-emerald-400 font-bold">
+                            ₹{Math.max(1, Math.round((item.subtotalUsd || 0) * 88)).toLocaleString("en-IN")}
+                          </span>
+                          <span className="text-[10px] text-[#a3abd6]">
+                            ${item.subtotalUsd?.toFixed(2)} USD
+                          </span>
                         </span>
                       </div>
                     ))

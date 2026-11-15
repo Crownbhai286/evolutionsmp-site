@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { calculateDynamicCoinPrice, getCoinConfig } from "@/lib/services/public-data";
 import { checkRateLimit, getRequestIp } from "@/lib/rate-limit";
+import { convertUsdToInr, getFamGatewayConfigStatus } from "@/lib/famgateway";
 
 export const dynamic = "force-dynamic";
 
@@ -63,6 +64,10 @@ export async function POST(req: Request) {
     }
 
     const pricing = calculateDynamicCoinPrice(coins, coinConfig);
+    const { usdToInrRate } = getFamGatewayConfigStatus();
+    const priceInr = convertUsdToInr(pricing.price, usdToInrRate);
+    const originalPriceInr = convertUsdToInr(pricing.originalPrice, usdToInrRate);
+
     const deliveryCommand = coinConfig.deliveryCommandTemplate
       .replace("{username}", username || "{username}")
       .replace("{coins}", String(coins));
@@ -72,6 +77,9 @@ export async function POST(req: Request) {
       coins,
       price: pricing.price,
       originalPrice: pricing.originalPrice,
+      priceInr,
+      originalPriceInr,
+      currency: "INR",
       discountPercent: pricing.discountPercent,
       unitPrice: Math.round((pricing.price / coins) * 10000) / 10000,
       limits: {
@@ -79,10 +87,9 @@ export async function POST(req: Request) {
         max: coinConfig.maxCustomCoins,
       },
       delivery: {
-        system: coinConfig.tebexPackageId ? "Tebex Package Delivery" : "Staff Verified / In-game Economy",
+        system: "In-game Economy (/eco give)",
         command: deliveryCommand,
-        tebexPackageId: coinConfig.tebexPackageId || "coins-custom-amount",
-        currency: "USD",
+        currency: "INR",
       },
     });
   } catch (error: any) {

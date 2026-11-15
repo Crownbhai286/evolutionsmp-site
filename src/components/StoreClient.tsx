@@ -23,7 +23,6 @@ import {
   Loader2,
   CheckCircle2,
   HelpCircle,
-  Copy,
   ArrowLeft,
   QrCode,
 } from "lucide-react";
@@ -37,20 +36,14 @@ import {
 } from "@/lib/types";
 import {
   CartLine,
-  PreparedOrder,
-  buildOrderSignature,
   computeOrderLines,
-  formatOrderText,
-  formatUsd,
-  prepareOrder,
+  formatInr,
   readCartFromStorage,
   readIgnFromStorage,
-  readOrderFromStorage,
   sanitizeCart,
   validateMinecraftIgn,
   writeCartToStorage,
   writeIgnToStorage,
-  writeOrderToStorage,
 } from "@/lib/checkout";
 import { useToast } from "@/components/NotificationToast";
 import RankIcon from "@/components/RankIcon";
@@ -110,24 +103,22 @@ export default function StoreClient({
     calculatePrice: calcCoinPrice,
   };
 
+  const conversionRate = Number.isFinite(usdToInrRate) && usdToInrRate > 0 ? usdToInrRate : 88.0;
+  const toInr = (usd: number) => Math.max(1, Math.round((Number(usd) || 0) * conversionRate));
+  const formatPrice = (usd: number) => formatInr(toInr(usd));
+
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [activeModalItem, setActiveModalItem] = useState<StoreCatalogItem | null>(null);
   const [modalQty, setModalQty] = useState(1);
   const [cart, setCart] = useState<CartLine[]>([]);
   const [droppedWarningCount, setDroppedWarningCount] = useState(0);
   const [cartOpen, setCartOpen] = useState(false);
-  const [checkoutView, setCheckoutView] = useState<"closed" | "checkout" | "handoff">("closed");
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [mcUsername, setMcUsername] = useState("");
   const [detailIgnError, setDetailIgnError] = useState("");
   const [checkoutIgnError, setCheckoutIgnError] = useState("");
-  const [paymentPendingAccepted, setPaymentPendingAccepted] = useState(false);
   const [checkoutError, setCheckoutError] = useState("");
-  const [ckBusy, setCkBusy] = useState(false);
-  const [tebexBusy, setTebexBusy] = useState(false);
   const [famBusy, setFamBusy] = useState(false);
-  const [savedOrder, setSavedOrder] = useState<PreparedOrder | null>(null);
-  const [handoffOrder, setHandoffOrder] = useState<PreparedOrder | null>(null);
-  const [copyFeedback, setCopyFeedback] = useState("");
 
   // Custom Coins Calculator State
   const [customCoinAmount, setCustomCoinAmount] = useState<number>(350);
@@ -216,8 +207,8 @@ export default function StoreClient({
         isCustomCoin: true,
         description: `${data.coins.toLocaleString()} In-game Survival Coins.`,
         perks: [
-          `${data.coins.toLocaleString()} Survival Coins delivered after staff verification`,
-          `${data.discountPercent}% Volume Discount applied ($${(data.originalPrice - data.price).toFixed(2)} savings)`,
+          `${data.coins.toLocaleString()} Survival Coins delivered upon verified payment`,
+          `${data.discountPercent}% Volume Discount applied (${formatInr(Math.max(0, toInr(data.originalPrice) - toInr(data.price)))} savings)`,
           "Spend on player warps, chest shops, auctions & land claims",
           "100% loss protected & non-expiring",
         ],
@@ -264,9 +255,6 @@ export default function StoreClient({
     const storedIgn = readIgnFromStorage();
     if (storedIgn) setMcUsername(storedIgn);
 
-    const storedOrder = readOrderFromStorage();
-    if (storedOrder) setSavedOrder(storedOrder);
-
     const urlParams = new URLSearchParams(window.location.search);
     const orderIdParam = urlParams.get("order_id");
     const upiReturn = urlParams.get("upi");
@@ -294,33 +282,14 @@ export default function StoreClient({
       window.history.replaceState({}, "", window.location.pathname);
     }
 
-    const tebexReturn = urlParams.get("tebex");
-    if (tebexReturn === "complete") {
-      writeCartToStorage([]);
-      setCart([]);
-      showToast(
-        "Payment Completed",
-        "Your Tebex checkout completed! In-game rewards deliver automatically.",
-        "success"
-      );
-      window.history.replaceState({}, "", window.location.pathname);
-    } else if (tebexReturn === "cancelled") {
-      showToast(
-        "Checkout Cancelled",
-        "Your Tebex checkout was cancelled. Your cart items are still saved.",
-        "info"
-      );
-      window.history.replaceState({}, "", window.location.pathname);
-    }
-
     const openFromHash = () => {
       if (window.location.hash === "#cart") {
-        setCheckoutView("closed");
+        setIsCheckoutOpen(false);
         setCartOpen(true);
       }
     };
     const openFromNavbar = () => {
-      setCheckoutView("closed");
+      setIsCheckoutOpen(false);
       setCartOpen(true);
     };
 
@@ -348,10 +317,11 @@ export default function StoreClient({
 
   const {
     lines: orderLines,
-    total: orderTotal,
+    total: orderTotalUsd,
+    totalInr: orderTotalInr,
     totalCount: totalCartCount,
     totalCoins: totalCoinsInCart,
-  } = computeOrderLines(cart, STORE_ITEMS, coinConfig);
+  } = computeOrderLines(cart, STORE_ITEMS, coinConfig, conversionRate);
 
   const openCheckoutModal = (overrideCart?: CartLine[], overrideIgn?: string) => {
     const sourceCart = overrideCart ?? cart;
@@ -361,9 +331,9 @@ export default function StoreClient({
       setCart(items);
       setDroppedWarningCount((prev) => prev + dropped);
     }
-    const { lines } = computeOrderLines(items, STORE_ITEMS, coinConfig);
+    const { lines } = computeOrderLines(items, STORE_ITEMS, coinConfig, conversionRate);
     if (lines.length === 0) {
-      setCheckoutView("closed");
+      setIsCheckoutOpen(false);
       setCartOpen(true);
       return;
     }
@@ -376,11 +346,8 @@ export default function StoreClient({
     if (prefillIgn) setMcUsername(prefillIgn);
     setCheckoutIgnError("");
     setCheckoutError("");
-    setPaymentPendingAccepted(false);
-    setCkBusy(false);
-    setSavedOrder(readOrderFromStorage());
     setCartOpen(false);
-    setCheckoutView("checkout");
+    setIsCheckoutOpen(true);
   };
 
   const addToCart = (
@@ -423,7 +390,7 @@ export default function StoreClient({
       `${safeQty}x ${item.name} was added to your order.`,
       "success"
     );
-    setCheckoutView("closed");
+    setIsCheckoutOpen(false);
     setCartOpen(true);
   };
 
@@ -442,122 +409,8 @@ export default function StoreClient({
     setCartItemQty(id, existing.qty + delta);
   };
 
-  const openExternalLink = (url: string) => {
-    const a = document.createElement("a");
-    a.href = url;
-    a.target = "_blank";
-    a.rel = "noopener noreferrer";
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-  };
-
-  const handleCheckoutConfirm = async () => {
-    if (ckBusy) return;
-
-    const cleanIgn = mcUsername.trim();
-    const ignErr = validateMinecraftIgn(cleanIgn);
-    setCheckoutIgnError(ignErr);
-    setCheckoutError("");
-    if (ignErr) return;
-
-    if (!paymentPendingAccepted) {
-      setCheckoutError("Please confirm that payment is pending until staff verify it.");
-      return;
-    }
-
-    const discordPanelUrl = SERVER_CONFIG.discordTicketPanelUrl;
-    if (!discordPanelUrl) {
-      setCheckoutError(
-        "The Discord support link is not set up yet, so checkout cannot continue. Please contact staff."
-      );
-      return;
-    }
-
-    setCkBusy(true);
-    try {
-      writeIgnToStorage(cleanIgn);
-      const updatedCart = persistCart(cart.map((c) => ({ ...c, user: cleanIgn })));
-      const { lines: freshLines } = computeOrderLines(updatedCart, STORE_ITEMS, coinConfig);
-
-      if (freshLines.length === 0) {
-        setCkBusy(false);
-        setCheckoutView("closed");
-        setCartOpen(true);
-        return;
-      }
-
-      const prevOrder = savedOrder ?? readOrderFromStorage();
-      const prepared = prepareOrder(cleanIgn, freshLines, prevOrder);
-      const orderText = formatOrderText(prepared);
-
-      // Open Discord Ticket King panel synchronously before awaiting clipboard write
-      openExternalLink(discordPanelUrl);
-
-      let copied = false;
-      try {
-        if (navigator.clipboard?.writeText) {
-          await navigator.clipboard.writeText(orderText);
-          copied = true;
-        }
-      } catch {
-        copied = false;
-      }
-
-      const finalOrder: PreparedOrder = {
-        ...prepared,
-        sent: prepared.sent || Date.now(),
-      };
-      writeOrderToStorage(finalOrder);
-      setSavedOrder(finalOrder);
-      setHandoffOrder(finalOrder);
-      setCopyFeedback(
-        copied
-          ? "Order details copied automatically. Paste them into your ticket."
-          : "Could not copy automatically. Use the button above or select the text and copy it."
-      );
-      setCheckoutView("handoff");
-    } catch {
-      setCheckoutError("Something went wrong while preparing your order. Nothing was sent. Please try again.");
-    } finally {
-      setCkBusy(false);
-    }
-  };
-
-  const handleTebexCheckout = async () => {
-    if (tebexBusy) return;
-    const cleanIgn = mcUsername.trim();
-    const ignErr = validateMinecraftIgn(cleanIgn);
-    setCheckoutIgnError(ignErr);
-    setCheckoutError("");
-    if (ignErr) return;
-
-    setTebexBusy(true);
-    try {
-      writeIgnToStorage(cleanIgn);
-      const res = await fetch("/api/store/tebex-checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          username: cleanIgn,
-          items: cart.map((c) => ({ slug: c.id, quantity: c.qty })),
-        }),
-      });
-      const data = await res.json();
-      if (!res.ok || !data.checkoutUrl) {
-        setCheckoutError(data.error || "Failed to create Tebex checkout session.");
-        return;
-      }
-      window.location.href = data.checkoutUrl;
-    } catch {
-      setCheckoutError("Unable to reach Tebex checkout. Please try again or use Discord checkout.");
-    } finally {
-      setTebexBusy(false);
-    }
-  };
-
   const handleFamGatewayCheckout = async () => {
-    if (famBusy || ckBusy || tebexBusy) return;
+    if (famBusy) return;
     const cleanIgn = mcUsername.trim();
     const ignErr = validateMinecraftIgn(cleanIgn);
     setCheckoutIgnError(ignErr);
@@ -587,37 +440,6 @@ export default function StoreClient({
       setFamBusy(false);
     }
   };
-
-  const handleCopyOrderDetails = async () => {
-    if (!handoffOrder) return;
-    const txt = formatOrderText(handoffOrder);
-    try {
-      await navigator.clipboard.writeText(txt);
-      setCopyFeedback("Copied. Paste it into your ticket.");
-    } catch {
-      const textarea = document.getElementById(
-        "order-details-textarea"
-      ) as HTMLTextAreaElement | null;
-      textarea?.select();
-      setCopyFeedback("Copy failed. Select the text above and copy it manually.");
-    }
-  };
-
-  const handleClearCartAfterTicket = () => {
-    persistCart([]);
-    setDroppedWarningCount(0);
-    setHandoffOrder(null);
-    setCheckoutView("closed");
-    showToast("Cart cleared", "Your cart has been cleared.", "success");
-  };
-
-  const previewOrderSig = buildOrderSignature(
-    mcUsername.trim() || readIgnFromStorage() || cart.find((c) => c.user)?.user || "",
-    orderLines
-  );
-  const isDuplicatePreparedOrder = Boolean(
-    savedOrder && savedOrder.sent > 0 && savedOrder.sig === previewOrderSig
-  );
 
   return (
     <div className="pt-28 pb-24 px-5 max-w-[1200px] mx-auto min-h-screen">
@@ -662,15 +484,15 @@ export default function StoreClient({
               </div>
             </li>
 
-            {/* Card 2: Secure Discord Checkout */}
+            {/* Card 2: Instant UPI Payment */}
             <li className="flex items-center gap-3.5 px-4 py-3 rounded-[14px] bg-[#0a0d22]/65 border border-[rgba(58,160,255,0.22)] backdrop-blur-md shadow-lg shadow-black/20 hover:border-[rgba(58,160,255,0.5)] hover:bg-[#0a0d22]/80 transition-all">
-              <span className="w-9 h-9 shrink-0 rounded-[10px] grid place-items-center bg-[#ff9a1f]/15 text-[#ff9a1f] border border-[rgba(58,160,255,0.25)]">
-                <ShieldCheck className="h-4 w-4" />
+              <span className="w-9 h-9 shrink-0 rounded-[10px] grid place-items-center bg-[#10b981]/15 text-[#10b981] border border-[rgba(16,185,129,0.3)]">
+                <QrCode className="h-4 w-4" />
               </span>
               <div className="min-w-0">
-                <b className="text-white text-[14.5px] block font-bold leading-tight">Secure Discord Checkout</b>
+                <b className="text-white text-[14.5px] block font-bold leading-tight">Instant UPI Payment</b>
                 <small className="text-[#a3abd6] text-[12.5px] block leading-tight mt-0.5">
-                  Secure payments with assistance from our staff team.
+                  Seamless checkout via GPay, PhonePe, Paytm, or QR.
                 </small>
               </div>
             </li>
@@ -818,7 +640,7 @@ export default function StoreClient({
                             <span>Select Coin Amount:</span>
                           </span>
                           <span className="text-[#ff9a1f] font-mono">
-                            Rate: ${(customPricing.price / customCoinAmount).toFixed(4)}/coin
+                            Rate: ₹{(toInr(customPricing.price) / customCoinAmount).toFixed(2)}/coin
                           </span>
                         </div>
 
@@ -906,11 +728,11 @@ export default function StoreClient({
                           <div className="text-left w-full sm:w-auto">
                             <div className="flex items-baseline gap-2">
                               <span className="font-head text-3xl text-white g">
-                                ${customPricing.price.toFixed(2)}
+                                {formatPrice(customPricing.price)}
                               </span>
                               {customPricing.discountPercent > 0 && (
                                 <span className="text-xs text-[#6f78a8] line-through font-mono">
-                                  ${customPricing.originalPrice.toFixed(2)}
+                                  {formatPrice(customPricing.originalPrice)}
                                 </span>
                               )}
                               {customPricing.discountPercent > 0 && (
@@ -920,7 +742,7 @@ export default function StoreClient({
                               )}
                             </div>
                             <small className="text-[#a3abd6] text-[11px] block mt-0.5">
-                              Server-validated rate &bull; Verified Tebex Delivery
+                              Server-validated rate &bull; Instant UPI Delivery
                             </small>
                           </div>
 
@@ -1020,11 +842,11 @@ export default function StoreClient({
 
                     <div className="flex items-baseline gap-2 mb-4">
                       <span className="font-head text-2xl text-white g">
-                        ${item.price.toFixed(2)}
+                        {formatPrice(item.price)}
                       </span>
                       {item.originalPrice && (
                         <span className="text-xs text-[#6f78a8] line-through font-mono">
-                          ${item.originalPrice.toFixed(2)}
+                          {formatPrice(item.originalPrice)}
                         </span>
                       )}
                       {item.bonusPercent && (
@@ -1053,7 +875,7 @@ export default function StoreClient({
                       }`}
                     >
                       <ShoppingCart className="h-3.5 w-3.5" />
-                      <span>Buy &bull; ${item.price.toFixed(2)}</span>
+                      <span>Buy &bull; {formatPrice(item.price)}</span>
                     </button>
                   </div>
                 </div>
@@ -1212,7 +1034,7 @@ export default function StoreClient({
                   {activeModalItem.name}
                 </h2>
                 <div className="font-head text-2xl g mt-1">
-                  ${activeModalItem.price.toFixed(2)}
+                  {formatPrice(activeModalItem.price)}
                 </div>
               </div>
             </div>
@@ -1260,7 +1082,7 @@ export default function StoreClient({
               </div>
 
               <div className="rounded-xl p-3 bg-white/[0.03] border border-white/[0.08] text-xs text-[#a3abd6]">
-                Staff deliver your items to this username manually after verifying your payment in a Discord ticket.
+                Your perks will be credited to this username immediately upon verified UPI payment.
               </div>
             </div>
 
@@ -1308,7 +1130,7 @@ export default function StoreClient({
                   className="btn glass w-full sm:w-auto"
                 >
                   <ShoppingCart className="h-4 w-4" />
-                  <span>Add to Cart ({formatUsd(activeModalItem.price * modalQty)})</span>
+                  <span>Add to Cart ({formatInr(toInr(activeModalItem.price) * modalQty)})</span>
                 </button>
                 <button
                   type="button"
@@ -1395,8 +1217,10 @@ export default function StoreClient({
                     </button>
                   </div>
                 ) : (
-                  orderLines.map(({ item, qty, sub }) => {
+                  orderLines.map(({ item, qty, unitPriceInr, subInr }) => {
                     const lineUser = cart.find((c) => c.id === item.id)?.user;
+                    const displayUnit = unitPriceInr ?? toInr(item.price);
+                    const displaySub = subInr ?? (displayUnit * qty);
                     return (
                       <div key={item.id} className="py-4 flex flex-col gap-3">
                         <div className="flex items-start justify-between gap-3">
@@ -1418,7 +1242,7 @@ export default function StoreClient({
                               </b>
                               <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 mt-0.5">
                                 <span className="text-xs text-[#a3abd6] font-mono">
-                                  {formatUsd(item.price)} each
+                                  {formatInr(displayUnit)} each
                                 </span>
                                 {lineUser && (
                                   <span className="text-[11px] text-[#3aa0ff] font-mono">
@@ -1435,7 +1259,7 @@ export default function StoreClient({
                           </div>
 
                           <span className="font-mono font-bold text-white text-sm shrink-0">
-                            {formatUsd(sub)}
+                            {formatInr(displaySub)}
                           </span>
                         </div>
 
@@ -1496,7 +1320,7 @@ export default function StoreClient({
                     <span>In-Game Coins Total: {totalCoinsInCart.toLocaleString()} Coins</span>
                   </div>
                   <p className="text-[11px] text-[#a3abd6] leading-relaxed">
-                    Coins stay pending until staff verify payment manually in your Discord ticket.
+                    Coins will be credited to your in-game account upon verified UPI payment.
                   </p>
                 </div>
               )}
@@ -1507,13 +1331,18 @@ export default function StoreClient({
               <div className="pt-4 border-t border-white/[0.08] space-y-3">
                 <div className="flex items-center justify-between text-base">
                   <span className="text-[#a3abd6] font-bold">Total</span>
-                  <span aria-live="polite" className="font-head text-2xl g">
-                    {formatUsd(orderTotal)}
-                  </span>
+                  <div className="text-right">
+                    <span aria-live="polite" className="font-head text-2xl g">
+                      {formatInr(orderTotalInr)}
+                    </span>
+                    <span className="block text-[11px] text-[#a3abd6] font-mono">
+                      (${orderTotalUsd.toFixed(2)} USD)
+                    </span>
+                  </div>
                 </div>
 
                 <p className="text-xs text-[#a3abd6] leading-relaxed">
-                  Nothing is charged on this website. Payment is arranged with staff in a Discord ticket.
+                  Perks are delivered in-game instantly once your UPI payment is confirmed.
                 </p>
 
                 <button
@@ -1538,85 +1367,81 @@ export default function StoreClient({
         </div>
       )}
 
-      {/* Checkout & Order Request Ready Modal */}
-      {checkoutView !== "closed" && (
+      {/* Checkout Modal */}
+      {isCheckoutOpen && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md"
-          onClick={() => setCheckoutView("closed")}
+          onClick={() => setIsCheckoutOpen(false)}
         >
           <div
             role="dialog"
             aria-modal="true"
-            aria-label={checkoutView === "checkout" ? "Checkout" : "Order request ready"}
+            aria-label="Checkout"
             className="relative w-full max-w-xl rounded-[24px] bg-[#0f1433] border border-[rgba(130,150,255,0.3)] shadow-2xl p-6 sm:p-7 max-h-[90vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             <button
               type="button"
-              onClick={() => setCheckoutView("closed")}
+              onClick={() => setIsCheckoutOpen(false)}
               aria-label="Close modal"
               className="absolute top-5 right-5 p-2 rounded-xl bg-[#141a42] text-slate-400 hover:text-white"
             >
               <X className="h-5 w-5" />
             </button>
 
-            {checkoutView === "checkout" && (
-              <div className="space-y-4">
-                <div>
-                  <h3 className="font-head text-3xl text-white tracking-wide">Checkout</h3>
-                  <p className="text-sm text-[#a3abd6] mt-1 leading-relaxed">
-                    Review your order. It goes to staff as a request in a private Discord ticket. Nothing is charged on this website.
+            <div className="space-y-4">
+              <div>
+                <h3 className="font-head text-3xl text-white tracking-wide">Checkout</h3>
+                <p className="text-sm text-[#a3abd6] mt-1 leading-relaxed">
+                  Enter your Minecraft username to receive your ranks or coins, then proceed with instant UPI payment.
+                </p>
+              </div>
+
+              {droppedWarningCount > 0 && (
+                <div
+                  role="alert"
+                  className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-xs text-amber-200"
+                >
+                  {droppedWarningCount} unavailable item{droppedWarningCount > 1 ? "s were" : " was"} removed from your cart.
+                </div>
+              )}
+
+              <div>
+                <label
+                  htmlFor="checkout-mc-ign"
+                  className="text-xs font-bold text-white block mb-1.5"
+                >
+                  Minecraft IGN
+                </label>
+                <input
+                  id="checkout-mc-ign"
+                  type="text"
+                  autoComplete="off"
+                  maxLength={16}
+                  value={mcUsername}
+                  onChange={(e) => {
+                    setMcUsername(e.target.value);
+                    if (checkoutIgnError) setCheckoutIgnError("");
+                  }}
+                  placeholder="Steve_123"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#141a42] border border-white/[0.1] text-sm text-white placeholder-slate-500 focus:outline-none focus:border-[#ff9a1f]"
+                />
+                {checkoutIgnError && (
+                  <p role="alert" className="text-xs text-red-400 font-semibold mt-1.5">
+                    {checkoutIgnError}
                   </p>
-                </div>
-
-                {droppedWarningCount > 0 && (
-                  <div
-                    role="alert"
-                    className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-xs text-amber-200"
-                  >
-                    {droppedWarningCount} unavailable item{droppedWarningCount > 1 ? "s were" : " was"} removed from your cart.
-                  </div>
                 )}
+                <small className="block text-[11px] text-[#a3abd6] mt-1.5">
+                  Your items are delivered to this username, so check the spelling.
+                </small>
+              </div>
 
-                {isDuplicatePreparedOrder && savedOrder && (
-                  <div className="p-3.5 rounded-xl bg-[#3aa0ff]/10 border border-[#3aa0ff]/30 text-xs text-[#d1d7f0] leading-relaxed">
-                    Order <b className="text-white font-mono">{savedOrder.ref}</b> was already prepared for this exact cart. Continuing reuses the same reference, so staff see one order, not a duplicate.
-                  </div>
-                )}
-
-                <div>
-                  <label
-                    htmlFor="checkout-mc-ign"
-                    className="text-xs font-bold text-white block mb-1.5"
-                  >
-                    Minecraft IGN
-                  </label>
-                  <input
-                    id="checkout-mc-ign"
-                    type="text"
-                    autoComplete="off"
-                    maxLength={16}
-                    value={mcUsername}
-                    onChange={(e) => {
-                      setMcUsername(e.target.value);
-                      if (checkoutIgnError) setCheckoutIgnError("");
-                    }}
-                    placeholder="Steve_123"
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#141a42] border border-white/[0.1] text-sm text-white placeholder-slate-500 focus:outline-none focus:border-[#ff9a1f]"
-                  />
-                  {checkoutIgnError && (
-                    <p role="alert" className="text-xs text-red-400 font-semibold mt-1.5">
-                      {checkoutIgnError}
-                    </p>
-                  )}
-                  <small className="block text-[11px] text-[#a3abd6] mt-1.5">
-                    Your items are delivered to this username, so check the spelling.
-                  </small>
-                </div>
-
-                {/* Selected Products & Subtotals */}
-                <div className="rounded-xl bg-[#141a42] border border-white/[0.08] divide-y divide-white/[0.08]">
-                  {orderLines.map(({ item, qty, sub }) => (
+              {/* Selected Products & Subtotals */}
+              <div className="rounded-xl bg-[#141a42] border border-white/[0.08] divide-y divide-white/[0.08]">
+                {orderLines.map(({ item, qty, unitPriceInr, subInr }) => {
+                  const displayUnit = unitPriceInr ?? toInr(item.price);
+                  const displaySub = subInr ?? (displayUnit * qty);
+                  return (
                     <div
                       key={item.id}
                       className="px-4 py-3 flex items-center justify-between gap-3 text-sm"
@@ -1627,257 +1452,82 @@ export default function StoreClient({
                           {qty > 1 ? ` × ${qty}` : ""}
                         </div>
                         <small className="text-xs text-[#a3abd6] font-mono">
-                          {formatUsd(item.price)} each
+                          {formatInr(displayUnit)} each
                         </small>
                       </div>
-                      <div className="font-mono font-bold text-white">{formatUsd(sub)}</div>
+                      <div className="font-mono font-bold text-white">{formatInr(displaySub)}</div>
                     </div>
-                  ))}
-                </div>
+                  );
+                })}
+              </div>
 
-                {/* Order Total */}
-                <div className="flex items-center justify-between py-2 border-y border-white/[0.08]">
-                  <span className="text-sm font-bold text-[#a3abd6]">Total</span>
-                  <div className="text-right">
-                    <span className="font-head text-2xl g">{formatUsd(orderTotal)}</span>
-                    {famgatewayConfigured && (
-                      <span className="block text-xs font-bold text-[#10b981]">
-                        ≈ ₹{Math.max(1, Math.round(orderTotal * (usdToInrRate || 88))).toLocaleString("en-IN")} INR (UPI)
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                {/* Payment Pending Confirmation Checkbox */}
-                <label className="flex items-start gap-2.5 text-xs text-[#d1d7f0] cursor-pointer leading-relaxed">
-                  <input
-                    id="payment-pending-checkbox"
-                    type="checkbox"
-                    checked={paymentPendingAccepted}
-                    onChange={(e) => {
-                      setPaymentPendingAccepted(e.target.checked);
-                      if (checkoutError) setCheckoutError("");
-                    }}
-                    className="mt-0.5 rounded bg-[#141a42] border-white/20 text-[#ff9a1f] focus:ring-0"
-                  />
-                  <span>
-                    I understand Discord tickets are verified manually, while UPI / Tebex payments deliver automatically in-game.
+              {/* Order Total */}
+              <div className="flex items-center justify-between py-2 border-y border-white/[0.08]">
+                <span className="text-sm font-bold text-[#a3abd6]">Total</span>
+                <div className="text-right">
+                  <span className="font-head text-2xl text-[#10b981] font-bold">
+                    {formatInr(orderTotalInr)}
                   </span>
-                </label>
+                  <span className="block text-xs text-[#a3abd6] font-mono">
+                    Converted from ${orderTotalUsd.toFixed(2)} USD (@ ₹{conversionRate}/USD)
+                  </span>
+                </div>
+              </div>
 
-                {checkoutError && (
-                  <div
-                    role="alert"
-                    className="p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-xs flex items-center gap-2"
-                  >
-                    <AlertCircle className="h-4 w-4 shrink-0" />
-                    <span>{checkoutError}</span>
-                  </div>
-                )}
+              {checkoutError && (
+                <div
+                  role="alert"
+                  className="p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-xs flex items-center gap-2"
+                >
+                  <AlertCircle className="h-4 w-4 shrink-0" />
+                  <span>{checkoutError}</span>
+                </div>
+              )}
 
-                <div className="space-y-2.5 pt-1">
-                  {famgatewayConfigured && (
-                    <button
-                      type="button"
-                      disabled={famBusy || ckBusy || tebexBusy}
-                      onClick={handleFamGatewayCheckout}
-                      className="btn w-full py-3.5 text-base font-extrabold flex items-center justify-center gap-2 bg-gradient-to-r from-[#10b981] via-[#059669] to-[#047857] hover:brightness-110 text-white shadow-lg shadow-emerald-500/25 border-none disabled:opacity-60"
-                    >
-                      {famBusy ? (
-                        <>
-                          <Loader2 className="h-4 w-4 animate-spin" />
-                          <span>Generating Instant UPI QR...</span>
-                        </>
-                      ) : (
-                        <>
-                          <QrCode className="h-5 w-5" />
-                          <span>
-                            Pay via UPI (GPay, PhonePe, Paytm) &bull; ₹
-                            {Math.max(1, Math.round(orderTotal * (usdToInrRate || 88))).toLocaleString("en-IN")}
-                          </span>
-                          <span className="text-[10px] font-bold bg-white/20 px-2 py-0.5 rounded-full ml-1">
-                            Instant
-                          </span>
-                        </>
-                      )}
-                    </button>
-                  )}
-
-                  {tebexConfigured && (
-                    <button
-                      type="button"
-                      disabled={tebexBusy || ckBusy}
-                      onClick={handleTebexCheckout}
-                      className="btn w-full py-3.5 text-base font-extrabold flex items-center justify-center gap-2 disabled:opacity-60"
-                    >
-                      {tebexBusy ? (
-                        <>
-                          <Loader2 className="h-4 w-4 animate-spin" />
-                          <span>Connecting to Tebex Checkout...</span>
-                        </>
-                      ) : (
-                        <>
-                          <Lock className="h-4 w-4" />
-                          <span>Pay Securely via Tebex</span>
-                          <ExternalLink className="h-4 w-4" />
-                        </>
-                      )}
-                    </button>
-                  )}
-
+              <div className="space-y-2.5 pt-1">
+                {famgatewayConfigured ? (
                   <button
                     type="button"
-                    disabled={ckBusy || tebexBusy || !SERVER_CONFIG.discordTicketPanelUrl}
-                    onClick={handleCheckoutConfirm}
-                    className={`${
-                      tebexConfigured ? "btn glass" : "btn"
-                    } w-full py-3.5 text-base font-extrabold flex items-center justify-center gap-2 disabled:opacity-60`}
+                    disabled={famBusy}
+                    onClick={handleFamGatewayCheckout}
+                    className="btn w-full py-3.5 text-base font-extrabold flex items-center justify-center gap-2 bg-gradient-to-r from-[#10b981] via-[#059669] to-[#047857] hover:brightness-110 text-white shadow-lg shadow-emerald-500/25 border-none disabled:opacity-60 cursor-pointer"
                   >
-                    {ckBusy ? (
+                    {famBusy ? (
                       <>
                         <Loader2 className="h-4 w-4 animate-spin" />
-                        <span>Preparing your order...</span>
+                        <span>Generating Instant UPI QR...</span>
                       </>
                     ) : (
                       <>
-                        <span>Continue to Discord</span>
-                        <ExternalLink className="h-4 w-4" />
+                        <QrCode className="h-5 w-5" />
+                        <span>
+                          Pay via UPI (GPay, PhonePe, Paytm, QR) &bull; {formatInr(orderTotalInr)}
+                        </span>
+                        <span className="text-[10px] font-bold bg-white/20 px-2 py-0.5 rounded-full ml-1">
+                          Instant
+                        </span>
                       </>
                     )}
                   </button>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setCheckoutView("closed");
-                      setCartOpen(true);
-                    }}
-                    className="btn glass w-full py-2.5 text-sm font-bold flex items-center justify-center gap-1.5"
-                  >
-                    <ArrowLeft className="h-4 w-4" />
-                    <span>Back to cart</span>
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {checkoutView === "handoff" && handoffOrder && (
-              <div className="space-y-4">
-                <div className="flex items-center gap-3">
-                  <span className="h-9 w-9 rounded-full bg-[#2fd47a]/15 border border-[#2fd47a]/40 text-[#2fd47a] flex items-center justify-center shrink-0">
-                    <CheckCircle2 className="h-5 w-5" />
-                  </span>
-                  <h3 className="font-head text-2xl sm:text-3xl text-white tracking-wide">
-                    Order request ready
-                  </h3>
-                </div>
-
-                <p className="text-sm text-[#a3abd6]">
-                  Reference{" "}
-                  <b className="text-white font-mono text-base font-bold ml-1">
-                    {handoffOrder.ref}
-                  </b>
-                </p>
-
-                <div className="rounded-xl p-3.5 bg-[#ff9a1f]/10 border border-[#ff9a1f]/30 text-xs text-[#d1d7f0] leading-relaxed">
-                  <b className="text-white">No ticket has been created yet.</b> This website cannot create Discord tickets by itself and cannot see whether you opened one. Opening the Discord link does not create a ticket or send your cart: you click the Paid Support button there and paste your order details.
-                </div>
-
-                <ol className="list-decimal pl-5 text-xs sm:text-sm text-[#a3abd6] space-y-1.5 leading-relaxed">
-                  <li>Copy your order details.</li>
-                  <li>
-                    Open our Discord and choose <b className="text-white">Paid Support</b> in the ticket panel.
-                  </li>
-                  <li>Paste the order details into the ticket and send them.</li>
-                  <li>
-                    Staff reply with payment instructions. Your items are delivered only after staff verify payment.
-                  </li>
-                </ol>
-
-                {/* Order Snapshot Items */}
-                <div className="rounded-xl bg-[#141a42] border border-white/[0.08] divide-y divide-white/[0.08]">
-                  {handoffOrder.items.map((item) => (
-                    <div
-                      key={item.id}
-                      className="px-4 py-2.5 flex items-center justify-between gap-3 text-sm"
-                    >
-                      <div>
-                        <div className="text-white font-semibold">
-                          {item.name}
-                          {item.qty > 1 ? ` × ${item.qty}` : ""}
-                        </div>
-                        <small className="text-xs text-[#a3abd6] font-mono">
-                          {formatUsd(item.unit)} each
-                        </small>
-                      </div>
-                      <div className="font-mono font-bold text-white">{formatUsd(item.sub)}</div>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="flex items-center justify-between py-2 border-y border-white/[0.08]">
-                  <span className="text-sm font-bold text-[#a3abd6]">Total</span>
-                  <span className="font-head text-2xl g">{formatUsd(handoffOrder.total)}</span>
-                </div>
-
-                <textarea
-                  id="order-details-textarea"
-                  readOnly
-                  rows={8}
-                  aria-label="Order details to paste into your ticket"
-                  value={formatOrderText(handoffOrder)}
-                  className="w-full rounded-xl bg-[#0a0d22] text-white border border-white/[0.12] p-3 font-mono text-xs leading-relaxed resize-y focus:outline-none focus:border-[#3aa0ff]"
-                />
-
-                <div className="flex flex-wrap items-center gap-2.5">
-                  <button
-                    type="button"
-                    onClick={handleCopyOrderDetails}
-                    className="btn py-2.5 px-4 text-sm font-bold flex items-center gap-2"
-                  >
-                    <Copy className="h-4 w-4" />
-                    <span>Copy Order Details</span>
-                  </button>
-
-                  <a
-                    href={SERVER_CONFIG.discordTicketPanelUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn glass py-2.5 px-4 text-sm font-bold flex items-center gap-2"
-                  >
-                    <span>Open Paid Support Ticket</span>
-                    <ExternalLink className="h-4 w-4" />
-                  </a>
-
-                  {SERVER_CONFIG.discordInvite && (
-                    <a
-                      href={SERVER_CONFIG.discordInvite}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn glass py-2.5 px-4 text-xs font-bold"
-                    >
-                      Not in the server? Join first
-                    </a>
-                  )}
-                </div>
-
-                {copyFeedback && (
-                  <p role="status" className="text-xs text-[#2fd47a] font-medium">
-                    {copyFeedback}
-                  </p>
+                ) : (
+                  <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-xs text-amber-200">
+                    UPI Payment gateway is temporarily undergoing maintenance. Please try again shortly or contact support on Discord.
+                  </div>
                 )}
 
-                <div className="pt-1">
-                  <button
-                    type="button"
-                    onClick={handleClearCartAfterTicket}
-                    className="btn glass w-full py-2.5 text-sm font-bold"
-                  >
-                    I&apos;ve submitted my ticket — Clear Cart
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsCheckoutOpen(false);
+                    setCartOpen(true);
+                  }}
+                  className="btn glass w-full py-2.5 text-sm font-bold flex items-center justify-center gap-1.5"
+                >
+                  <ArrowLeft className="h-4 w-4" />
+                  <span>Back to cart</span>
+                </button>
               </div>
-            )}
+            </div>
           </div>
         </div>
       )}

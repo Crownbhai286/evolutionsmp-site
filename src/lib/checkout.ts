@@ -21,7 +21,6 @@ function calcCoinPriceLocal(coins: number, coinCfg?: CoinConfigData) {
 }
 
 export const CART_STORAGE_KEY = "evo-cart";
-export const ORDER_STORAGE_KEY = "evo-order";
 export const IGN_STORAGE_KEY = "evo-ign";
 export const CART_UPDATED_EVENT = "evo-cart-updated";
 
@@ -35,27 +34,9 @@ export interface OrderLine {
   item: StoreItem;
   qty: number;
   sub: number;
+  unitPriceInr?: number;
+  subInr?: number;
 }
-
-export interface PreparedOrderItem {
-  id: string;
-  name: string;
-  qty: number;
-  unit: number;
-  sub: number;
-}
-
-export interface PreparedOrder {
-  sig: string;
-  ref: string;
-  ign: string;
-  created: string;
-  items: PreparedOrderItem[];
-  total: number;
-  sent: number;
-}
-
-const REF_CHARS = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
 
 /** Validates a Minecraft IGN using the original EvolutionSMP store rules. */
 export function validateMinecraftIgn(raw: string): string {
@@ -96,7 +77,7 @@ export function resolveStoreItem(
         tebexPackageId: coinCfg?.tebexPackageId || "",
         description: `${coins.toLocaleString()} In-game Survival Coins.`,
         perks: [
-          `${coins.toLocaleString()} Survival Coins delivered after staff verification`,
+          `${coins.toLocaleString()} Survival Coins delivered upon verified payment`,
           `${pricing.discountPercent}% Volume Discount applied`,
           "Spend on player warps, chest shops, auctions & land claims",
         ],
@@ -111,6 +92,11 @@ export function resolveStoreItem(
 
 export function formatUsd(amount: number): string {
   return `$${amount.toFixed(2)}`;
+}
+
+export function formatInr(amount: number): string {
+  const rounded = Math.round(Number(amount) || 0);
+  return `₹${rounded.toLocaleString("en-IN")}`;
 }
 
 /** Cleans stored cart entries, drops invalid items, and merges duplicates. */
@@ -167,15 +153,18 @@ export function sanitizeCart(
 export function computeOrderLines(
   cart: CartLine[],
   catalog: StoreCatalogItem[] = STORE_ITEMS,
-  coinCfg?: CoinConfigData
+  coinCfg?: CoinConfigData,
+  rate: number = 88.0
 ): {
-  lines: OrderLine[];
+  lines: (OrderLine & { unitPriceInr: number; subInr: number })[];
   total: number;
+  totalInr: number;
   totalCount: number;
   totalCoins: number;
 } {
-  const lines: OrderLine[] = [];
+  const lines: (OrderLine & { unitPriceInr: number; subInr: number })[] = [];
   let total = 0;
+  let totalInr = 0;
   let totalCount = 0;
   let totalCoins = 0;
 
@@ -183,8 +172,11 @@ export function computeOrderLines(
     const item = resolveStoreItem(entry.id, catalog, coinCfg);
     if (!item || !Number.isInteger(entry.qty) || entry.qty < 1 || entry.qty > 99) continue;
     const sub = Math.round(item.price * entry.qty * 100) / 100;
-    lines.push({ item, qty: entry.qty, sub });
+    const unitPriceInr = Math.max(1, Math.round(item.price * rate));
+    const subInr = unitPriceInr * entry.qty;
+    lines.push({ item, qty: entry.qty, sub, unitPriceInr, subInr });
     total += sub;
+    totalInr += subInr;
     totalCount += entry.qty;
     totalCoins += (item.coinAmount || 0) * entry.qty;
   }
@@ -192,77 +184,10 @@ export function computeOrderLines(
   return {
     lines,
     total: Math.round(total * 100) / 100,
+    totalInr,
     totalCount,
     totalCoins,
   };
-}
-
-export function generateOrderRef(avoid?: string): string {
-  for (let attempt = 0; attempt < 5; attempt++) {
-    const bytes = new Uint8Array(8);
-    if (typeof window !== "undefined" && window.crypto?.getRandomValues) {
-      window.crypto.getRandomValues(bytes);
-    } else {
-      for (let i = 0; i < 8; i++) bytes[i] = Math.floor(Math.random() * 256);
-    }
-    const ref =
-      "EVO-" +
-      Array.from(bytes.slice(0, 6))
-        .map((n) => REF_CHARS[n % REF_CHARS.length])
-        .join("");
-    if (ref !== avoid) return ref;
-  }
-  return "EVO-" + Date.now().toString(36).toUpperCase().slice(-6);
-}
-
-export function buildOrderSignature(ign: string, lines: OrderLine[]): string {
-  return JSON.stringify([
-    ign.trim(),
-    lines.map((l) => [l.item.id, l.qty, l.item.price]),
-  ]);
-}
-
-/** Reuses the existing order reference when the exact same IGN and cart are reopened. */
-export function prepareOrder(
-  ign: string,
-  lines: OrderLine[],
-  prev: PreparedOrder | null
-): PreparedOrder {
-  const cleanIgn = ign.trim();
-  const sig = buildOrderSignature(cleanIgn, lines);
-  const isSame = Boolean(prev && prev.sig === sig && prev.ref);
-  const total = Math.round(lines.reduce((sum, l) => sum + l.sub, 0) * 100) / 100;
-
-  return {
-    sig,
-    ref: isSame && prev ? prev.ref : generateOrderRef(prev?.ref),
-    ign: cleanIgn,
-    created: isSame && prev?.created ? prev.created : new Date().toISOString(),
-    items: lines.map((l) => ({
-      id: l.item.id,
-      name: l.item.name,
-      qty: l.qty,
-      unit: l.item.price,
-      sub: l.sub,
-    })),
-    total,
-    sent: isSame && prev?.sent ? prev.sent : 0,
-  };
-}
-
-export function formatOrderText(order: PreparedOrder): string {
-  return [
-    "EvolutionSMP order request",
-    `Reference: ${order.ref}`,
-    `IGN: ${order.ign}`,
-    "Items:",
-    ...order.items.map(
-      (l) => `- ${l.name} x${l.qty} @ ${formatUsd(l.unit)} = ${formatUsd(l.sub)}`
-    ),
-    `Total: ${formatUsd(order.total)}`,
-    "Status: payment pending (manual verification by staff)",
-    `Created: ${order.created}`,
-  ].join("\n");
 }
 
 export function readCartFromStorage(
@@ -283,28 +208,6 @@ export function writeCartToStorage(items: CartLine[]): void {
   try {
     window.localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
     window.dispatchEvent(new Event(CART_UPDATED_EVENT));
-  } catch {
-    // Ignore storage quota errors
-  }
-}
-
-export function readOrderFromStorage(): PreparedOrder | null {
-  if (typeof window === "undefined") return null;
-  try {
-    const parsed = JSON.parse(window.localStorage.getItem(ORDER_STORAGE_KEY) || "null");
-    if (!parsed || typeof parsed !== "object" || typeof parsed.ref !== "string") {
-      return null;
-    }
-    return parsed as PreparedOrder;
-  } catch {
-    return null;
-  }
-}
-
-export function writeOrderToStorage(order: PreparedOrder): void {
-  if (typeof window === "undefined") return;
-  try {
-    window.localStorage.setItem(ORDER_STORAGE_KEY, JSON.stringify(order));
   } catch {
     // Ignore storage quota errors
   }

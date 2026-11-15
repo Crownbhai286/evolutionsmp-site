@@ -401,7 +401,7 @@ export default function AdminStorePage() {
               <p className="text-xs text-[#8f98c7] mt-1 leading-relaxed">
                 {tebexStatus?.configured
                   ? "Server-side Tebex Headless checkout is active. Map Tebex Package IDs on products below to enable direct online payments."
-                  : "Set TEBEX_PUBLIC_TOKEN, TEBEX_SECRET_KEY, and TEBEX_WEBHOOK_SECRET in environment variables when ready. Until configured, Store checkout cleanly uses Discord Ticket handoff."}
+                  : "Store checkout accepts direct UPI payments via FamGateway (GPay, PhonePe, Paytm, QR). Tebex integration is optional."}
               </p>
             </div>
           </div>
@@ -515,13 +515,18 @@ export default function AdminStorePage() {
                           {p.category_slug}
                         </span>
                       </td>
-                      <td className="px-4 py-3.5 font-mono font-bold text-white">
-                        ${Number(p.price).toFixed(2)}
-                        {p.original_price && (
-                          <span className="ml-1.5 text-[11px] text-[#7d87b8] line-through">
-                            ${Number(p.original_price).toFixed(2)}
-                          </span>
-                        )}
+                      <td className="px-4 py-3.5 font-mono">
+                        <span className="font-bold text-white block">
+                          ₹{Math.max(1, Math.round(Number(p.price) * 88)).toLocaleString("en-IN")}
+                        </span>
+                        <span className="text-[11px] text-[#7d87b8]">
+                          ${Number(p.price).toFixed(2)} USD
+                          {p.original_price && (
+                            <span className="ml-1.5 line-through">
+                              ${Number(p.original_price).toFixed(2)}
+                            </span>
+                          )}
+                        </span>
                       </td>
                       <td className="px-4 py-3.5 font-mono text-[11px]">
                         {p.tebex_package_id ? (
