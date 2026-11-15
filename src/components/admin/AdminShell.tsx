@@ -45,6 +45,7 @@ const NAV_ITEMS = [
   { href: "/admin", label: "Overview", icon: LayoutDashboard },
   { href: "/admin/settings", label: "Site Settings", icon: Settings },
   { href: "/admin/store", label: "Store & Coins", icon: ShoppingBag },
+  { href: "/admin/orders", label: "Orders & UPI", icon: CreditCard },
   { href: "/admin/news", label: "News & Posts", icon: Newspaper },
   { href: "/admin/staff", label: "Staff Team", icon: Users },
   { href: "/admin/rules", label: "Server Rules", icon: ShieldAlert },

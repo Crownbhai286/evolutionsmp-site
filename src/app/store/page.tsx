@@ -2,6 +2,7 @@ import React from "react";
 import StoreClient from "@/components/StoreClient";
 import { getPublicStoreData, getWebsiteSettings } from "@/lib/services/public-data";
 import { getTebexConfigStatus } from "@/lib/tebex";
+import { getFamGatewayConfigStatus } from "@/lib/famgateway";
 
 export const dynamic = "force-dynamic";
 
@@ -11,6 +12,7 @@ export default async function StorePage() {
     getWebsiteSettings(),
   ]);
   const tebexStatus = getTebexConfigStatus();
+  const famStatus = getFamGatewayConfigStatus();
 
   return (
     <StoreClient
@@ -19,6 +21,8 @@ export default async function StorePage() {
       coinConfig={storeData.coinConfig}
       settings={settings}
       tebexConfigured={tebexStatus.hasPublicToken}
+      famgatewayConfigured={famStatus.configured}
+      usdToInrRate={famStatus.usdToInrRate}
     />
   );
 }

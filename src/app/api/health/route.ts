@@ -6,6 +6,7 @@ import {
   isSupabasePublicConfigured,
 } from "@/lib/supabase/server";
 import { getTebexConfigStatus } from "@/lib/tebex";
+import { getFamGatewayConfigStatus } from "@/lib/famgateway";
 
 export const dynamic = "force-dynamic";
 
@@ -13,6 +14,7 @@ export async function GET() {
   const supabaseConfigured = isSupabasePublicConfigured();
   const serviceRoleConfigured = isSupabaseAdminConfigured();
   const tebex = getTebexConfigStatus();
+  const famgateway = getFamGatewayConfigStatus();
 
   const rawSyncKey = process.env.MINECRAFT_SYNC_API_KEY?.trim() || "";
   const syncApiConfigured = Boolean(rawSyncKey) && !rawSyncKey.includes("replace-with");
@@ -54,6 +56,7 @@ export async function GET() {
     storageBucketReady,
     syncApiConfigured,
     tebexConfigured: tebex.configured,
+    famgatewayConfigured: famgateway.configured,
     timestamp: new Date().toISOString(),
   });
 }

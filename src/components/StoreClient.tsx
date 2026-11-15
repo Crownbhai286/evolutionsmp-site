@@ -25,6 +25,7 @@ import {
   HelpCircle,
   Copy,
   ArrowLeft,
+  QrCode,
 } from "lucide-react";
 import { SERVER_CONFIG as DEFAULT_SERVER_CONFIG } from "@/lib/data";
 import {
@@ -60,6 +61,8 @@ interface StoreClientProps {
   coinConfig: CoinConfigData;
   settings: WebsiteSettingsData;
   tebexConfigured: boolean;
+  famgatewayConfigured?: boolean;
+  usdToInrRate?: number;
 }
 
 export default function StoreClient({
@@ -68,6 +71,8 @@ export default function StoreClient({
   coinConfig,
   settings,
   tebexConfigured,
+  famgatewayConfigured = true,
+  usdToInrRate = 88,
 }: StoreClientProps) {
   const STORE_ITEMS = products;
   const SERVER_CONFIG = {
@@ -119,6 +124,7 @@ export default function StoreClient({
   const [checkoutError, setCheckoutError] = useState("");
   const [ckBusy, setCkBusy] = useState(false);
   const [tebexBusy, setTebexBusy] = useState(false);
+  const [famBusy, setFamBusy] = useState(false);
   const [savedOrder, setSavedOrder] = useState<PreparedOrder | null>(null);
   const [handoffOrder, setHandoffOrder] = useState<PreparedOrder | null>(null);
   const [copyFeedback, setCopyFeedback] = useState("");
@@ -262,6 +268,32 @@ export default function StoreClient({
     if (storedOrder) setSavedOrder(storedOrder);
 
     const urlParams = new URLSearchParams(window.location.search);
+    const orderIdParam = urlParams.get("order_id");
+    const upiReturn = urlParams.get("upi");
+    if (orderIdParam) {
+      fetch(`/api/store/order-status?order_id=${encodeURIComponent(orderIdParam)}`)
+        .then((r) => r.json())
+        .then((data) => {
+          if (data.paymentStatus === "paid") {
+            writeCartToStorage([]);
+            setCart([]);
+            showToast(
+              "UPI Payment Confirmed!",
+              `Order ${data.orderId} verified. In-game perks delivered for ${data.username}!`,
+              "success"
+            );
+          } else if (upiReturn === "complete") {
+            showToast(
+              "Payment Awaiting Confirmation",
+              `Order ${orderIdParam} is being verified by the banking network. Perks deliver automatically once settled.`,
+              "info"
+            );
+          }
+        })
+        .catch(() => {});
+      window.history.replaceState({}, "", window.location.pathname);
+    }
+
     const tebexReturn = urlParams.get("tebex");
     if (tebexReturn === "complete") {
       writeCartToStorage([]);
@@ -521,6 +553,38 @@ export default function StoreClient({
       setCheckoutError("Unable to reach Tebex checkout. Please try again or use Discord checkout.");
     } finally {
       setTebexBusy(false);
+    }
+  };
+
+  const handleFamGatewayCheckout = async () => {
+    if (famBusy || ckBusy || tebexBusy) return;
+    const cleanIgn = mcUsername.trim();
+    const ignErr = validateMinecraftIgn(cleanIgn);
+    setCheckoutIgnError(ignErr);
+    setCheckoutError("");
+    if (ignErr) return;
+
+    setFamBusy(true);
+    try {
+      writeIgnToStorage(cleanIgn);
+      const res = await fetch("/api/store/famgateway-checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: cleanIgn,
+          items: cart.map((c) => ({ slug: c.id, quantity: c.qty })),
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.checkoutUrl) {
+        setCheckoutError(data.error || "Failed to create UPI checkout session.");
+        return;
+      }
+      window.location.href = data.checkoutUrl;
+    } catch {
+      setCheckoutError("Unable to reach FamGateway UPI checkout. Please try again.");
+    } finally {
+      setFamBusy(false);
     }
   };
 
@@ -1574,7 +1638,14 @@ export default function StoreClient({
                 {/* Order Total */}
                 <div className="flex items-center justify-between py-2 border-y border-white/[0.08]">
                   <span className="text-sm font-bold text-[#a3abd6]">Total</span>
-                  <span className="font-head text-2xl g">{formatUsd(orderTotal)}</span>
+                  <div className="text-right">
+                    <span className="font-head text-2xl g">{formatUsd(orderTotal)}</span>
+                    {famgatewayConfigured && (
+                      <span className="block text-xs font-bold text-[#10b981]">
+                        ≈ ₹{Math.max(1, Math.round(orderTotal * (usdToInrRate || 88))).toLocaleString("en-IN")} INR (UPI)
+                      </span>
+                    )}
+                  </div>
                 </div>
 
                 {/* Payment Pending Confirmation Checkbox */}
@@ -1590,7 +1661,7 @@ export default function StoreClient({
                     className="mt-0.5 rounded bg-[#141a42] border-white/20 text-[#ff9a1f] focus:ring-0"
                   />
                   <span>
-                    I understand payment stays pending until staff verify it manually in my ticket.
+                    I understand Discord tickets are verified manually, while UPI / Tebex payments deliver automatically in-game.
                   </span>
                 </label>
 
@@ -1605,6 +1676,33 @@ export default function StoreClient({
                 )}
 
                 <div className="space-y-2.5 pt-1">
+                  {famgatewayConfigured && (
+                    <button
+                      type="button"
+                      disabled={famBusy || ckBusy || tebexBusy}
+                      onClick={handleFamGatewayCheckout}
+                      className="btn w-full py-3.5 text-base font-extrabold flex items-center justify-center gap-2 bg-gradient-to-r from-[#10b981] via-[#059669] to-[#047857] hover:brightness-110 text-white shadow-lg shadow-emerald-500/25 border-none disabled:opacity-60"
+                    >
+                      {famBusy ? (
+                        <>
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                          <span>Generating Instant UPI QR...</span>
+                        </>
+                      ) : (
+                        <>
+                          <QrCode className="h-5 w-5" />
+                          <span>
+                            Pay via UPI (GPay, PhonePe, Paytm) &bull; ₹
+                            {Math.max(1, Math.round(orderTotal * (usdToInrRate || 88))).toLocaleString("en-IN")}
+                          </span>
+                          <span className="text-[10px] font-bold bg-white/20 px-2 py-0.5 rounded-full ml-1">
+                            Instant
+                          </span>
+                        </>
+                      )}
+                    </button>
+                  )}
+
                   {tebexConfigured && (
                     <button
                       type="button"
