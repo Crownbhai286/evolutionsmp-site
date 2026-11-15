@@ -38,6 +38,7 @@ import {
   CartLine,
   computeOrderLines,
   formatInr,
+  formatUsd,
   readCartFromStorage,
   readIgnFromStorage,
   sanitizeCart,
@@ -65,7 +66,7 @@ export default function StoreClient({
   settings,
   tebexConfigured,
   famgatewayConfigured = true,
-  usdToInrRate = 88,
+  usdToInrRate = 94.25,
 }: StoreClientProps) {
   const STORE_ITEMS = products;
   const SERVER_CONFIG = {
@@ -103,9 +104,7 @@ export default function StoreClient({
     calculatePrice: calcCoinPrice,
   };
 
-  const conversionRate = Number.isFinite(usdToInrRate) && usdToInrRate > 0 ? usdToInrRate : 88.0;
-  const toInr = (usd: number) => Math.max(1, Math.round((Number(usd) || 0) * conversionRate));
-  const formatPrice = (usd: number) => formatInr(toInr(usd));
+  const conversionRate = Number.isFinite(usdToInrRate) && usdToInrRate > 0 ? usdToInrRate : 94.25;
 
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [activeModalItem, setActiveModalItem] = useState<StoreCatalogItem | null>(null);
@@ -208,7 +207,7 @@ export default function StoreClient({
         description: `${data.coins.toLocaleString()} In-game Survival Coins.`,
         perks: [
           `${data.coins.toLocaleString()} Survival Coins delivered upon verified payment`,
-          `${data.discountPercent}% Volume Discount applied (${formatInr(Math.max(0, toInr(data.originalPrice) - toInr(data.price)))} savings)`,
+          `${data.discountPercent}% Volume Discount applied (${formatUsd(Math.max(0, data.originalPrice - data.price))} savings)`,
           "Spend on player warps, chest shops, auctions & land claims",
           "100% loss protected & non-expiring",
         ],
@@ -640,7 +639,7 @@ export default function StoreClient({
                             <span>Select Coin Amount:</span>
                           </span>
                           <span className="text-[#ff9a1f] font-mono">
-                            Rate: ₹{(toInr(customPricing.price) / customCoinAmount).toFixed(2)}/coin
+                            Rate: ${(customPricing.price / customCoinAmount).toFixed(4)}/coin
                           </span>
                         </div>
 
@@ -728,11 +727,11 @@ export default function StoreClient({
                           <div className="text-left w-full sm:w-auto">
                             <div className="flex items-baseline gap-2">
                               <span className="font-head text-3xl text-white g">
-                                {formatPrice(customPricing.price)}
+                                {formatUsd(customPricing.price)}
                               </span>
                               {customPricing.discountPercent > 0 && (
                                 <span className="text-xs text-[#6f78a8] line-through font-mono">
-                                  {formatPrice(customPricing.originalPrice)}
+                                  {formatUsd(customPricing.originalPrice)}
                                 </span>
                               )}
                               {customPricing.discountPercent > 0 && (
@@ -842,11 +841,11 @@ export default function StoreClient({
 
                     <div className="flex items-baseline gap-2 mb-4">
                       <span className="font-head text-2xl text-white g">
-                        {formatPrice(item.price)}
+                        {formatUsd(item.price)}
                       </span>
                       {item.originalPrice && (
                         <span className="text-xs text-[#6f78a8] line-through font-mono">
-                          {formatPrice(item.originalPrice)}
+                          {formatUsd(item.originalPrice)}
                         </span>
                       )}
                       {item.bonusPercent && (
@@ -875,7 +874,7 @@ export default function StoreClient({
                       }`}
                     >
                       <ShoppingCart className="h-3.5 w-3.5" />
-                      <span>Buy &bull; {formatPrice(item.price)}</span>
+                      <span>Buy &bull; {formatUsd(item.price)}</span>
                     </button>
                   </div>
                 </div>
@@ -1034,7 +1033,7 @@ export default function StoreClient({
                   {activeModalItem.name}
                 </h2>
                 <div className="font-head text-2xl g mt-1">
-                  {formatPrice(activeModalItem.price)}
+                  {formatUsd(activeModalItem.price)}
                 </div>
               </div>
             </div>
@@ -1130,7 +1129,7 @@ export default function StoreClient({
                   className="btn glass w-full sm:w-auto"
                 >
                   <ShoppingCart className="h-4 w-4" />
-                  <span>Add to Cart ({formatInr(toInr(activeModalItem.price) * modalQty)})</span>
+                  <span>Add to Cart ({formatUsd(activeModalItem.price * modalQty)})</span>
                 </button>
                 <button
                   type="button"
@@ -1217,10 +1216,8 @@ export default function StoreClient({
                     </button>
                   </div>
                 ) : (
-                  orderLines.map(({ item, qty, unitPriceInr, subInr }) => {
+                  orderLines.map(({ item, qty, sub }) => {
                     const lineUser = cart.find((c) => c.id === item.id)?.user;
-                    const displayUnit = unitPriceInr ?? toInr(item.price);
-                    const displaySub = subInr ?? (displayUnit * qty);
                     return (
                       <div key={item.id} className="py-4 flex flex-col gap-3">
                         <div className="flex items-start justify-between gap-3">
@@ -1242,7 +1239,7 @@ export default function StoreClient({
                               </b>
                               <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 mt-0.5">
                                 <span className="text-xs text-[#a3abd6] font-mono">
-                                  {formatInr(displayUnit)} each
+                                  {formatUsd(item.price)} each
                                 </span>
                                 {lineUser && (
                                   <span className="text-[11px] text-[#3aa0ff] font-mono">
@@ -1259,7 +1256,7 @@ export default function StoreClient({
                           </div>
 
                           <span className="font-mono font-bold text-white text-sm shrink-0">
-                            {formatInr(displaySub)}
+                            {formatUsd(sub)}
                           </span>
                         </div>
 
@@ -1333,11 +1330,13 @@ export default function StoreClient({
                   <span className="text-[#a3abd6] font-bold">Total</span>
                   <div className="text-right">
                     <span aria-live="polite" className="font-head text-2xl g">
-                      {formatInr(orderTotalInr)}
+                      {formatUsd(orderTotalUsd)}
                     </span>
-                    <span className="block text-[11px] text-[#a3abd6] font-mono">
-                      (${orderTotalUsd.toFixed(2)} USD)
-                    </span>
+                    {famgatewayConfigured && (
+                      <span className="block text-[11px] text-[#10b981] font-mono font-bold">
+                        ≈ {formatInr(orderTotalInr)} INR (UPI)
+                      </span>
+                    )}
                   </div>
                 </div>
 
@@ -1438,38 +1437,44 @@ export default function StoreClient({
 
               {/* Selected Products & Subtotals */}
               <div className="rounded-xl bg-[#141a42] border border-white/[0.08] divide-y divide-white/[0.08]">
-                {orderLines.map(({ item, qty, unitPriceInr, subInr }) => {
-                  const displayUnit = unitPriceInr ?? toInr(item.price);
-                  const displaySub = subInr ?? (displayUnit * qty);
-                  return (
-                    <div
-                      key={item.id}
-                      className="px-4 py-3 flex items-center justify-between gap-3 text-sm"
-                    >
-                      <div>
-                        <div className="text-white font-semibold">
-                          {item.name}
-                          {qty > 1 ? ` × ${qty}` : ""}
-                        </div>
-                        <small className="text-xs text-[#a3abd6] font-mono">
-                          {formatInr(displayUnit)} each
-                        </small>
+                {orderLines.map(({ item, qty, sub }) => (
+                  <div
+                    key={item.id}
+                    className="px-4 py-3 flex items-center justify-between gap-3 text-sm"
+                  >
+                    <div>
+                      <div className="text-white font-semibold">
+                        {item.name}
+                        {qty > 1 ? ` × ${qty}` : ""}
                       </div>
-                      <div className="font-mono font-bold text-white">{formatInr(displaySub)}</div>
+                      <small className="text-xs text-[#a3abd6] font-mono">
+                        {formatUsd(item.price)} each
+                      </small>
                     </div>
-                  );
-                })}
+                    <div className="font-mono font-bold text-white">{formatUsd(sub)}</div>
+                  </div>
+                ))}
               </div>
 
               {/* Order Total */}
               <div className="flex items-center justify-between py-2 border-y border-white/[0.08]">
-                <span className="text-sm font-bold text-[#a3abd6]">Total</span>
+                <div>
+                  <span className="text-xs font-bold text-[#a3abd6] uppercase tracking-wider block">
+                    Order Subtotal
+                  </span>
+                  <span className="font-head text-2xl text-white font-bold">
+                    {formatUsd(orderTotalUsd)}
+                  </span>
+                </div>
                 <div className="text-right">
+                  <span className="text-xs font-bold text-[#a3abd6] uppercase tracking-wider block">
+                    Payable via UPI
+                  </span>
                   <span className="font-head text-2xl text-[#10b981] font-bold">
                     {formatInr(orderTotalInr)}
                   </span>
-                  <span className="block text-xs text-[#a3abd6] font-mono">
-                    Converted from ${orderTotalUsd.toFixed(2)} USD (@ ₹{conversionRate}/USD)
+                  <span className="block text-[11px] text-[#a3abd6] font-mono">
+                    (@ ₹{conversionRate}/USD)
                   </span>
                 </div>
               </div>

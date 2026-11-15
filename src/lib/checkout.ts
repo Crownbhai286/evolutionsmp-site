@@ -95,8 +95,11 @@ export function formatUsd(amount: number): string {
 }
 
 export function formatInr(amount: number): string {
-  const rounded = Math.round(Number(amount) || 0);
-  return `₹${rounded.toLocaleString("en-IN")}`;
+  const safe = Math.round(Number(amount) * 100) / 100 || 0;
+  return `₹${safe.toLocaleString("en-IN", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })}`;
 }
 
 /** Cleans stored cart entries, drops invalid items, and merges duplicates. */
@@ -154,7 +157,7 @@ export function computeOrderLines(
   cart: CartLine[],
   catalog: StoreCatalogItem[] = STORE_ITEMS,
   coinCfg?: CoinConfigData,
-  rate: number = 88.0
+  rate: number = 94.25
 ): {
   lines: (OrderLine & { unitPriceInr: number; subInr: number })[];
   total: number;
@@ -164,7 +167,6 @@ export function computeOrderLines(
 } {
   const lines: (OrderLine & { unitPriceInr: number; subInr: number })[] = [];
   let total = 0;
-  let totalInr = 0;
   let totalCount = 0;
   let totalCoins = 0;
 
@@ -172,18 +174,20 @@ export function computeOrderLines(
     const item = resolveStoreItem(entry.id, catalog, coinCfg);
     if (!item || !Number.isInteger(entry.qty) || entry.qty < 1 || entry.qty > 99) continue;
     const sub = Math.round(item.price * entry.qty * 100) / 100;
-    const unitPriceInr = Math.max(1, Math.round(item.price * rate));
-    const subInr = unitPriceInr * entry.qty;
+    const unitPriceInr = Math.round(item.price * rate * 100) / 100;
+    const subInr = Math.round(sub * rate * 100) / 100;
     lines.push({ item, qty: entry.qty, sub, unitPriceInr, subInr });
     total += sub;
-    totalInr += subInr;
     totalCount += entry.qty;
     totalCoins += (item.coinAmount || 0) * entry.qty;
   }
 
+  const roundedTotal = Math.round(total * 100) / 100;
+  const totalInr = Math.max(1, Math.round(roundedTotal * rate * 100) / 100);
+
   return {
     lines,
-    total: Math.round(total * 100) / 100,
+    total: roundedTotal,
     totalInr,
     totalCount,
     totalCoins,

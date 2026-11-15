@@ -79,7 +79,7 @@ export async function POST(req: Request) {
       originalPrice: pricing.originalPrice,
       priceInr,
       originalPriceInr,
-      currency: "INR",
+      currency: "USD",
       discountPercent: pricing.discountPercent,
       unitPrice: Math.round((pricing.price / coins) * 10000) / 10000,
       limits: {
@@ -89,7 +89,7 @@ export async function POST(req: Request) {
       delivery: {
         system: "In-game Economy (/eco give)",
         command: deliveryCommand,
-        currency: "INR",
+        currency: "USD",
       },
     });
   } catch (error: any) {

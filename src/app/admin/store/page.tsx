@@ -515,18 +515,13 @@ export default function AdminStorePage() {
                           {p.category_slug}
                         </span>
                       </td>
-                      <td className="px-4 py-3.5 font-mono">
-                        <span className="font-bold text-white block">
-                          ₹{Math.max(1, Math.round(Number(p.price) * 88)).toLocaleString("en-IN")}
-                        </span>
-                        <span className="text-[11px] text-[#7d87b8]">
-                          ${Number(p.price).toFixed(2)} USD
-                          {p.original_price && (
-                            <span className="ml-1.5 line-through">
-                              ${Number(p.original_price).toFixed(2)}
-                            </span>
-                          )}
-                        </span>
+                      <td className="px-4 py-3.5 font-mono font-bold text-white">
+                        ${Number(p.price).toFixed(2)}
+                        {p.original_price && (
+                          <span className="ml-1.5 text-[11px] text-[#7d87b8] line-through">
+                            ${Number(p.original_price).toFixed(2)}
+                          </span>
+                        )}
                       </td>
                       <td className="px-4 py-3.5 font-mono text-[11px]">
                         {p.tebex_package_id ? (

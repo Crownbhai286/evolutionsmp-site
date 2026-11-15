@@ -83,7 +83,6 @@ export async function POST(req: Request) {
   // Validate items and calculate totals
   const storedItems: StoredOrderItem[] = [];
   let totalUsd = 0;
-  let totalInr = 0;
 
   for (const item of items) {
     const customCoinMatch = /^coins-custom-(\d+)$/.exec(item.slug);
@@ -113,9 +112,6 @@ export async function POST(req: Request) {
       const subtotal = Math.round(unitPrice * item.quantity * 100) / 100;
       totalUsd += subtotal;
 
-      const unitInr = convertUsdToInr(unitPrice, config.usdToInrRate);
-      totalInr += unitInr * item.quantity;
-
       storedItems.push({
         slug: item.slug,
         name: `Custom Coins (${(coins * item.quantity).toLocaleString()} Coins)`,
@@ -138,9 +134,6 @@ export async function POST(req: Request) {
     const subtotal = Math.round(product.price * item.quantity * 100) / 100;
     totalUsd += subtotal;
 
-    const unitInr = convertUsdToInr(product.price, config.usdToInrRate);
-    totalInr += unitInr * item.quantity;
-
     storedItems.push({
       slug: product.id,
       name: product.name,
@@ -152,11 +145,12 @@ export async function POST(req: Request) {
   }
 
   totalUsd = Math.round(totalUsd * 100) / 100;
-  if (totalUsd <= 0 || totalInr <= 0) {
+  if (totalUsd <= 0) {
     return NextResponse.json({ error: "Order total must be greater than zero." }, { status: 400 });
   }
 
-  const amountInr = Math.max(1, totalInr);
+  // Convert USD to INR only when creating the FamGateway payment session (rate: ₹94.25/USD, 2 decimal places)
+  const amountInr = convertUsdToInr(totalUsd, config.usdToInrRate);
   const deliveryCommands = buildDeliveryCommands({
     username,
     items,

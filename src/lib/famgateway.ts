@@ -31,7 +31,7 @@ export function getFamGatewayConfigStatus(): FamGatewayConfigStatus {
   const apiKey = process.env.FAMGATEWAY_API_KEY?.trim() || "";
   const hasApiKey = Boolean(apiKey) && !apiKey.includes("your_api_key_here");
   const rawRate = Number(process.env.USD_TO_INR_RATE);
-  const usdToInrRate = Number.isFinite(rawRate) && rawRate > 0 ? rawRate : 88.0;
+  const usdToInrRate = Number.isFinite(rawRate) && rawRate > 0 ? rawRate : 94.25;
 
   return {
     configured: hasApiKey,
