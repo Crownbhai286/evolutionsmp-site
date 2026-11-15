@@ -1,0 +1,41 @@
+# ==============================================================================
+# EvolutionLeaderboard - EvolutionSMP Survival Server Sync Configuration
+# Minecraft / Paper 1.21.x
+# ==============================================================================
+
+api:
+  # The website endpoint URL where leaderboard data is received
+  # Production: https://evolutionsmp-site.vercel.app/api/sync/leaderboard
+  url: "https://evolutionsmp-site.vercel.app/api/sync/leaderboard"
+
+  # Secret synchronization API key matching MINECRAFT_SYNC_API_KEY in your website environment.
+  # KEEP THIS PRIVATE. DO NOT share this key with players.
+  sync_key: "PASTE_YOUR_MINECRAFT_SYNC_API_KEY_HERE"
+
+  # HTTP request connection timeout in seconds
+  timeout_seconds: 15
+
+sync:
+  # How often the plugin automatically collects and syncs leaderboard data (in minutes).
+  # Default is 15 minutes as per server requirements.
+  interval_minutes: 15
+
+  # Initial delay before the first sync after server boot (in seconds).
+  # Allows CoinsEngine, Vault, and worlds to fully load.
+  initial_delay_seconds: 30
+
+  # Maximum number of players to send per category (1 to 500, default 50).
+  top_players_per_category: 50
+
+  # Whether to also synchronize live server statistics (online players, max players, total registered players).
+  sync_server_statistics: true
+
+coins_engine:
+  # Currency ID in CoinsEngine to read for the money leaderboard.
+  # Leave as "money" or set to your custom currency ID in CoinsEngine.
+  # If CoinsEngine or currency is unavailable, Vault Economy will be used as automatic fallback.
+  currency_id: "money"
+
+logging:
+  # Enable verbose debug logs in the server console during sync cycles.
+  debug: false

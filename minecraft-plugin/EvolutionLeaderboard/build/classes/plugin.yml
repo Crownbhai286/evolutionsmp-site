@@ -1,0 +1,18 @@
+name: EvolutionLeaderboard
+version: '1.0.0'
+main: fun.evolutionsmp.leaderboard.EvolutionLeaderboardPlugin
+api-version: '1.21'
+author: EvolutionSMP
+description: Lightweight real-time survival leaderboard sync plugin for EvolutionSMP
+softdepend:
+  - CoinsEngine
+  - Vault
+commands:
+  evosync:
+    description: Manage EvolutionSMP leaderboard synchronization
+    usage: /evosync <now|status|reload|help>
+    permission: evolutionsmp.admin
+permissions:
+  evolutionsmp.admin:
+    description: Allows administrative access to EvolutionLeaderboard commands
+    default: op
