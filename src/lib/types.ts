@@ -112,6 +112,7 @@ export interface StoreItem {
   coinAmount?: number;
   isCustomCoin?: boolean;
   bonusPercent?: number;
+  kitImageUrl?: string | null;
 }
 
 export interface NewsPost {
@@ -227,4 +228,5 @@ export interface StoreCatalogItem extends StoreItem {
   tebexPackageId?: string;
   isEnabled?: boolean;
   sortOrder?: number;
+  kitImageUrl?: string | null;
 }

@@ -43,6 +43,7 @@ export async function POST(
       accent_color: source.accent_color,
       badge: source.badge,
       image_url: source.image_url,
+      kit_image_url: source.kit_image_url,
       icon_name: source.icon_name,
       perks: source.perks,
       popular: false,

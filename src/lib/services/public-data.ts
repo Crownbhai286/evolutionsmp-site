@@ -387,6 +387,7 @@ export async function getPublicStoreData(): Promise<{
             perks: Array.isArray(p.perks) ? p.perks : [],
             icon: p.icon_name || "PackageCheck",
             imageUrl: p.image_url || null,
+            kitImageUrl: p.kit_image_url || null,
             checkoutUrl: p.checkout_url || "",
             coinAmount: p.coin_amount ?? undefined,
             isCustomCoin: Boolean(p.is_custom_coin),

@@ -17,6 +17,8 @@ import {
   Save,
   CheckCircle2,
   AlertTriangle,
+  Upload,
+  Sparkles,
 } from "lucide-react";
 import AdminShell from "@/components/admin/AdminShell";
 import ConfirmDialog from "@/components/admin/ConfirmDialog";
@@ -35,6 +37,7 @@ interface StoreProductRow {
   accent_color: string;
   badge: string | null;
   image_url: string | null;
+  kit_image_url: string | null;
   icon_name: string;
   perks: string[];
   popular: boolean;
@@ -77,6 +80,7 @@ const EMPTY_PRODUCT: Omit<StoreProductRow, "id"> = {
   accent_color: "#ff9a1f",
   badge: "",
   image_url: "",
+  kit_image_url: "",
   icon_name: "Crown",
   perks: [""],
   popular: false,
@@ -123,6 +127,7 @@ export default function AdminStorePage() {
   const [saving, setSaving] = useState(false);
   const [savingCoins, setSavingCoins] = useState(false);
   const [mediaOpen, setMediaOpen] = useState(false);
+  const [kitMediaOpen, setKitMediaOpen] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<StoreProductRow | null>(null);
   const [deleting, setDeleting] = useState(false);
 
@@ -174,6 +179,7 @@ export default function AdminStorePage() {
       accent_color: row.accent_color || "#ff9a1f",
       badge: row.badge || "",
       image_url: row.image_url || "",
+      kit_image_url: row.kit_image_url || "",
       icon_name: row.icon_name || "PackageCheck",
       perks: Array.isArray(row.perks) && row.perks.length > 0 ? row.perks : [""],
       popular: Boolean(row.popular),
@@ -199,6 +205,7 @@ export default function AdminStorePage() {
       slug: form.slug.trim() || toSlug(form.name),
       badge: form.badge?.trim() ? form.badge.trim() : null,
       image_url: form.image_url?.trim() ? form.image_url.trim() : null,
+      kit_image_url: form.kit_image_url?.trim() ? form.kit_image_url.trim() : null,
       perks: form.perks.map((p) => p.trim()).filter(Boolean),
     };
 
@@ -507,6 +514,11 @@ export default function AdminStorePage() {
                           <div>
                             <p className="font-bold text-white">{p.name}</p>
                             <p className="text-[11px] font-mono text-[#7d87b8]">{p.slug}</p>
+                            {p.kit_image_url && (
+                              <span className="inline-flex items-center gap-1 text-[10px] text-[#ff9a1f] font-mono mt-0.5 font-bold">
+                                <Sparkles className="h-3 w-3" /> Kit Preview
+                              </span>
+                            )}
                           </div>
                         </div>
                       </td>
@@ -977,6 +989,66 @@ export default function AdminStorePage() {
                 </div>
               </div>
 
+              {/* Kit Preview Image field */}
+              <div className="rounded-xl p-3.5 bg-[#141a42] border border-white/[0.08] space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <label className="text-xs font-bold text-white flex items-center gap-1.5">
+                      <Sparkles className="h-3.5 w-3.5 text-[#ff9a1f]" />
+                      <span>Kit Preview Image</span>
+                    </label>
+                    <p className="text-[11px] text-[#8f98c7] mt-0.5">
+                      Upload an in-game kit screenshot or render for this tier. Players can view and zoom this in Rank Details.
+                    </p>
+                  </div>
+                  {form.kit_image_url && (
+                    <button
+                      type="button"
+                      onClick={() => setForm({ ...form, kit_image_url: "" })}
+                      className="text-xs text-red-400 hover:text-red-300 font-bold flex items-center gap-1"
+                    >
+                      <Trash2 className="h-3 w-3" />
+                      <span>Remove</span>
+                    </button>
+                  )}
+                </div>
+
+                <div className="flex gap-2">
+                  <input
+                    value={form.kit_image_url || ""}
+                    onChange={(e) => setForm({ ...form, kit_image_url: e.target.value })}
+                    placeholder="https://... or click Upload / Pick Image"
+                    className="flex-1 px-3 py-2 rounded-xl bg-[#080b1c] border border-white/[0.12] text-xs font-mono text-white"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setKitMediaOpen(true)}
+                    className="px-3.5 py-2 rounded-xl bg-[#232c6a] hover:bg-[#2e3988] border border-white/[0.12] text-xs font-bold text-white inline-flex items-center gap-1.5 shrink-0"
+                  >
+                    <Upload className="h-3.5 w-3.5 text-[#ff9a1f]" />
+                    <span>Upload / Pick</span>
+                  </button>
+                </div>
+
+                {form.kit_image_url && (
+                  <div className="relative rounded-xl overflow-hidden border border-white/[0.1] bg-[#080b1c] p-2 flex items-center gap-3">
+                    <img
+                      src={form.kit_image_url}
+                      alt="Kit Preview"
+                      className="h-16 w-24 object-cover rounded-lg border border-white/[0.08]"
+                    />
+                    <div className="text-xs text-[#a3abd6] min-w-0 flex-1">
+                      <span className="text-white font-bold block truncate">
+                        Kit preview image configured
+                      </span>
+                      <span className="text-[10px] text-[#6f78a8] font-mono block truncate">
+                        {form.kit_image_url}
+                      </span>
+                    </div>
+                  </div>
+                )}
+              </div>
+
               <div>
                 <label className="text-xs font-bold text-[#a3abd6] block mb-1">Description</label>
                 <textarea
@@ -1077,6 +1149,14 @@ export default function AdminStorePage() {
         selectedUrl={form.image_url}
         onSelect={(url) => setForm({ ...form, image_url: url })}
         onClose={() => setMediaOpen(false)}
+      />
+
+      <MediaPickerModal
+        open={kitMediaOpen}
+        defaultFolder="products"
+        selectedUrl={form.kit_image_url}
+        onSelect={(url) => setForm({ ...form, kit_image_url: url })}
+        onClose={() => setKitMediaOpen(false)}
       />
 
       <ConfirmDialog

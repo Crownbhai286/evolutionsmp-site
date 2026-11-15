@@ -81,6 +81,7 @@ export const storeProductSchema = z.object({
   accent_color: z.string().trim().regex(/^#[0-9a-fA-F]{6}$/).default("#ff9a1f"),
   badge: z.string().trim().max(50).nullable().optional(),
   image_url: urlOrRelativeSchema.nullable().optional(),
+  kit_image_url: urlOrRelativeSchema.nullable().optional(),
   icon_name: z.string().trim().min(1).max(40).default("PackageCheck"),
   perks: z.array(z.string().trim().min(1).max(300)).default([]),
   popular: z.boolean().default(false),
