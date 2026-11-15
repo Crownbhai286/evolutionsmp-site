@@ -41,24 +41,25 @@ CREATE TRIGGER trg_store_orders_updated_at
   BEFORE UPDATE ON public.store_orders
   FOR EACH ROW EXECUTE FUNCTION public.set_updated_at();
 
--- Enable Row Level Security
+-- ============================================================================
+-- ROW LEVEL SECURITY (RLS) POLICIES
+-- ============================================================================
+-- 1. Enable Row Level Security to prevent unauthorized access.
 ALTER TABLE public.store_orders ENABLE ROW LEVEL SECURITY;
 
--- Admins have full access to view and manage all orders
+-- 2. Drop any legacy/insecure public policies completely.
+DROP POLICY IF EXISTS "Public read store_orders" ON public.store_orders;
+DROP POLICY IF EXISTS "Public insert store_orders" ON public.store_orders;
+DROP POLICY IF EXISTS "Admins manage store_orders" ON public.store_orders;
+
+-- 3. Strict Admin Access: Only verified active staff/owners can read or write directly.
 CREATE POLICY "Admins manage store_orders"
   ON public.store_orders
   FOR ALL
   USING (public.is_active_admin())
   WITH CHECK (public.is_active_admin());
 
--- Public users can view order tracking details by order_id
-CREATE POLICY "Public read store_orders"
-  ON public.store_orders
-  FOR SELECT
-  USING (TRUE);
-
--- Public checkout sessions can create initial pending orders
-CREATE POLICY "Public insert store_orders"
-  ON public.store_orders
-  FOR INSERT
-  WITH CHECK (TRUE);
+-- NOTE: All customer checkout order creation, webhook verification, and status
+-- checks are strictly executed server-side via Next.js API routes using the
+-- Supabase service-role client (SUPABASE_SERVICE_ROLE_KEY).
+-- Anonymous and public authenticated client connections have ZERO direct access.

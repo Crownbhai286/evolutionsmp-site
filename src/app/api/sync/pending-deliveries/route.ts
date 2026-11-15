@@ -6,24 +6,40 @@ import { checkRateLimit, getRequestIp } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 
-function verifyApiKey(headerKey: string | null): boolean {
+function extractApiKey(req: Request): string | null {
+  const custom = req.headers.get("x-sync-api-key")?.trim();
+  if (custom) return custom;
+  const auth = req.headers.get("authorization")?.trim();
+  if (auth && /^Bearer\s+/i.test(auth)) {
+    return auth.replace(/^Bearer\s+/i, "").trim();
+  }
+  return null;
+}
+
+function verifyApiKey(req: Request): boolean {
   const expected = process.env.MINECRAFT_SYNC_API_KEY?.trim();
-  if (!expected || expected.includes("replace-with") || !headerKey) return false;
-  const a = Buffer.from(headerKey, "utf8");
+  // Fail closed if server has no key configured or key is a placeholder
+  if (!expected || expected.length < 16 || expected.includes("replace-with")) {
+    return false;
+  }
+  const provided = extractApiKey(req);
+  if (!provided) return false;
+
+  const a = Buffer.from(provided, "utf8");
   const b = Buffer.from(expected, "utf8");
   if (a.length !== b.length) return false;
   return crypto.timingSafeEqual(a, b);
 }
 
 /**
- * Endpoint for Minecraft server or RCON sync plugin to poll paid store deliveries.
- * Requires header `x-sync-api-key: <MINECRAFT_SYNC_API_KEY>`.
+ * Authenticated endpoint for Minecraft server or RCON sync plugin to poll paid store deliveries.
+ * Requires header `x-sync-api-key: <MINECRAFT_SYNC_API_KEY>` or `Authorization: Bearer <MINECRAFT_SYNC_API_KEY>`.
  */
 export async function GET(req: Request) {
   const rl = checkRateLimit(`mc-deliveries:${getRequestIp(req)}`, 60, 60_000);
   if (!rl.allowed) return NextResponse.json({ error: "Rate limit exceeded." }, { status: 429 });
 
-  if (!verifyApiKey(req.headers.get("x-sync-api-key"))) {
+  if (!verifyApiKey(req)) {
     return NextResponse.json({ error: "Invalid or unconfigured MINECRAFT_SYNC_API_KEY." }, { status: 401 });
   }
 
@@ -32,11 +48,13 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: "Database client unavailable." }, { status: 503 });
   }
 
+  // Only return paid orders whose perks are still pending delivery
   const { data, error } = await db
     .from("store_orders")
     .select("id, order_id, username, amount, currency, delivery_commands, delivery_status, payment_status, created_at")
     .eq("payment_status", "paid")
-    .order("created_at", { ascending: false })
+    .eq("delivery_status", "pending")
+    .order("created_at", { ascending: true })
     .limit(50);
 
   if (error) {
@@ -55,7 +73,7 @@ const ackSchema = z.object({
 });
 
 export async function POST(req: Request) {
-  if (!verifyApiKey(req.headers.get("x-sync-api-key"))) {
+  if (!verifyApiKey(req)) {
     return NextResponse.json({ error: "Invalid or unconfigured MINECRAFT_SYNC_API_KEY." }, { status: 401 });
   }
 

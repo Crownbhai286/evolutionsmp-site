@@ -279,13 +279,13 @@ export default function StoreClient({
             setCart([]);
             showToast(
               "UPI Payment Confirmed!",
-              `Order ${data.orderId} verified. In-game perks delivered for ${data.username}!`,
+              `Order ${data.orderId} verified. Perks queued for delivery to ${data.username}!`,
               "success"
             );
           } else if (upiReturn === "complete") {
             showToast(
               "Payment Awaiting Confirmation",
-              `Order ${orderIdParam} is being verified by the banking network. Perks deliver automatically once settled.`,
+              `Order ${orderIdParam} is being verified by the banking network. Perks are delivered once verified.`,
               "info"
             );
           }

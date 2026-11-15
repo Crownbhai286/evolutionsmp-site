@@ -99,8 +99,13 @@ export function buildDeliveryCommands(params: {
 
 function getDatabaseClient() {
   const adminDb = createSupabaseAdminClient();
-  if (adminDb) return adminDb;
-  return createSupabasePublicClient();
+  if (!adminDb) {
+    console.error(
+      "[Orders] SUPABASE_SERVICE_ROLE_KEY is required for secure server-side store_orders operations. Public client is forbidden."
+    );
+    return null;
+  }
+  return adminDb;
 }
 
 /**

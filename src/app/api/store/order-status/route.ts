@@ -8,6 +8,15 @@ import {
 
 export const dynamic = "force-dynamic";
 
+function sanitizeOrderItems(items: unknown) {
+  if (!Array.isArray(items)) return [];
+  return items.map((it) => ({
+    name: typeof it?.name === "string" ? it.name : "Store Item",
+    quantity: typeof it?.quantity === "number" ? Math.max(1, it.quantity) : 1,
+    coinAmount: typeof it?.coinAmount === "number" ? it.coinAmount : undefined,
+  }));
+}
+
 export async function GET(req: Request) {
   const ip = getRequestIp(req);
   const rl = checkRateLimit(`order-status:${ip}`, 40, 60_000);
@@ -18,8 +27,9 @@ export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const orderId = searchParams.get("order_id")?.trim();
 
-  if (!orderId) {
-    return NextResponse.json({ error: "Missing order_id parameter." }, { status: 400 });
+  // Validate order ID pattern to prevent probing
+  if (!orderId || !/^[A-Za-z0-9_-]{6,64}$/.test(orderId)) {
+    return NextResponse.json({ error: "Invalid or missing order_id parameter." }, { status: 400 });
   }
 
   const order = await getStoreOrder(orderId);
@@ -40,7 +50,7 @@ export async function GET(req: Request) {
       deliveryStatus: order.delivery_status,
       utr: order.utr,
       deliveredAt: order.delivered_at,
-      items: order.items,
+      items: sanitizeOrderItems(order.items),
     });
   }
 
@@ -70,7 +80,7 @@ export async function GET(req: Request) {
             deliveryStatus: fulfillment.order.delivery_status,
             utr: fulfillment.order.utr,
             deliveredAt: fulfillment.order.delivered_at,
-            items: fulfillment.order.items,
+            items: sanitizeOrderItems(fulfillment.order.items),
           });
         }
       }
@@ -89,6 +99,6 @@ export async function GET(req: Request) {
     status: order.status,
     paymentStatus: order.payment_status,
     deliveryStatus: order.delivery_status,
-    items: order.items,
+    items: sanitizeOrderItems(order.items),
   });
 }

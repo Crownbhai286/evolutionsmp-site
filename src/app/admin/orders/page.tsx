@@ -163,6 +163,15 @@ export default function AdminOrdersPage() {
         </div>
       )}
 
+      {/* In-Game Delivery Notice Banner */}
+      <div className="mb-6 rounded-2xl p-4 bg-[#3aa0ff]/10 border border-[#3aa0ff]/25 flex items-start gap-3">
+        <PackageCheck className="h-5 w-5 text-[#3aa0ff] shrink-0 mt-0.5" />
+        <div className="text-xs text-[#d1d7f0] leading-relaxed">
+          <b className="text-white block font-bold mb-0.5">In-Game Delivery Status & Management</b>
+          Paid UPI orders generate verified Minecraft console commands (e.g. LuckPerms ranks or economy coins). Staff can review and copy commands directly below to run in the server console, or connect an in-game sync plugin using <code className="text-[#3aa0ff] bg-black/40 px-1 py-0.5 rounded">MINECRAFT_SYNC_API_KEY</code> to dispatch commands automatically.
+        </div>
+      </div>
+
       {/* Overview Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
         <div className="rounded-2xl p-4 bg-[#141a42] border border-white/[0.08]">
