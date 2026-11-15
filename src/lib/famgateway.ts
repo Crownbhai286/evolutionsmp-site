@@ -75,7 +75,10 @@ export function verifyFamGatewayWebhookSignature(
       .update(rawBody)
       .digest("hex");
 
-    const cleanHeader = signatureHeader.trim().toLowerCase();
+    const cleanHeader = signatureHeader
+      .trim()
+      .toLowerCase()
+      .replace(/^sha256=/i, "");
     const cleanExpected = expected.toLowerCase();
 
     const sigBuf = Buffer.from(cleanHeader, "utf8");

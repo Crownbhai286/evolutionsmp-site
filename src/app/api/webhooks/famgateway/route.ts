@@ -9,12 +9,29 @@ import { getStoreOrder, fulfillStoreOrder } from "@/lib/orders";
 
 export const dynamic = "force-dynamic";
 
+/**
+ * Health check & verification ping handler for gateway dashboards (e.g. FamGateway URL tester).
+ */
+export async function GET() {
+  return NextResponse.json({
+    status: "ok",
+    endpoint: "/api/webhooks/famgateway",
+    service: "EvolutionSMP FamGateway Webhook Receiver",
+    timestamp: new Date().toISOString(),
+  });
+}
+
+export async function HEAD() {
+  return new Response(null, { status: 200 });
+}
+
 export async function POST(req: Request) {
   const ip = getRequestIp(req);
   const rawBody = await req.text();
   const signature =
     req.headers.get("x-famgateway-signature") ||
     req.headers.get("x-signature") ||
+    req.headers.get("signature") ||
     null;
 
   // 1. Authenticate webhook using HMAC-SHA256 signature
@@ -43,18 +60,38 @@ export async function POST(req: Request) {
   const webhookAmount = Number(data.amount || payload.amount) || undefined;
   const senderUpi = data.sender_upi || payload.sender_upi || undefined;
 
+  // Handle test events sent by dashboard webhook verification
+  if (
+    event === "test" ||
+    event === "ping" ||
+    event === "webhook.test" ||
+    orderId.toLowerCase() === "test" ||
+    orderId.toLowerCase().startsWith("test_")
+  ) {
+    return NextResponse.json({
+      success: true,
+      message: "FamGateway test webhook verified and accepted.",
+      event,
+      timestamp: new Date().toISOString(),
+    });
+  }
+
   if (!orderId) {
-    return NextResponse.json({ error: "Missing order_id in webhook payload." }, { status: 400 });
+    return NextResponse.json({
+      received: true,
+      message: "Webhook acknowledged without order_id.",
+    });
   }
 
   // 2. Locate stored order in Supabase
   const storedOrder = await getStoreOrder(orderId);
   if (!storedOrder) {
     console.warn(`[FamGateway Webhook] Stored order not found for identifier: ${orderId}`);
-    return NextResponse.json(
-      { error: `Order "${orderId}" not found in database.` },
-      { status: 404 }
-    );
+    // Return 200 OK so the gateway does not register a 404 or retry storm for mock/unknown events
+    return NextResponse.json({
+      received: true,
+      message: `Order "${orderId}" not found in database. Event acknowledged.`,
+    });
   }
 
   // 3. Strict Idempotency Check
@@ -129,7 +166,7 @@ export async function POST(req: Request) {
 
   const finalUtr = serverVerification.utr || webhookUtr || undefined;
 
-  // 7. Fulfill order and deliver Minecraft perks (Rule 10 & 11)
+  // 7. Fulfill order and record Minecraft perks (Rule 10 & 11)
   const fulfillment = await fulfillStoreOrder({
     orderId: storedOrder.order_id,
     utr: finalUtr,
