@@ -125,6 +125,7 @@ export default function StoreClient({
   const [checkoutIgnError, setCheckoutIgnError] = useState("");
   const [checkoutError, setCheckoutError] = useState("");
   const [famBusy, setFamBusy] = useState(false);
+  const [hasAgreedToTerms, setHasAgreedToTerms] = useState(false);
 
   // Custom Coins Calculator State
   const [customCoinAmount, setCustomCoinAmount] = useState<number>(350);
@@ -330,6 +331,9 @@ export default function StoreClient({
   } = computeOrderLines(cart, STORE_ITEMS, coinConfig, conversionRate);
 
   const openCheckoutModal = (overrideCart?: CartLine[], overrideIgn?: string) => {
+    if (!hasAgreedToTerms) {
+      return;
+    }
     const sourceCart = overrideCart ?? cart;
     const { items, dropped } = sanitizeCart(sourceCart, STORE_ITEMS, coinConfig);
     if (dropped > 0) {
@@ -387,6 +391,11 @@ export default function StoreClient({
     if (activeModalItem) setActiveModalItem(null);
 
     if (openCheckoutAfter) {
+      if (!hasAgreedToTerms) {
+        setIsCheckoutOpen(false);
+        setCartOpen(true);
+        return;
+      }
       openCheckoutModal(cleaned, validIgn);
       return;
     }
@@ -417,6 +426,12 @@ export default function StoreClient({
 
   const handleFamGatewayCheckout = async () => {
     if (famBusy) return;
+    if (!hasAgreedToTerms) {
+      setCheckoutError(
+        "Please agree that all purchases are final and non-refundable before proceeding."
+      );
+      return;
+    }
     const cleanIgn = mcUsername.trim();
     const ignErr = validateMinecraftIgn(cleanIgn);
     setCheckoutIgnError(ignErr);
@@ -1557,10 +1572,52 @@ export default function StoreClient({
                   Perks are delivered in-game instantly once your UPI payment is confirmed.
                 </p>
 
+                {/* Mandatory Non-Refundable Purchase Agreement */}
+                <label
+                  htmlFor="cart-purchase-agreement"
+                  className={`flex items-start gap-2.5 p-3 rounded-xl border transition-all cursor-pointer select-none group ${
+                    hasAgreedToTerms
+                      ? "bg-[#141a42] border-blue-500/40 shadow-sm shadow-blue-500/10"
+                      : "bg-[#141a42]/60 hover:bg-[#141a42] border-white/[0.08] hover:border-blue-500/30"
+                  }`}
+                >
+                  <div className="relative flex items-center justify-center shrink-0 mt-0.5">
+                    <input
+                      id="cart-purchase-agreement"
+                      type="checkbox"
+                      checked={hasAgreedToTerms}
+                      onChange={(e) => setHasAgreedToTerms(e.target.checked)}
+                      className="sr-only peer"
+                    />
+                    <div
+                      className={`w-4 h-4 rounded border transition-all flex items-center justify-center shadow-inner ${
+                        hasAgreedToTerms
+                          ? "bg-blue-600 border-blue-500 ring-2 ring-blue-400/30"
+                          : "bg-[#0d122d] border-white/20 group-hover:border-blue-400/50"
+                      }`}
+                    >
+                      <Check
+                        className={`w-3 h-3 text-white stroke-[3] transition-transform duration-150 ${
+                          hasAgreedToTerms ? "scale-100 opacity-100" : "scale-0 opacity-0"
+                        }`}
+                      />
+                    </div>
+                  </div>
+                  <span className="text-xs text-[#a3abd6] group-hover:text-[#d1d7f0] leading-snug transition-colors">
+                    I agree that all purchases are final and non-refundable. I have reviewed my order and understand that digital items are delivered in-game after payment confirmation.
+                  </span>
+                </label>
+
                 <button
                   type="button"
+                  disabled={!hasAgreedToTerms}
                   onClick={() => openCheckoutModal()}
-                  className="btn w-full py-3.5 text-base font-extrabold flex items-center justify-center gap-2"
+                  className={`btn w-full py-3.5 text-base font-extrabold flex items-center justify-center gap-2 transition-all ${
+                    !hasAgreedToTerms
+                      ? "opacity-50 cursor-not-allowed filter grayscale-[30%]"
+                      : "cursor-pointer hover:brightness-105"
+                  }`}
+                  aria-disabled={!hasAgreedToTerms}
                 >
                   <Lock className="h-4 w-4" />
                   <span>Checkout Now</span>
@@ -1702,13 +1759,54 @@ export default function StoreClient({
                 </div>
               )}
 
+              {/* Mandatory Non-Refundable Purchase Agreement */}
+              <label
+                htmlFor="checkout-purchase-agreement"
+                className={`flex items-start gap-2.5 p-3 rounded-xl border transition-all cursor-pointer select-none group ${
+                  hasAgreedToTerms
+                    ? "bg-[#141a42] border-blue-500/40 shadow-sm shadow-blue-500/10"
+                    : "bg-[#141a42]/60 hover:bg-[#141a42] border-white/[0.08] hover:border-blue-500/30"
+                }`}
+              >
+                <div className="relative flex items-center justify-center shrink-0 mt-0.5">
+                  <input
+                    id="checkout-purchase-agreement"
+                    type="checkbox"
+                    checked={hasAgreedToTerms}
+                    onChange={(e) => setHasAgreedToTerms(e.target.checked)}
+                    className="sr-only peer"
+                  />
+                  <div
+                    className={`w-4 h-4 rounded border transition-all flex items-center justify-center shadow-inner ${
+                      hasAgreedToTerms
+                        ? "bg-blue-600 border-blue-500 ring-2 ring-blue-400/30"
+                        : "bg-[#0d122d] border-white/20 group-hover:border-blue-400/50"
+                    }`}
+                  >
+                    <Check
+                      className={`w-3 h-3 text-white stroke-[3] transition-transform duration-150 ${
+                        hasAgreedToTerms ? "scale-100 opacity-100" : "scale-0 opacity-0"
+                      }`}
+                    />
+                  </div>
+                </div>
+                <span className="text-xs text-[#a3abd6] group-hover:text-[#d1d7f0] leading-snug transition-colors">
+                  I agree that all purchases are final and non-refundable. I have reviewed my order and understand that digital items are delivered in-game after payment confirmation.
+                </span>
+              </label>
+
               <div className="space-y-2.5 pt-1">
                 {famgatewayConfigured ? (
                   <button
                     type="button"
-                    disabled={famBusy}
+                    disabled={famBusy || !hasAgreedToTerms}
                     onClick={handleFamGatewayCheckout}
-                    className="btn w-full py-3.5 text-base font-extrabold flex items-center justify-center gap-2 bg-gradient-to-r from-[#10b981] via-[#059669] to-[#047857] hover:brightness-110 text-white shadow-lg shadow-emerald-500/25 border-none disabled:opacity-60 cursor-pointer"
+                    className={`btn w-full py-3.5 text-base font-extrabold flex items-center justify-center gap-2 bg-gradient-to-r from-[#10b981] via-[#059669] to-[#047857] text-white shadow-lg shadow-emerald-500/25 border-none transition-all ${
+                      famBusy || !hasAgreedToTerms
+                        ? "opacity-50 cursor-not-allowed filter grayscale-[30%]"
+                        : "hover:brightness-110 cursor-pointer"
+                    }`}
+                    aria-disabled={famBusy || !hasAgreedToTerms}
                   >
                     {famBusy ? (
                       <>
