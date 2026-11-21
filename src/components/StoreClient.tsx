@@ -532,7 +532,7 @@ export default function StoreClient({
       {/* Main Shop Layout: Sidebar Tree + Product Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-7 items-start">
         {/* Left Category Tree */}
-        <aside className="sticky top-24 rounded-[18px] p-3.5 bg-gradient-to-b from-[#1b2254] to-[#141a42] border border-[rgba(130,150,255,0.2)] shadow-xl space-y-1.5">
+        <aside className="static lg:sticky lg:top-24 rounded-[18px] p-3.5 bg-gradient-to-b from-[#1b2254] to-[#141a42] border border-[rgba(130,150,255,0.2)] shadow-xl space-y-1.5">
           <div className="px-3 py-2 text-xs font-head uppercase tracking-wider text-[#ff9a1f] border-b border-white/[0.08] mb-2 flex items-center justify-between">
             <span>Categories</span>
             <span className="text-[10px] text-[#a3abd6] font-mono">store.evolutionsmp.fun</span>
@@ -639,7 +639,7 @@ export default function StoreClient({
                       </div>
 
                       {/* Right Column: Interactive Amount Calculator Box */}
-                      <div className="lg:col-span-6 rounded-2xl p-5 bg-[#0a0d22]/85 border border-[rgba(130,150,255,0.2)] shadow-inner space-y-4">
+                      <div className="lg:col-span-6 rounded-2xl p-4 sm:p-5 bg-[#0a0d22]/85 border border-[rgba(130,150,255,0.2)] shadow-inner space-y-4">
                         <div className="flex items-center justify-between text-xs font-bold">
                           <span className="text-[#a3abd6] uppercase tracking-wider flex items-center gap-1.5">
                             <Calculator className="h-4 w-4 text-[#ff9a1f]" />
@@ -651,11 +651,11 @@ export default function StoreClient({
                         </div>
 
                         {/* Amount Stepper & Number Input */}
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-1 sm:gap-2">
                           <button
                             type="button"
                             onClick={() => adjustCustomCoins(-100)}
-                            className="px-2.5 py-2 rounded-xl bg-[#141a42] hover:bg-[#1f275e] text-xs font-bold text-white border border-white/[0.08] transition-all"
+                            className="px-2 sm:px-2.5 py-2 rounded-xl bg-[#141a42] hover:bg-[#1f275e] text-xs font-bold text-white border border-white/[0.08] transition-all shrink-0"
                             title="-100 Coins"
                           >
                             -100
@@ -663,13 +663,13 @@ export default function StoreClient({
                           <button
                             type="button"
                             onClick={() => adjustCustomCoins(-50)}
-                            className="px-2.5 py-2 rounded-xl bg-[#141a42] hover:bg-[#1f275e] text-xs font-bold text-white border border-white/[0.08] transition-all"
+                            className="px-2 sm:px-2.5 py-2 rounded-xl bg-[#141a42] hover:bg-[#1f275e] text-xs font-bold text-white border border-white/[0.08] transition-all shrink-0"
                             title="-50 Coins"
                           >
                             -50
                           </button>
 
-                          <div className="relative flex-1">
+                          <div className="relative flex-1 min-w-[70px]">
                             <input
                               type="number"
                               min={COIN_CONFIG.minCustomCoins}
@@ -677,9 +677,9 @@ export default function StoreClient({
                               step={50}
                               value={customCoinAmount}
                               onChange={(e) => handleCustomCoinChange(parseInt(e.target.value, 10))}
-                              className="w-full text-center py-2 px-3 rounded-xl bg-[#141a42] border border-[#ff9a1f]/50 text-white font-mono text-base font-bold focus:outline-none focus:border-[#ff9a1f] shadow-inner"
+                              className="w-full text-center py-2 px-1 sm:px-3 rounded-xl bg-[#141a42] border border-[#ff9a1f]/50 text-white font-mono text-sm sm:text-base font-bold focus:outline-none focus:border-[#ff9a1f] shadow-inner"
                             />
-                            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#a3abd6] font-head uppercase pointer-events-none">
+                            <span className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 text-[10px] sm:text-xs text-[#a3abd6] font-head uppercase pointer-events-none">
                               Coins
                             </span>
                           </div>
@@ -687,7 +687,7 @@ export default function StoreClient({
                           <button
                             type="button"
                             onClick={() => adjustCustomCoins(50)}
-                            className="px-2.5 py-2 rounded-xl bg-[#141a42] hover:bg-[#1f275e] text-xs font-bold text-white border border-white/[0.08] transition-all"
+                            className="px-2 sm:px-2.5 py-2 rounded-xl bg-[#141a42] hover:bg-[#1f275e] text-xs font-bold text-white border border-white/[0.08] transition-all shrink-0"
                             title="+50 Coins"
                           >
                             +50
@@ -695,7 +695,7 @@ export default function StoreClient({
                           <button
                             type="button"
                             onClick={() => adjustCustomCoins(100)}
-                            className="px-2.5 py-2 rounded-xl bg-[#141a42] hover:bg-[#1f275e] text-xs font-bold text-white border border-white/[0.08] transition-all"
+                            className="px-2 sm:px-2.5 py-2 rounded-xl bg-[#141a42] hover:bg-[#1f275e] text-xs font-bold text-white border border-white/[0.08] transition-all shrink-0"
                             title="+100 Coins"
                           >
                             +100
@@ -806,7 +806,7 @@ export default function StoreClient({
 
                   {/* Picture Container */}
                   <div
-                    className="relative h-44 w-full rounded-xl flex items-center justify-center bg-[radial-gradient(circle,rgba(255,154,31,0.08),transparent_70%)] cursor-pointer overflow-visible"
+                    className="relative h-44 w-full rounded-xl flex items-center justify-center bg-[radial-gradient(circle,rgba(255,154,31,0.08),transparent_70%)] cursor-pointer overflow-visible shrink-0"
                     onClick={() => openItemModal(item)}
                   >
                     <div
@@ -827,26 +827,28 @@ export default function StoreClient({
                   </div>
 
                   {/* Product Info */}
-                  <div className="mt-3">
-                    {/* Coin Quantity Indicator */}
-                    {item.coinAmount && (
-                      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#ff9a1f]/10 border border-[#ff9a1f]/30 text-[#ff9a1f] text-xs font-mono font-bold mb-2">
-                        <Coins className="h-3.5 w-3.5 shrink-0" />
-                        <span>{item.coinAmount.toLocaleString()} Coins</span>
-                      </div>
-                    )}
+                  <div className="mt-3 flex-1 flex flex-col justify-between">
+                    <div>
+                      {/* Coin Quantity Indicator */}
+                      {item.coinAmount && (
+                        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#ff9a1f]/10 border border-[#ff9a1f]/30 text-[#ff9a1f] text-xs font-mono font-bold mb-2">
+                          <Coins className="h-3.5 w-3.5 shrink-0" />
+                          <span>{item.coinAmount.toLocaleString()} Coins</span>
+                        </div>
+                      )}
 
-                    <div className="flex items-center justify-between gap-2 mb-1">
-                      <h3 className="font-head text-xl text-white tracking-wide uppercase">
-                        {item.name}
-                      </h3>
+                      <div className="flex items-center justify-between gap-2 mb-1">
+                        <h3 className="font-head text-xl text-white tracking-wide uppercase">
+                          {item.name}
+                        </h3>
+                      </div>
+
+                      <p className="text-xs text-[#a3abd6] leading-relaxed line-clamp-2 mb-3">
+                        {item.description}
+                      </p>
                     </div>
 
-                    <p className="text-xs text-[#a3abd6] leading-relaxed line-clamp-2 mb-4">
-                      {item.description}
-                    </p>
-
-                    <div className="flex items-baseline gap-2 mb-4">
+                    <div className="flex items-baseline gap-2 mt-auto mb-3">
                       <span className="font-head text-2xl text-white g">
                         {formatUsd(item.price)}
                       </span>
@@ -864,11 +866,11 @@ export default function StoreClient({
                   </div>
 
                   {/* Card Action Buttons */}
-                  <div className="grid grid-cols-2 gap-2 pt-3 border-t border-white/[0.08]">
+                  <div className="grid grid-cols-2 gap-2 pt-3 border-t border-white/[0.08] mt-auto">
                     <button
                       type="button"
                       onClick={() => openItemModal(item)}
-                      className="px-3 py-2.5 rounded-xl bg-[#232c6a] hover:bg-[#2b367d] text-xs font-bold text-white transition-all text-center"
+                      className="h-10 min-h-[40px] px-3 rounded-xl bg-[#232c6a] hover:bg-[#2b367d] text-xs font-bold text-white transition-all flex items-center justify-center text-center"
                     >
                       Details
                     </button>
@@ -876,12 +878,14 @@ export default function StoreClient({
                     <button
                       type="button"
                       onClick={() => addToCart(item, 1)}
-                      className={`btn small text-xs font-bold flex items-center justify-center gap-1.5 ${
-                        isRecommended ? "primary shadow-md shadow-[#ff9a1f]/20" : ""
+                      className={`h-10 min-h-[40px] px-2.5 sm:px-3.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
+                        isRecommended
+                          ? "bg-gradient-to-r from-[#ffb02e] to-[#ff9a1f] text-[#0a0d22] font-extrabold shadow-md shadow-[#ff9a1f]/20 hover:brightness-105"
+                          : "bg-gradient-to-r from-[#ff7a1f] to-[#ff3d5a] text-white hover:brightness-105 shadow-sm"
                       }`}
                     >
-                      <ShoppingCart className="h-3.5 w-3.5" />
-                      <span>Buy &bull; {formatUsd(item.price)}</span>
+                      <ShoppingCart className="h-3.5 w-3.5 shrink-0" />
+                      <span className="whitespace-nowrap truncate">Buy • {formatUsd(item.price)}</span>
                     </button>
                   </div>
                 </div>
@@ -1010,7 +1014,7 @@ export default function StoreClient({
           onClick={() => setActiveModalItem(null)}
         >
           <div
-            className="relative w-full max-w-2xl rounded-[24px] bg-[#0f1433] border border-[rgba(130,150,255,0.3)] shadow-2xl p-6 sm:p-8 overflow-hidden max-h-[90vh] overflow-y-auto"
+            className="relative w-full max-w-2xl rounded-[24px] bg-[#0f1433] border border-[rgba(130,150,255,0.3)] shadow-2xl p-6 sm:p-8 overflow-hidden max-h-[90svh] sm:max-h-[88vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             <button
@@ -1202,7 +1206,7 @@ export default function StoreClient({
           }}
         >
           <div
-            className="relative w-full max-w-4xl rounded-[24px] bg-[#0c102b] border border-[rgba(255,154,31,0.35)] shadow-2xl p-5 sm:p-7 overflow-hidden max-h-[92vh] flex flex-col"
+            className="relative w-full max-w-4xl rounded-[24px] bg-[#0c102b] border border-[rgba(255,154,31,0.35)] shadow-2xl p-5 sm:p-7 overflow-hidden max-h-[92svh] sm:max-h-[90vh] flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
@@ -1585,7 +1589,7 @@ export default function StoreClient({
             role="dialog"
             aria-modal="true"
             aria-label="Checkout"
-            className="relative w-full max-w-xl rounded-[24px] bg-[#0f1433] border border-[rgba(130,150,255,0.3)] shadow-2xl p-6 sm:p-7 max-h-[90vh] overflow-y-auto"
+            className="relative w-full max-w-xl rounded-[24px] bg-[#0f1433] border border-[rgba(130,150,255,0.3)] shadow-2xl p-6 sm:p-7 max-h-[90svh] sm:max-h-[88vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             <button

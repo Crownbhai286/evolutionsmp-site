@@ -73,7 +73,7 @@ export default function HeroSection({
 
   return (
     <section
-      className="relative overflow-hidden isolate min-h-[min(100vh,920px)] flex items-center justify-center pt-36 pb-28 px-5"
+      className="relative overflow-hidden isolate min-h-[min(100svh,920px)] sm:min-h-[min(100dvh,920px)] flex flex-col justify-start sm:justify-center items-center pt-28 sm:pt-36 pb-14 sm:pb-28 px-4 sm:px-5"
     >
       {/* Main Hero Background Image with subtle ambient floating motion */}
       <motion.div
@@ -105,7 +105,7 @@ export default function HeroSection({
           initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 32 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
-          className="font-head text-[clamp(40px,6.8vw,86px)] uppercase leading-[1.02] tracking-[0.02em] max-w-4xl drop-shadow-[0_10px_35px_rgba(0,0,0,0.8)] text-center select-none"
+          className="font-head text-[clamp(28px,7.2vw,86px)] uppercase leading-[1.05] tracking-[0.02em] max-w-4xl drop-shadow-[0_10px_35px_rgba(0,0,0,0.8)] text-center select-none"
         >
           <span className="block text-white">{line1}</span>
           <span className="block g mt-0.5 sm:mt-1">{line2}</span>
@@ -116,7 +116,7 @@ export default function HeroSection({
           initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-4 text-[#a3abd6] text-base sm:text-lg max-w-xl font-medium"
+          className="mt-3.5 sm:mt-4 text-[#a3abd6] text-sm sm:text-base md:text-lg max-w-xl font-medium px-2"
         >
           {subtitle}
         </motion.p>
@@ -126,14 +126,14 @@ export default function HeroSection({
           initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 22, scale: 0.96 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.65, delay: 0.28, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-8 ipcard shadow-2xl hover:shadow-[#ff9a1f]/20 transition-all"
+          className="mt-6 sm:mt-8 ipcard shadow-2xl hover:shadow-[#ff9a1f]/20 transition-all max-w-full"
         >
-          <div className="ico">
-            <Server className="h-6 w-6" />
+          <div className="ico shrink-0">
+            <Server className="h-5 w-5 sm:h-6 sm:w-6" />
           </div>
-          <div className="text-left pr-2">
+          <div className="text-left pr-1 sm:pr-2 min-w-0">
             <small>Server IP</small>
-            <b id="ipText" className="select-all">{SERVER_CONFIG.javaIp}</b>
+            <b id="ipText" className="select-all text-base sm:text-lg block truncate">{SERVER_CONFIG.javaIp}</b>
           </div>
           <button
             type="button"
@@ -204,7 +204,7 @@ export default function HeroSection({
       </div>
 
       {/* Playbex Mouse scroll down indicator */}
-      <a href="#modes" className="mouse" aria-label="Scroll down to game modes" />
+      <a href="#modes" className="mouse hidden sm:block" aria-label="Scroll down to game modes" />
     </section>
   );
 }

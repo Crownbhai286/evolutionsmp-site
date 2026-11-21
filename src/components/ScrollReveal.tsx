@@ -18,9 +18,9 @@ export function ScrollReveal({
   className = "",
   direction = "up",
   delay = 0,
-  duration = 0.65,
-  distance = 28,
-  amount = 0.15,
+  duration = 0.55,
+  distance = 16,
+  amount = 0.05,
 }: ScrollRevealProps) {
   const shouldReduceMotion = useReducedMotion();
 
